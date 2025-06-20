@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<title>Pesquisa Condomínio</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #eaeaea;
+    padding: 20px;
+    text-align: center; /* Centraliza conteúdo */
+  }
+  #infoNivel {
+    margin-bottom: 20px;
+    font-weight: bold;
+  }
+  #pesquisaContainer {
+    display: inline-flex;       /* Container flexível inline para alinhar input e botão */
+    align-items: center;        /* Alinha verticalmente no centro */
+    gap: 10px;                  /* Espaço entre input e botão */
+  }
+  input, button {
+    font-size: 16px;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  #resultados {
+    margin-top: 20px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .resultado-item {
+    background: white;
+    padding: 10px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    text-align: left;
+  }
+  .resultado-item:hover {
+    background: #ddd;
+  }
+</style>
+</head>
+<body>
+
+<h1>Pesquisa de Moradores e Veículos</h1>
+<div id="infoNivel"></div>
+
+<div id="pesquisaContainer">
+  <input type="text" id="inputPesquisa" placeholder="Digite nome, placa, CPF, RG..." onkeydown="if(event.key==='Enter') pesquisar()" />
+  <button onclick="pesquisar()">Pesquisar</button>
+</div>
+
+<div id="resultados"></div>
+
+<script>
+  // Captura nível de acesso da URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const nivel = urlParams.get('acesso') || 'visitante';
+  document.getElementById('infoNivel').innerText = `Você está logado como: ${nivel.toUpperCase()}`;
+
+  // Exemplo fixo de dados para pesquisa
+  const moradores = [
+    {
+      id: 1,
+      nome: 'João da Silva',
+      cpf: '123.456.789-00',
+      rg: 'MG-12.345.678',
+      placas: ['ABC-1234', 'XYZ-9876'],
+    },
+    {
+      id: 2,
+      nome: 'Maria Oliveira',
+      cpf: '987.654.321-00',
+      rg: 'SP-87.654.321',
+      placas: ['QWE-1122'],
+    },
+    {
+      id: 3,
+      nome: 'Carlos Cunha',
+      cpf: '111.222.333-44',
+      rg: 'RJ-55.666.777',
+      placas: [],
+    }
+  ];
+
+  function pesquisar() {
+    const termo = document.getElementById('inputPesquisa').value.trim().toLowerCase();
+    const resultadosDiv = document.getElementById('resultados');
+    resultadosDiv.innerHTML = '';
+
+    if(!termo) {
+      resultadosDiv.innerHTML = '<p style="color:red;">Digite algo para pesquisar.</p>';
+      return;
+    }
+
+    // Filtra moradores que contenham o termo em nome, cpf, rg ou placas
+    const resultados = moradores.filter(m => {
+      return (
+        m.nome.toLowerCase().includes(termo) ||
+        m.cpf.toLowerCase().includes(termo) ||
+        m.rg.toLowerCase().includes(termo) ||
+        m.placas.some(p => p.toLowerCase().includes(termo))
+      );
+    });
+
+    if (resultados.length === 0) {
+      resultadosDiv.innerHTML = '<p>Nenhum resultado encontrado.</p>';
+      return;
+    }
+
+    resultados.forEach(morador => {
+      const div = document.createElement('div');
+      div.className = 'resultado-item';
+      div.innerHTML = `
+        <strong>${morador.nome}</strong><br>
+        CPF: ${morador.cpf}<br>
+        RG: ${morador.rg}<br>
+        Placas: ${morador.placas.join(', ') || '-'}<br>
+        <small>Clique para ver detalhes</small>
+      `;
+      div.onclick = () => {
+        // Redireciona para formulário, passando id e nível de acesso na URL
+        window.location.href = `formulario.html?id=${morador.id}&acesso=${nivel}`;
+      };
+      resultadosDiv.appendChild(div);
+    });
+  }
+</script>
+
+</body>
+</html>
