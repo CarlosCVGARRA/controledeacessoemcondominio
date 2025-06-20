@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Formulário do Morador - Condomínio</title>
+<style>
+  :root {
+    --cor-fundo: #f2f2f2;
+    --cor-fundo-form: #fff;
+    --cor-botao: #007bff;
+    --cor-botao-desativado: #ccc;
+    --cor-texto-botao: #fff;
+    --cor-texto-erro: red;
+    --cor-input-fundo: #fff;
+    --cor-input-borda: #ccc;
+    --cor-fundo-foto: #fafafa;
+    --fonte-principal: Arial, sans-serif;
+    --border-radius: 5px;
+  }
+  body {
+    font-family: var(--fonte-principal);
+    background: var(--cor-fundo);
+    padding: 20px;
+    max-width: 900px;
+    margin: auto;
+  }
+  h1, h2 {
+    text-align: center;
+  }
+  form {
+    background: var(--cor-fundo-form);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+  section {
+    margin-bottom: 20px;
+  }
+  label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+  }
+  input[type="text"],
+  input[type="date"],
+  input[type="time"],
+  input[type="datetime-local"],
+  input[type="file"],
+  textarea,
+  select {
+    width: 100%;
+    padding: 7px;
+    margin-top: 5px;
+    box-sizing: border-box;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--cor-input-borda);
+    background: var(--cor-input-fundo);
+  }
+  textarea {
+    resize: vertical;
+  }
+  .inline-group {
+    display: flex;
+    gap: 10px;
+  }
+  .inline-group > div {
+    flex: 1;
+  }
+  .foto-3x4 {
+    margin-top: 10px;
+    max-width: 150px;
+    max-height: 200px;
+    border: 1px solid var(--cor-input-borda);
+    background: var(--cor-fundo-foto);
+    object-fit: contain;
+  }
+  button {
+    background: var(--cor-botao);
+    color: var(--cor-texto-botao);
+    padding: 10px 20px;
+    font-weight: bold;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  button:disabled {
+    background: var(--cor-botao-desativado);
+    cursor: default;
+  }
+  .subtitulo {
+    margin-top: 15px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
+  }
+  .flex-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .flex-row > div {
+    flex: 1;
+    min-width: 200px;
+  }
+  .adicionar-btn {
+    margin-top: 10px;
+  }
+  #statusMsg {
+    margin-top: 10px;
+    font-size: 14px;
+    color: green;
+    text-align: center;
+  }
+  #errorMsg {
+    margin-top: 10px;
+    font-size: 14px;
+    color: var(--cor-texto-erro);
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<h1>Formulário do Morador</h1>
+
+<form id="formMorador">
+
+  <section>
+    <h2>Dados Pessoais</h2>
+    <label>Nome Completo:
+      <input type="text" id="nome" />
+    </label>
+    <label>CPF:
+      <input type="text" id="cpf" maxlength="14" placeholder="000.000.000-00" />
+    </label>
+    <label>RG:
+      <input type="text" id="rg" />
+    </label>
+    <label>CNH:
+      <input type="text" id="cnh" />
+    </label>
+
+    <label>Endereço Completo:</label>
+    <div class="flex-row">
+      <div><input type="text" id="rua" placeholder="Rua" /></div>
+      <div><input type="text" id="quadra" placeholder="Quadra" /></div>
+      <div><input type="text" id="lote" placeholder="Lote" /></div>
+      <div><input type="text" id="numero" placeholder="Número" /></div>
+    </div>
+    <label>CEP:
+      <input type="text" id="cep" maxlength="9" placeholder="00000-000" />
+    </label>
+    <label>Próximo a:
+      <input type="text" id="proximo" />
+    </label>
+  </section>
+
+  <section>
+    <h2>Placas de Veículos</h2>
+    <div id="placasContainer"></div>
+    <button type="button" id="btnAddPlaca" class="adicionar-btn">Adicionar Placa</button>
+  </section>
+
+  <section>
+    <h2>Familiares e Contatos</h2>
+    <div id="familiaresContainer"></div>
+    <button type="button" id="btnAddFamiliar" class="adicionar-btn">Adicionar Familiar / Contato</button>
+  </section>
+
+  <section>
+    <h2>Permissões</h2>
+    <label>Quem pode entrar sem necessidade de permissão:
+      <textarea id="permissoes" rows="3" placeholder="Digite nomes, cargos ou relacionamentos..."></textarea>
+    </label>
+  </section>
+
+  <section>
+    <h2>Observações</h2>
+    <textarea id="observacoes" rows="4" placeholder="Observações adicionais..."></textarea>
+  </section>
+
+  <section>
+    <h2>Penalidades</h2>
+    <textarea id="penalidades" rows="3" placeholder="Penalidades aplicadas..."></textarea>
+  </section>
+
+  <section>
+    <h2>Foto 3x4</h2>
+    <input type="file" id="foto3x4" accept="image/*" />
+    <br />
+    <img id="imgFoto" class="foto-3x4" src="" alt="Foto 3x4" />
+  </section>
+
+  <section>
+    <h2>Informações de edição</h2>
+    <p>Data e Hora Atual: <span id="dataHoraAtual"></span></p>
+    <label>Última edição salva:
+      <input type="datetime-local" id="ultimaEdicao" disabled />
+    </label>
+  </section>
+
+  <button type="button" id="btnSalvar">Salvar Dados no PC</button>
+  <button type="button" id="btnCarregar">Carregar Dados do PC</button>
+  <input type="file" id="inputCarregarArquivo" style="display:none" accept=".json" />
+
+  <div id="statusMsg"></div>
+  <div id="errorMsg"></div>
+</form>
+
+<script>
+  // Recebe nível de acesso via URL (?acesso=admin)
+  const urlParams = new URLSearchParams(window.location.search);
+const nivel = urlParams.get('acesso') || 'admin';  // assume admin se não passar acesso
+
+  // Permissões de edição por nível
+  const permissoes = {
+    admin: { podeEditar: true, podeEditarDocumentos: true },
+    sindico: { podeEditar: true, podeEditarDocumentos: false },
+    porteiro: { podeEditar: true, podeEditarDocumentos: false },
+    morador: { podeEditar: false, podeEditarDocumentos: false },
+    visitante: { podeEditar: false, podeEditarDocumentos: false }
+  };
+  const usuarioPermissao = permissoes[nivel] || permissoes.visitante;
+
+  // Função para formatar data/hora para exibição
+  function formatarDataHora(data) {
+    return data.toLocaleString('pt-BR', { hour12: false });
+  }
+
+  // Atualiza data e hora atual na tela
+  function atualizarDataHoraAtual() {
+    const agora = new Date();
+    document.getElementById('dataHoraAtual').innerText = formatarDataHora(agora);
+  }
+
+  // Criar campo placa
+  function criarCampoPlaca(valor = '') {
+    const div = document.createElement('div');
+    div.style.marginTop = '5px';
+
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.placeholder = 'Placa do veículo';
+    input.value = valor;
+
+    // bloqueia edição de documentos para níveis sem permissão
+    input.disabled = !usuarioPermissao.podeEditar;
+
+    div.appendChild(input);
+
+    if (usuarioPermissao.podeEditar) {
+      const btnRemover = document.createElement('button');
+      btnRemover.type = 'button';
+      btnRemover.textContent = 'Remover';
+      btnRemover.style.marginLeft = '10px';
+      btnRemover.onclick = () => div.remove();
+      div.appendChild(btnRemover);
+    }
+    return div;
+  }
+
+  // Criar campo familiar
+  function criarCampoFamiliar(familiar = {}) {
+    const div = document.createElement('div');
+    div.style.border = '1px solid #ccc';
+    div.style.padding = '10px';
+    div.style.marginTop = '10px';
+    div.style.borderRadius = '5px';
+    div.style.background = '#fafafa';
+
+    // Nome e Parentesco
+    const nomeLabel = document.createElement('label');
+    nomeLabel.textContent = 'Nome:';
+    const nomeInput = document.createElement('input');
+    nomeInput.type = 'text';
+    nomeInput.value = familiar.nome || '';
+    nomeInput.disabled = !usuarioPermissao.podeEditar;
+    nomeLabel.appendChild(nomeInput);
+
+    const parentescoLabel = document.createElement('label');
+    parentescoLabel.textContent = 'Parentesco / Relação:';
+    const parentescoInput = document.createElement('input');
+    parentescoInput.type = 'text';
+    parentescoInput.value = familiar.parentesco || '';
+    parentescoInput.disabled = !usuarioPermissao.podeEditar;
+    parentescoLabel.appendChild(parentescoInput);
+
+    // Documentos
+    const cpfLabel = document.createElement('label');
+    cpfLabel.textContent = 'CPF:';
+    const cpfInput = document.createElement('input');
+    cpfInput.type = 'text';
+    cpfInput.value = familiar.cpf || '';
+    cpfInput.disabled = !usuarioPermissao.podeEditar;
+    cpfLabel.appendChild(cpfInput);
+
+    const rgLabel = document.createElement('label');
+    rgLabel.textContent = 'RG:';
+    const rgInput = document.createElement('input');
+    rgInput.type = 'text';
+    rgInput.value = familiar.rg || '';
+    rgInput.disabled = !usuarioPermissao.podeEditar;
+    rgLabel.appendChild(rgInput);
+
+    const cnhLabel = document.createElement('label');
+    cnhLabel.textContent = 'CNH:';
+    const cnhInput = document.createElement('input');
+    cnhInput.type = 'text';
+    cnhInput.value = familiar.cnh || '';
+    cnhInput.disabled = !usuarioPermissao.podeEditar;
+    cnhLabel.appendChild(cnhInput);
+
+    // Placas do familiar
+    const placasFamiliarContainer = document.createElement('div');
+    placasFamiliarContainer.style.marginTop = '5px';
+
+    const placasTitulo = document.createElement('strong');
+    placasTitulo.textContent = 'Placas de Veículos:';
+    placasFamiliarContainer.appendChild(placasTitulo);
+
+    const placasLista = document.createElement('div');
+    placasFamiliarContainer.appendChild(placasLista);
+
+    function adicionarPlacaFamiliar(valor = '') {
+      const placaDiv = document.createElement('div');
+      placaDiv.style.marginTop = '3px';
+
+      const placaInput = document.createElement('input');
+      placaInput.type = 'text';
+      placaInput.placeholder = 'Placa do veículo';
+      placaInput.value = valor;
+      placaInput.disabled = !usuarioPermissao.podeEditar;
+
+      placaDiv.appendChild(placaInput);
+
+      if (usuarioPermissao.podeEditar) {
+        const btnRemover = document.createElement('button');
+        btnRemover.type = 'button';
+        btnRemover.textContent = 'Remover';
+        btnRemover.style.marginLeft = '10px';
+        btnRemover.onclick = () => placaDiv.remove();
+        placaDiv.appendChild(btnRemover);
+      }
+
+      placasLista.appendChild(placaDiv);
+    }
+
+    (familiar.placas || []).forEach(p => adicionarPlacaFamiliar(p));
+
+    if (usuarioPermissao.podeEditar) {
+      const btnAddPlacaFam = document.createElement('button');
+      btnAddPlacaFam.type = 'button';
+      btnAddPlacaFam.textContent = 'Adicionar Placa';
+      btnAddPlacaFam.style.marginTop = '5px';
+      btnAddPlacaFam.onclick = () => adicionarPlacaFamiliar();
+      placasFamiliarContainer.appendChild(btnAddPlacaFam);
+    }
+
+    // Botão remover familiar
+    const btnRemoverFamiliar = document.createElement('button');
+    btnRemoverFamiliar.type = 'button';
+    btnRemoverFamiliar.textContent = 'Remover Familiar/Contato';
+    btnRemoverFamiliar.style.marginTop = '10px';
+    btnRemoverFamiliar.onclick = () => div.remove();
+
+    div.appendChild(nomeLabel);
+    div.appendChild(parentescoLabel);
+    div.appendChild(cpfLabel);
+    div.appendChild(rgLabel);
+    div.appendChild(cnhLabel);
+    div.appendChild(placasFamiliarContainer);
+    if (usuarioPermissao.podeEditar) div.appendChild(btnRemoverFamiliar);
+
+    return div;
+  }
+
+  // Adicionar placa na seção principal
+  function adicionarPlaca(valor) {
+    const container = document.getElementById('placasContainer');
+    container.appendChild(criarCampoPlaca(valor));
+  }
+
+  // Adicionar familiar na seção principal
+  function adicionarFamiliar(familiar) {
+    const container = document.getElementById('familiaresContainer');
+    container.appendChild(criarCampoFamiliar(familiar));
+  }
+
+  // Botões para adicionar placas e familiares
+  document.getElementById('btnAddPlaca').onclick = () => adicionarPlaca('');
+  document.getElementById('btnAddFamiliar').onclick = () => adicionarFamiliar({ placas: [] });
+
+  // Upload e exibição da foto 3x4
+  document.getElementById('foto3x4').addEventListener('change', function(event) {
+    const arquivo = event.target.files[0];
+    if (!arquivo) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      document.getElementById('imgFoto').src = e.target.result;
+      // Salvamento automático ao trocar foto
+      salvarLocalStorage();
+    };
+    reader.readAsDataURL(arquivo);
+  });
+
+  // Função para coletar dados do formulário
+  function coletarDados() {
+    const dados = {
+      nome: document.getElementById('nome').value,
+      cpf: document.getElementById('cpf').value,
+      rg: document.getElementById('rg').value,
+      cnh: document.getElementById('cnh').value,
+      rua: document.getElementById('rua').value,
+      quadra: document.getElementById('quadra').value,
+      lote: document.getElementById('lote').value,
+      numero: document.getElementById('numero').value,
+      cep: document.getElementById('cep').value,
+      proximo: document.getElementById('proximo').value,
+      placas: [],
+      familiares: [],
+      permissoes: document.getElementById('permissoes').value,
+      observacoes: document.getElementById('observacoes').value,
+      penalidades: document.getElementById('penalidades').value,
+      foto3x4: document.getElementById('imgFoto').src || '',
+      ultimaEdicao: new Date().toISOString()
+    };
+
+    // Coleta placas
+    const placasContainer = document.getElementById('placasContainer');
+    placasContainer.querySelectorAll('input[type="text"]').forEach(input => {
+      if (input.value.trim() !== '') dados.placas.push(input.value.trim());
+    });
+
+    // Coleta familiares
+    const familiaresContainer = document.getElementById('familiaresContainer');
+    familiaresContainer.querySelectorAll('div').forEach(divFamiliar => {
+      const inputs = divFamiliar.querySelectorAll('input[type="text"]');
+      if (inputs.length < 5) return; // tem que ter pelo menos 5 campos
+
+      let fam = {
+        nome: inputs[0].value.trim(),
+        parentesco: inputs[1].value.trim(),
+        cpf: inputs[2].value.trim(),
+        rg: inputs[3].value.trim(),
+        cnh: inputs[4].value.trim(),
+        placas: []
+      };
+
+      // Placas do familiar (inputs que ficam dentro do familiar, mas fora do 5 principais)
+      const placasInputs = divFamiliar.querySelectorAll('div > input[type="text"]');
+      placasInputs.forEach(inp => {
+        if (inp.value.trim() !== '') fam.placas.push(inp.value.trim());
+      });
+
+      if (fam.nome !== '' || fam.parentesco !== '') dados.familiares.push(fam);
+    });
+
+    return dados;
+  }
+
+  // Função para preencher o formulário com dados carregados
+  function preencherFormulario(dados) {
+    if (!dados) return;
+
+    document.getElementById('nome').value = dados.nome || '';
+    document.getElementById('cpf').value = dados.cpf || '';
+    document.getElementById('rg').value = dados.rg || '';
+    document.getElementById('cnh').value = dados.cnh || '';
+    document.getElementById('rua').value = dados.rua || '';
+    document.getElementById('quadra').value = dados.quadra || '';
+    document.getElementById('lote').value = dados.lote || '';
+    document.getElementById('numero').value = dados.numero || '';
+    document.getElementById('cep').value = dados.cep || '';
+    document.getElementById('proximo').value = dados.proximo || '';
+    document.getElementById('permissoes').value = dados.permissoes || '';
+    document.getElementById('observacoes').value = dados.observacoes || '';
+    document.getElementById('penalidades').value = dados.penalidades || '';
+
+    // Limpa e adiciona placas
+    const placasContainer = document.getElementById('placasContainer');
+    placasContainer.innerHTML = '';
+    (dados.placas || []).forEach(p => adicionarPlaca(p));
+
+    // Limpa e adiciona familiares
+    const familiaresContainer = document.getElementById('familiaresContainer');
+    familiaresContainer.innerHTML = '';
+    (dados.familiares || []).forEach(fam => adicionarFamiliar(fam));
+
+    // Foto
+    if (dados.foto3x4) {
+      document.getElementById('imgFoto').src = dados.foto3x4;
+    } else {
+      document.getElementById('imgFoto').src = '';
+    }
+
+    // Atualiza campo ultima edição com data do arquivo
+    if (dados.ultimaEdicao) {
+      document.getElementById('ultimaEdicao').value = dados.ultimaEdicao.slice(0,16);
+    }
+  }
+
+  // Salvar dados no localStorage automaticamente
+  function salvarLocalStorage() {
+    if (!usuarioPermissao.podeEditar) return;
+    const dados = coletarDados();
+    localStorage.setItem('formMoradorDados', JSON.stringify(dados));
+    // Atualiza última edição no formulário
+    document.getElementById('ultimaEdicao').value = dados.ultimaEdicao.slice(0,16);
+    mostrarStatus('Dados salvos localmente automaticamente.');
+  }
+
+  // Carregar dados do localStorage na inicialização
+  function carregarLocalStorage() {
+    const dadosJson = localStorage.getItem('formMoradorDados');
+    if (!dadosJson) return;
+    try {
+      const dados = JSON.parse(dadosJson);
+      preencherFormulario(dados);
+      mostrarStatus('Dados carregados do armazenamento local.');
+    } catch {
+      mostrarErro('Erro ao carregar dados locais.');
+    }
+  }
+
+  // Salvar dados no PC (download arquivo .json)
+  function salvarDadosNoPC() {
+    if (!usuarioPermissao.podeEditar) {
+      alert('Você não tem permissão para salvar os dados no PC.');
+      return;
+    }
+    const dados = coletarDados();
+    const dadosJson = JSON.stringify(dados, null, 2);
+    const blob = new Blob([dadosJson], {type: "application/json"});
+    const nomeArquivo = `dadosMorador_${new Date().toISOString().slice(0,19).replace(/[:T]/g,'-')}.json`;
+
+    // Criar link temporário para download
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = nomeArquivo;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    mostrarStatus(`Arquivo salvo no PC: ${nomeArquivo}`);
+
+    // Também salvar localStorage para segurança
+    localStorage.setItem('formMoradorDados', dadosJson);
+    // Atualizar última edição no formulário
+    document.getElementById('ultimaEdicao').value = dados.ultimaEdicao.slice(0,16);
+  }
+
+  // Carregar dados do PC (arquivo JSON selecionado)
+  function carregarDadosDoPC(event) {
+    const arquivo = event.target.files[0];
+    if (!arquivo) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      try {
+        const dados = JSON.parse(e.target.result);
+        preencherFormulario(dados);
+        localStorage.setItem('formMoradorDados', JSON.stringify(dados));
+        mostrarStatus('Dados carregados do arquivo com sucesso.');
+      } catch {
+        mostrarErro('Arquivo inválido ou com erro.');
+      }
+    };
+    reader.readAsText(arquivo);
+  }
+
+  // Mostrar mensagem de status
+  function mostrarStatus(msg) {
+    const statusDiv = document.getElementById('statusMsg');
+    statusDiv.textContent = msg;
+    const erroDiv = document.getElementById('errorMsg');
+    erroDiv.textContent = '';
+  }
+
+  // Mostrar mensagem de erro
+  function mostrarErro(msg) {
+    const erroDiv = document.getElementById('errorMsg');
+    erroDiv.textContent = msg;
+    const statusDiv = document.getElementById('statusMsg');
+    statusDiv.textContent = '';
+  }
+
+  // Evento salvar botão
+  document.getElementById('btnSalvar').onclick = salvarDadosNoPC;
+
+  // Evento carregar botão - abre seletor de arquivos
+  document.getElementById('btnCarregar').onclick = () => {
+    document.getElementById('inputCarregarArquivo').click();
+  };
+
+  // Evento input de arquivo para carregar dados
+  document.getElementById('inputCarregarArquivo').addEventListener('change', carregarDadosDoPC);
+
+  // Salvar automaticamente a cada 5 segundos se houver alterações
+  let timerSalvarAuto = null;
+  function agendarSalvamentoAuto() {
+    if (timerSalvarAuto) clearTimeout(timerSalvarAuto);
+    timerSalvarAuto = setTimeout(() => {
+      salvarLocalStorage();
+    }, 5000);
+  }
+
+  // Monitorar mudanças no formulário para salvar automaticamente
+  const camposMonitorados = document.querySelectorAll('#formMorador input[type="text"], #formMorador textarea');
+  camposMonitorados.forEach(campo => {
+    campo.addEventListener('input', agendarSalvamentoAuto);
+  });
+  // Foto já salva automaticamente no evento do FileReader
+
+  // Inicialização
+  atualizarDataHoraAtual();
+  carregarLocalStorage();
+  setInterval(atualizarDataHoraAtual, 60000);
+</script>
+
+</body>
+</html>
