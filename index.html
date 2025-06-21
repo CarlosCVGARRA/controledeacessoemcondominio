@@ -153,8 +153,7 @@
     const senhasPadrao = {
       admin: '464007',
       sindico: '1234',
-      porteiro: '12345',
-      morador: '123456'
+      porteiro: '12345'
     };
 
     // Carrega senhas do localStorage ou usa padrão
@@ -187,7 +186,6 @@
       if (senhaDigitada === senhas.admin) nivelAcesso = 'admin';
       else if (senhaDigitada === senhas.sindico) nivelAcesso = 'sindico';
       else if (senhaDigitada === senhas.porteiro) nivelAcesso = 'porteiro';
-      else if (senhaDigitada === senhas.morador) nivelAcesso = 'morador';
 
       if (nivelAcesso) {
         // Salva o nível no localStorage para manter sessão
