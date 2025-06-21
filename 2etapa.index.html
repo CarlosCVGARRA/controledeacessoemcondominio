@@ -662,73 +662,68 @@ h1, h2 {
     reader.readAsDataURL(file);
   });
 
-  // Salvar dados no localStorage e baixar JSON
-  document.getElementById('btnSalvar').onclick = () => {
-    if (!usuarioPermissao.podeEditar) {
-      alert('Você não tem permissão para salvar dados.');
-      return;
-    }
-    const dados = coletarDados();
+// Função para limpar o formulário (coloque esta função fora do btnSalvar.onclick)
+function limparFormulario() {
+  document.getElementById('formMorador').reset(); // Limpa os inputs padrão
 
-    // Atualiza última edição
-const agora = new Date();
-agora.setHours(agora.getHours() - 3);
-dados.ultimaEdicao = agora.toISOString();
+  // Limpa os campos dinâmicos (placas e familiares)
+  document.getElementById('placasContainer').innerHTML = '';
+  document.getElementById('familiaresContainer').innerHTML = '';
 
-    // Atualiza ou adiciona na lista
-    const idx = moradores.findIndex(m => m.id === dados.id);
-    if (idx >= 0) {
-      moradores[idx] = dados;
-    } else {
-      moradores.push(dados);
-    }
-    salvarListaMoradores(moradores);
-    moradorAtual = dados;
-    preencherFormulario(moradorAtual);
+  // Limpa a foto 3x4 (remove a imagem)
+  document.getElementById('imgFoto').src = '';
 
-    // Baixar arquivo JSON
-    const jsonStr = JSON.stringify(dados, null, 2);
-    const blob = new Blob([jsonStr], {type: 'application/json'});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `morador_${dados.id}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
+  // Limpa campo data/hora de última edição
+  document.getElementById('ultimaEdicao').value = '';
+}
 
-    document.getElementById('statusMsg').textContent = 'Dados salvos com sucesso!';
-    document.getElementById('errorMsg').textContent = '';
-  };
+// Salvar dados no localStorage e baixar JSON
+document.getElementById('btnSalvar').onclick = () => {
+  if (!usuarioPermissao.podeEditar) {
+    alert('Você não tem permissão para salvar dados.');
+    return;
+  }
+  const dados = coletarDados();
 
-// Carregar dados do arquivo JSON
-document.getElementById('btnCarregar').onclick = () => {
-  document.getElementById('inputCarregarArquivo').click();
+  // Atualiza última edição
+  const agora = new Date();
+  agora.setHours(agora.getHours() - 3);
+  dados.ultimaEdicao = agora.toISOString();
+
+  // Atualiza ou adiciona na lista
+  const idx = moradores.findIndex(m => m.id === dados.id);
+  if (idx >= 0) {
+    moradores[idx] = dados;
+  } else {
+    moradores.push(dados);
+  }
+  salvarListaMoradores(moradores);
+  moradorAtual = dados;
+  preencherFormulario(moradorAtual);
+
+  // Baixar arquivo JSON
+  const jsonStr = JSON.stringify(dados, null, 2);
+  const blob = new Blob([jsonStr], {type: 'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `morador_${dados.id}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+
+  document.getElementById('statusMsg').textContent = 'Dados salvos com sucesso!';
+  document.getElementById('errorMsg').textContent = '';
+
+  // Limpa o formulário após salvar
+  limparFormulario();
 };
-document.getElementById('inputCarregarArquivo').addEventListener('change', function() {
-  const file = this.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = function(evt) {
-    try {
-      const dados = JSON.parse(evt.target.result);
-      moradorAtual = dados;
-      preencherFormulario(dados);
-      document.getElementById('statusMsg').textContent = 'Dados carregados do arquivo.';
-      document.getElementById('errorMsg').textContent = '';
-    } catch(e) {
-      document.getElementById('errorMsg').textContent = 'Erro ao carregar arquivo JSON.';
-      document.getElementById('statusMsg').textContent = '';
-    }
-  };
-  reader.readAsText(file);
-  this.value = '';
-});
 
 // *** COLE AQUI ***
 // Botão para limpar localStorage com senha
 document.getElementById('btnLimparLocalStorage').onclick = () => {
   const confirmar = confirm('Esta ação irá apagar TODOS os dados dos moradores salvos no localStorage. Deseja continuar?');
   if (!confirmar) return;
+
 
   const senha = prompt('Digite a senha do admin ou síndico para confirmar a limpeza:');
   const senhasValidas = ['464007', 'sindico123']; // ajuste as senhas aqui conforme seu uso
