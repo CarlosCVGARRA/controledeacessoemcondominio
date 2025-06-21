@@ -72,13 +72,13 @@
 
       if (senhaDigitada === senhas.admin) {
         // Redireciona para formulário com nível admin
-        window.location.href = 'formulario.html?acesso=admin';
+        window.location.href = '2etapa.index.html?acesso=admin';
       } else if (senhaDigitada === senhas.sindico) {
-        window.location.href = 'formulario.html?acesso=sindico';
+        window.location.href = '2etapa.index.html?acesso=sindico';
       } else if (senhaDigitada === senhas.porteiro) {
-        window.location.href = 'formulario.html?acesso=porteiro';
+        window.location.href = '2etapa.index.html?acesso=porteiro';
       } else if (senhaDigitada === senhas.morador) {
-        window.location.href = 'formulario.html?acesso=admin';
+        window.location.href = '2etapa.index.html?acesso=admin';
       } else {
         painel.textContent = 'Senha incorreta!';
       }
