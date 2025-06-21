@@ -314,14 +314,21 @@ h1, h2 {
         </label>
       </section>
 
-      <button type="button" id="btnSalvar">Salvar Dados no localStorage e baixar JSON</button>
-      <button type="button" id="btnCarregar">Carregar Dados do arquivo JSON</button>
+      <button type="button" id="btnSalvar">Salvar Dados</button>
+      <button type="button" id="btnCarregar">Carregar Dados</button>
       <input type="file" id="inputCarregarArquivo" style="display:none" accept=".json" />
+      <!-- Aqui: botão para limpar localStorage -->
+<button type="button" id="btnLimparLocalStorage" style="background:#d9534f; color:#fff; margin-top:10px; padding:10px 20px; border:none; border-radius:5px; cursor:pointer;">
+  Limpar TODOS os dados (admin/síndico)
+</button>
 
-      <div id="statusMsg"></div>
-      <div id="errorMsg"></div>
-    </form>
-  </div>
+<!-- Mensagem de status ou erro para a limpeza -->
+<div id="msgLimparLocalStorage" style="margin-top:10px; font-weight:bold; text-align:center;"></div>
+
+<div id="statusMsg"></div>
+<div id="errorMsg"></div>
+</form>
+</div>
 
 <!-- Lado direito: Botões para ver lista e apagar morador -->
 <div id="ladoDireito">
@@ -693,29 +700,56 @@ dados.ultimaEdicao = agora.toISOString();
     document.getElementById('errorMsg').textContent = '';
   };
 
-  // Carregar dados do arquivo JSON
-  document.getElementById('btnCarregar').onclick = () => {
-    document.getElementById('inputCarregarArquivo').click();
+// Carregar dados do arquivo JSON
+document.getElementById('btnCarregar').onclick = () => {
+  document.getElementById('inputCarregarArquivo').click();
+};
+document.getElementById('inputCarregarArquivo').addEventListener('change', function() {
+  const file = this.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(evt) {
+    try {
+      const dados = JSON.parse(evt.target.result);
+      moradorAtual = dados;
+      preencherFormulario(dados);
+      document.getElementById('statusMsg').textContent = 'Dados carregados do arquivo.';
+      document.getElementById('errorMsg').textContent = '';
+    } catch(e) {
+      document.getElementById('errorMsg').textContent = 'Erro ao carregar arquivo JSON.';
+      document.getElementById('statusMsg').textContent = '';
+    }
   };
-  document.getElementById('inputCarregarArquivo').addEventListener('change', function() {
-    const file = this.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = function(evt) {
-      try {
-        const dados = JSON.parse(evt.target.result);
-        moradorAtual = dados;
-        preencherFormulario(dados);
-        document.getElementById('statusMsg').textContent = 'Dados carregados do arquivo.';
-        document.getElementById('errorMsg').textContent = '';
-      } catch(e) {
-        document.getElementById('errorMsg').textContent = 'Erro ao carregar arquivo JSON.';
-        document.getElementById('statusMsg').textContent = '';
-      }
-    };
-    reader.readAsText(file);
-    this.value = '';
-  });
+  reader.readAsText(file);
+  this.value = '';
+});
+
+// *** COLE AQUI ***
+// Botão para limpar localStorage com senha
+document.getElementById('btnLimparLocalStorage').onclick = () => {
+  const confirmar = confirm('Esta ação irá apagar TODOS os dados dos moradores salvos no localStorage. Deseja continuar?');
+  if (!confirmar) return;
+
+  const senha = prompt('Digite a senha do admin ou síndico para confirmar a limpeza:');
+  const senhasValidas = ['464007', 'sindico123']; // ajuste as senhas aqui conforme seu uso
+
+  const msgEl = document.getElementById('msgLimparLocalStorage');
+
+  if (!senhasValidas.includes(senha)) {
+    msgEl.style.color = 'red';
+    msgEl.textContent = 'Senha incorreta. A operação foi cancelada.';
+    return;
+  }
+
+  // Limpa localStorage da chave moradores
+  localStorage.removeItem('moradores');
+  moradores = [];
+  atualizarListaMoradores();
+
+  msgEl.style.color = 'green';
+  msgEl.textContent = 'LocalStorage limpo com sucesso! Todos os dados dos moradores foram apagados.';
+};
+
 
 // Mostrar lista de moradores
 document.getElementById('btnBuscar').onclick = () => {
@@ -764,7 +798,7 @@ function atualizarListaMoradores() {
     btnApagar.textContent = 'Apagar';
     btnApagar.onclick = () => {
       const senha = prompt('Digite a senha do síndico ou admin para apagar:');
-      const senhasAceitas = ['sindico123', 'admin123']; // Altere aqui as senhas válidas
+      const senhasAceitas = ['sindico123', '464007']; // Altere aqui as senhas válidas
       if (!senhasAceitas.includes(senha)) {
         alert('Senha incorreta.');
         return;
