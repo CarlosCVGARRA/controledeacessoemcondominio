@@ -379,11 +379,29 @@ h1, h2 {
     localStorage.setItem('moradores', JSON.stringify(lista));
   }
 
-  // Gera novo ID incremental para morador
-  function gerarNovoId(lista) {
-    if (lista.length === 0) return 1;
-    return Math.max(...lista.map(m => m.id || 0)) + 1;
+function gerarNovoId(lista) {
+  // Tenta pegar o contador salvo no localStorage
+  let contador = parseInt(localStorage.getItem('contadorMoradoresId') || '0', 10);
+
+  // Se lista está vazia e contador é zero, começa em 1
+  if ((!lista || lista.length === 0) && contador === 0) {
+    contador = 1;
+  } else {
+    // Se lista não está vazia, atualiza o contador para ser maior que o maior ID da lista
+    const maxId = lista.length > 0 ? Math.max(...lista.map(m => m.id || 0)) : 0;
+    if (maxId >= contador) {
+      contador = maxId + 1;
+    } else {
+      contador++; // incrementa para garantir um novo ID
+    }
   }
+
+  // Salva o contador atualizado no localStorage
+  localStorage.setItem('contadorMoradoresId', contador.toString());
+
+  return contador;
+}
+
 
   // Função para coletar dados do formulário
   function coletarDados() {
@@ -683,20 +701,23 @@ document.getElementById('btnSalvar').onclick = () => {
     alert('Você não tem permissão para salvar dados.');
     return;
   }
-  const dados = coletarDados();
+  let dados = coletarDados();
 
   // Atualiza última edição
   const agora = new Date();
   agora.setHours(agora.getHours() - 3);
   dados.ultimaEdicao = agora.toISOString();
 
-  // Atualiza ou adiciona na lista
-  const idx = moradores.findIndex(m => m.id === dados.id);
-  if (idx >= 0) {
-    moradores[idx] = dados;
-  } else {
+  // Se não tem ID válido (novo morador), gera novo ID único e adiciona
+  if (!dados.id || moradores.findIndex(m => m.id === dados.id) === -1) {
+    dados.id = gerarNovoId(moradores);
     moradores.push(dados);
+  } else {
+    // Atualiza morador existente
+    const idx = moradores.findIndex(m => m.id === dados.id);
+    moradores[idx] = dados;
   }
+
   salvarListaMoradores(moradores);
   moradorAtual = dados;
   preencherFormulario(moradorAtual);
@@ -714,9 +735,13 @@ document.getElementById('btnSalvar').onclick = () => {
   document.getElementById('statusMsg').textContent = 'Dados salvos com sucesso!';
   document.getElementById('errorMsg').textContent = '';
 
-  // Limpa o formulário após salvar
-  limparFormulario();
+// Limpa o formulário após salvar e já prepara para novo morador
+limparFormulario();
+moradorAtual = { id: gerarNovoId(moradores) };
+preencherFormulario(moradorAtual);
+
 };
+
 
 // *** COLE AQUI ***
 // Botão para limpar localStorage com senha
@@ -743,6 +768,10 @@ document.getElementById('btnLimparLocalStorage').onclick = () => {
 
   msgEl.style.color = 'green';
   msgEl.textContent = 'LocalStorage limpo com sucesso! Todos os dados dos moradores foram apagados.';
+  // Limpa o formulário e prepara novo morador
+limparFormulario();
+moradorAtual = { id: gerarNovoId(moradores) };
+preencherFormulario(moradorAtual);
 };
 
 
@@ -801,10 +830,16 @@ function atualizarListaMoradores() {
       if (confirm(`Tem certeza que deseja apagar ${m.nome} (CPF: ${m.cpf})?`)) {
         const idx = moradores.findIndex(x => x.id === m.id);
         if (idx >= 0) {
-          moradores.splice(idx, 1);
-          salvarListaMoradores(moradores);
-          atualizarListaMoradores();
-          alert('Morador apagado com sucesso.');
+moradores.splice(idx, 1);
+salvarListaMoradores(moradores);
+atualizarListaMoradores();
+alert('Morador apagado com sucesso.');
+
+// Limpa e já prepara novo morador
+limparFormulario();
+moradorAtual = { id: gerarNovoId(moradores) };
+preencherFormulario(moradorAtual);
+
         }
       }
     };
