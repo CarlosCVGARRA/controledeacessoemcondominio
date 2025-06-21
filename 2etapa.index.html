@@ -30,12 +30,12 @@
   }
 
 body {
-  margin: 0 auto;
+  margin: 0;
   padding: 20px;
   font-family: var(--fonte-principal);
   background: var(--cor-fundo);
-  max-width: 900px;
-  width: 100%;
+  width: 100vw;       /* largura total da janela */
+  max-width: 100vw;   /* remove limite máximo */
   overflow-x: hidden; /* evita scroll horizontal */
   box-sizing: border-box; /* evita estouro de largura */
 }
@@ -704,8 +704,9 @@ document.getElementById('btnSalvar').onclick = () => {
   let dados = coletarDados();
 
   // Atualiza última edição
-dados.ultimaEdicao = new Date().toISOString();
-
+  const agora = new Date();
+  agora.setHours(agora.getHours() - 3);
+  dados.ultimaEdicao = agora.toISOString();
 
   // Se não tem ID válido (novo morador), gera novo ID único e adiciona
   if (!dados.id || moradores.findIndex(m => m.id === dados.id) === -1) {
@@ -721,18 +722,7 @@ dados.ultimaEdicao = new Date().toISOString();
   moradorAtual = dados;
   preencherFormulario(moradorAtual);
 
-    // Baixar todos os moradores juntos como backup
-  const todosJson = JSON.stringify(moradores, null, 2);
-  const blobTodos = new Blob([todosJson], { type: 'application/json' });
-  const urlTodos = URL.createObjectURL(blobTodos);
-  const linkTodos = document.createElement('a');
-  linkTodos.href = urlTodos;
-  linkTodos.download = 'moradores_backup.json';
-  document.body.appendChild(linkTodos);
-  linkTodos.click();
-  document.body.removeChild(linkTodos);
-  URL.revokeObjectURL(urlTodos);
-
+  
 
   // Baixar arquivo JSON
   const jsonStr = JSON.stringify(dados, null, 2);
@@ -870,59 +860,34 @@ document.getElementById('btnCarregar').onclick = () => {
 };
 
 // Ao selecionar um arquivo JSON, carrega os dados
-document.getElementById('inputCarregarArquivo').addEventListener('change', function(e) {
-  if (!usuarioPermissao.podeEditar) {
-    alert('Você não tem permissão para carregar dados.');
-    return;
-  }
-  const arquivo = e.target.files[0];
-  if (!arquivo) return;
+document.getElementById('inputCarregarArquivo').addEventListener('change', function(event) {
+  const file = event.target.files[0];
+  if (!file) return;
 
   const reader = new FileReader();
-  reader.onload = function(evt) {
+  reader.onload = function(e) {
     try {
-      const dadosImportados = JSON.parse(evt.target.result);
+      const dados = JSON.parse(e.target.result);
+      if (!dados.id) dados.id = gerarNovoId(moradores); // garante ID
 
-      if (Array.isArray(dadosImportados)) {
-        // arquivo contém lista completa de moradores
-        moradores = dadosImportados;
-
-        // Atualiza contador para garantir IDs únicos futuros
-        const maxId = moradores.length > 0 ? Math.max(...moradores.map(m => m.id || 0)) : 0;
-        localStorage.setItem('contadorMoradoresId', (maxId + 1).toString());
-
+      const idx = moradores.findIndex(m => m.id === dados.id);
+      if (idx >= 0) {
+        moradores[idx] = dados;
       } else {
-        // arquivo contém um único morador (compatibilidade)
-        if (!dadosImportados.id) dadosImportados.id = gerarNovoId(moradores);
-        const idx = moradores.findIndex(m => m.id === dadosImportados.id);
-        if (idx >= 0) {
-          moradores[idx] = dadosImportados;
-        } else {
-          moradores.push(dadosImportados);
-        }
+        moradores.push(dados);
       }
 
       salvarListaMoradores(moradores);
-      moradorAtual = moradores.length > 0 ? moradores[0] : { id: gerarNovoId(moradores) };
+      moradorAtual = dados;
       preencherFormulario(moradorAtual);
       document.getElementById('statusMsg').textContent = 'Dados carregados com sucesso!';
       document.getElementById('errorMsg').textContent = '';
-
-      // Atualiza a lista na tela
-      atualizarListaMoradores();
-
-    } catch (error) {
-      document.getElementById('errorMsg').textContent = 'Erro ao carregar arquivo: JSON inválido.';
-      document.getElementById('statusMsg').textContent = '';
+    } catch (err) {
+      document.getElementById('errorMsg').textContent = 'Erro ao carregar o arquivo: ' + err.message;
     }
   };
-  reader.readAsText(arquivo);
-
-  // Limpa o input para poder carregar o mesmo arquivo novamente se quiser
-  e.target.value = '';
+  reader.readAsText(file);
 });
-
-
 
 
 
