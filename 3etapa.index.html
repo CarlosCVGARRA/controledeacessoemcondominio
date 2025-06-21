@@ -199,16 +199,11 @@
 
   <button type="button" id="btnSalvar">Salvar Dados no PC</button>
   <button type="button" id="btnCarregar">Carregar Dados do PC</button>
-  <button type="button" id="btnSalvarNuvem">Salvar na Nuvem (Firebase)</button>
   <input type="file" id="inputCarregarArquivo" style="display:none" accept=".json" />
 
   <div id="statusMsg"></div>
   <div id="errorMsg"></div>
 </form>
-
-<!-- Firebase scripts -->
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 
 <script>
   // Recebe nível de acesso via URL (?acesso=admin)
@@ -538,20 +533,6 @@
     mostrarStatus('Dados carregados do computador.');
   }
 
-  // Salvar na nuvem Firebase
-  function salvarNaNuvem() {
-    if (!usuarioPermissao.podeEditar) {
-      alert("Você não tem permissão para salvar na nuvem.");
-      return;
-    }
-    const dados = coletarDados();
-    // Gerar chave única (CPF ou timestamp)
-    const idUnico = 'morador_' + (dados.cpf.replace(/\D/g, '') || Date.now());
-    database.ref('moradores/' + idUnico).set(dados)
-      .then(() => mostrarStatus('Dados salvos na nuvem com sucesso.'))
-      .catch(() => mostrarErro('Erro ao salvar na nuvem.'));
-  }
-
   // Mensagens status e erro
   function mostrarStatus(msg) {
     const el = document.getElementById('statusMsg');
@@ -580,7 +561,6 @@
   // Eventos dos botões
   document.getElementById('btnSalvar').onclick = salvarLocalStorage;
   document.getElementById('btnCarregar').onclick = carregarLocalStorage;
-  document.getElementById('btnSalvarNuvem').onclick = salvarNaNuvem;
 
   // Iniciar
   inicializar();
