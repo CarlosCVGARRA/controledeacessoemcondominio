@@ -2,193 +2,644 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8" />
-<title>Pesquisa Condomínio</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Formulário do Morador - Condomínio</title>
 <style>
+  :root {
+    --cor-fundo: #f2f2f2;
+    --cor-fundo-form: #fff;
+    --cor-botao: #007bff;
+    --cor-botao-desativado: #ccc;
+    --cor-texto-botao: #fff;
+    --cor-texto-erro: red;
+    --cor-input-fundo: #fff;
+    --cor-input-borda: #ccc;
+    --cor-fundo-foto: #fafafa;
+    --fonte-principal: Arial, sans-serif;
+    --border-radius: 5px;
+  }
   body {
-    font-family: Arial, sans-serif;
-    background: #eaeaea;
+    font-family: var(--fonte-principal);
+    background: var(--cor-fundo);
     padding: 20px;
+    max-width: 900px;
+    margin: auto;
+  }
+  h1, h2 {
     text-align: center;
   }
-  #infoNivel {
-    margin-bottom: 20px;
+  form {
+    background: var(--cor-fundo-form);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+  label {
+    display: block;
+    margin-top: 10px;
     font-weight: bold;
   }
-  #pesquisaContainer {
-    display: inline-flex;
-    align-items: center;
+  input[type="text"],
+  input[type="date"],
+  input[type="time"],
+  input[type="datetime-local"],
+  input[type="file"],
+  textarea,
+  select {
+    width: 100%;
+    padding: 7px;
+    margin-top: 5px;
+    box-sizing: border-box;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--cor-input-borda);
+    background: var(--cor-input-fundo);
+  }
+  textarea {
+    resize: vertical;
+  }
+  .inline-group {
+    display: flex;
     gap: 10px;
   }
-  input, button {
-    font-size: 16px;
-    padding: 8px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
+  .inline-group > div {
+    flex: 1;
   }
-  #resultados {
-    margin-top: 20px;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
+  .foto-3x4 {
+    margin-top: 10px;
+    max-width: 150px;
+    max-height: 200px;
+    border: 1px solid var(--cor-input-borda);
+    background: var(--cor-fundo-foto);
+    object-fit: contain;
   }
-  .resultado-item {
-    background: white;
-    padding: 10px;
-    margin-bottom: 8px;
-    cursor: pointer;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    text-align: left;
-  }
-  .resultado-item:hover {
-    background: #ddd;
-  }
-  /* Estilo para os botões Ver Moradores e Adicionar Morador */
-  #btnVerMoradores {
-    background-color: green;
-    color: white;
-    padding: 8px;
+  button {
+    background: var(--cor-botao);
+    color: var(--cor-texto-botao);
+    padding: 10px 20px;
+    font-weight: bold;
     border: none;
-    border-radius: 5px;
-    margin-right: 10px;
+    border-radius: var(--border-radius);
     cursor: pointer;
+    margin-top: 10px;
   }
-  #btnAdicionarMorador {
-    background-color: blue;
-    color: white;
-    padding: 8px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+  button:disabled {
+    background: var(--cor-botao-desativado);
+    cursor: default;
+  }
+  .subtitulo {
+    margin-top: 15px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
+  }
+  .flex-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .flex-row > div {
+    flex: 1;
+    min-width: 200px;
+  }
+  .adicionar-btn {
+    margin-top: 10px;
+  }
+  #statusMsg {
+    margin-top: 10px;
+    font-size: 14px;
+    color: green;
+    text-align: center;
+  }
+  #errorMsg {
+    margin-top: 10px;
+    font-size: 14px;
+    color: var(--cor-texto-erro);
+    text-align: center;
   }
 </style>
 </head>
 <body>
 
-<!-- Botões Ver Moradores e Adicionar Morador -->
-<div style="margin-bottom: 20px;">
-  <button id="btnVerMoradores">Ver Moradores</button>
-  <button id="btnAdicionarMorador">Adicionar Morador</button>
-</div>
+<h1>Formulário do Morador</h1>
 
-<div id="infoNivel"></div>
+<form id="formMorador">
 
-<div id="pesquisaContainer">
-  <input
-    type="text"
-    id="inputPesquisa"
-    placeholder="Digite nome, placa, CPF, RG..."
-    onkeydown="if(event.key==='Enter') pesquisar()"
-  />
-  <button onclick="pesquisar()">Pesquisar</button>
-</div>
+  <section>
+    <h2>Dados Pessoais</h2>
+    <label>Nome Completo:
+      <input type="text" id="nome" />
+    </label>
+    <label>CPF:
+      <input type="text" id="cpf" maxlength="14" placeholder="000.000.000-00" />
+    </label>
+    <label>RG:
+      <input type="text" id="rg" />
+    </label>
+    <label>CNH:
+      <input type="text" id="cnh" />
+    </label>
 
-<div id="resultados"></div>
+    <label>Endereço Completo:</label>
+    <div class="flex-row">
+      <div><input type="text" id="rua" placeholder="Rua" /></div>
+      <div><input type="text" id="quadra" placeholder="Quadra" /></div>
+      <div><input type="text" id="lote" placeholder="Lote" /></div>
+      <div><input type="text" id="numero" placeholder="Número" /></div>
+    </div>
+    <label>CEP:
+      <input type="text" id="cep" maxlength="9" placeholder="00000-000" />
+    </label>
+    <label>Próximo a:
+      <input type="text" id="proximo" />
+    </label>
+  </section>
+
+  <section>
+    <h2>Placas de Veículos</h2>
+    <div id="placasContainer"></div>
+    <button type="button" id="btnAddPlaca" class="adicionar-btn">Adicionar Placa</button>
+  </section>
+
+  <section>
+    <h2>Familiares e Contatos</h2>
+    <div id="familiaresContainer"></div>
+    <button type="button" id="btnAddFamiliar" class="adicionar-btn">Adicionar Familiar / Contato</button>
+  </section>
+
+  <section>
+    <h2>Permissões</h2>
+    <label>Quem pode entrar sem necessidade de permissão:
+      <textarea id="permissoes" rows="3" placeholder="Digite nomes, cargos ou relacionamentos..."></textarea>
+    </label>
+  </section>
+
+  <section>
+    <h2>Observações</h2>
+    <textarea id="observacoes" rows="4" placeholder="Observações adicionais..."></textarea>
+  </section>
+
+  <section>
+    <h2>Penalidades</h2>
+    <textarea id="penalidades" rows="3" placeholder="Penalidades aplicadas..."></textarea>
+  </section>
+
+  <section>
+    <h2>Foto 3x4</h2>
+    <input type="file" id="foto3x4" accept="image/*" />
+    <br />
+    <img id="imgFoto" class="foto-3x4" src="" alt="Foto 3x4" />
+  </section>
+
+  <section>
+    <h2>Informações de edição</h2>
+    <p>Data e Hora Atual: <span id="dataHoraAtual"></span></p>
+    <label>Última edição salva:
+      <input type="datetime-local" id="ultimaEdicao" disabled />
+    </label>
+  </section>
+
+  <button type="button" id="btnSalvar">Salvar Dados no localStorage e baixar JSON</button>
+  <button type="button" id="btnCarregar">Carregar Dados do arquivo JSON</button>
+  <input type="file" id="inputCarregarArquivo" style="display:none" accept=".json" />
+
+  <div id="statusMsg"></div>
+  <div id="errorMsg"></div>
+</form>
 
 <script>
-  // Obtém nível de acesso da URL (exemplo: ?acesso=admin)
+  // Pega parâmetros da URL
   const urlParams = new URLSearchParams(window.location.search);
-  const nivel = urlParams.get('acesso') || 'visitante';
+  let nivel = urlParams.get('acesso');
 
-  // Mostra o nível na tela
-  document.getElementById('infoNivel').innerText = `Você está logado como: ${nivel.toUpperCase()}`;
-
-  // Dados fixos para simular moradores
-  const moradores = [
-    {
-      id: 1,
-      nome: 'João da Silva',
-      cpf: '123.456.789-00',
-      rg: 'MG-12.345.678',
-      placas: ['ABC-1234', 'XYZ-9876'],
-    },
-    {
-      id: 2,
-      nome: 'Maria Oliveira',
-      cpf: '987.654.321-00',
-      rg: 'SP-87.654.321',
-      placas: ['QWE-1122'],
-    },
-    {
-      id: 3,
-      nome: 'Carlos Cunha',
-      cpf: '111.222.333-44',
-      rg: 'RJ-55.666.777',
-      placas: [],
-    }
-  ];
-
-  // Função de pesquisa
-  function pesquisar() {
-    const termo = document.getElementById('inputPesquisa').value.trim().toLowerCase();
-    const resultadosDiv = document.getElementById('resultados');
-    resultadosDiv.innerHTML = '';
-
-    if(!termo) {
-      resultadosDiv.innerHTML = '<p style="color:red;">Digite algo para pesquisar.</p>';
-      return;
-    }
-
-    // Filtra moradores pelo termo em nome, cpf, rg ou placas
-    const resultados = moradores.filter(m => {
-      return (
-        m.nome.toLowerCase().includes(termo) ||
-        m.cpf.toLowerCase().includes(termo) ||
-        m.rg.toLowerCase().includes(termo) ||
-        m.placas.some(p => p.toLowerCase().includes(termo))
-      );
-    });
-
-    if (resultados.length === 0) {
-      resultadosDiv.innerHTML = '<p>Nenhum resultado encontrado.</p>';
-      return;
-    }
-
-    // Exibe cada morador encontrado
-    resultados.forEach(morador => {
-      const div = document.createElement('div');
-      div.className = 'resultado-item';
-      div.innerHTML = `
-        <strong>${morador.nome}</strong><br>
-        CPF: ${morador.cpf}<br>
-        RG: ${morador.rg}<br>
-        Placas: ${morador.placas.length ? morador.placas.join(', ') : '-'}<br>
-        <small>Clique para ver detalhes</small>
-      `;
-      div.onclick = () => {
-        // Redireciona para o formulário, passando id e acesso na URL
-        window.location.href = `3etapa.index.html?id=${morador.id}&acesso=${nivel}`;
-      };
-      resultadosDiv.appendChild(div);
-    });
+  if (!nivel) {
+    nivel = localStorage.getItem('nivelAcessoCond') || 'visitante';
   }
 
-  // Botão para listar todos moradores
-  document.getElementById('btnVerMoradores').onclick = () => {
-    const resultadosDiv = document.getElementById('resultados');
-    resultadosDiv.innerHTML = '';
+  const idMorador = urlParams.get('id');  
+  const modoNovo = urlParams.get('novo') === 'true';
 
-    moradores.forEach(morador => {
-      const div = document.createElement('div');
-      div.className = 'resultado-item';
-      div.innerHTML = `
-        <strong>${morador.nome}</strong><br>
-        CPF: ${morador.cpf}<br>
-        RG: ${morador.rg}<br>
-        Placas: ${morador.placas.length ? morador.placas.join(', ') : '-'}<br>
-        <small>Clique para ver detalhes</small>
-      `;
-      div.onclick = () => {
-        window.location.href = `3etapa.index.html?id=${morador.id}&acesso=${nivel}`;
-      };
-      resultadosDiv.appendChild(div);
+  // Permissões de edição por nível
+  const permissoes = {
+    admin: { podeEditar: true, podeEditarDocumentos: true },
+    sindico: { podeEditar: true, podeEditarDocumentos: false },
+    porteiro: { podeEditar: true, podeEditarDocumentos: false },
+    morador: { podeEditar: false, podeEditarDocumentos: false },
+    visitante: { podeEditar: false, podeEditarDocumentos: false }
+  };
+  const usuarioPermissao = permissoes[nivel] || permissoes.visitante;
+
+
+  // Função para carregar lista moradores do localStorage
+  function carregarListaMoradores() {
+    const dados = localStorage.getItem('moradores');
+    if (!dados) return [];
+    try {
+      return JSON.parse(dados);
+    } catch {
+      return [];
+    }
+  }
+  // Função para salvar lista moradores no localStorage
+  function salvarListaMoradores(lista) {
+    localStorage.setItem('moradores', JSON.stringify(lista));
+  }
+
+  // Gera novo ID incremental para morador
+  function gerarNovoId(lista) {
+    if (lista.length === 0) return 1;
+    return Math.max(...lista.map(m => m.id || 0)) + 1;
+  }
+
+  // Função para coletar dados do formulário
+  function coletarDados() {
+    const dados = {
+      id: moradorAtual.id,
+      nome: document.getElementById('nome').value,
+      cpf: document.getElementById('cpf').value,
+      rg: document.getElementById('rg').value,
+      cnh: document.getElementById('cnh').value,
+      rua: document.getElementById('rua').value,
+      quadra: document.getElementById('quadra').value,
+      lote: document.getElementById('lote').value,
+      numero: document.getElementById('numero').value,
+      cep: document.getElementById('cep').value,
+      proximo: document.getElementById('proximo').value,
+      placas: [],
+      familiares: [],
+      permissoes: document.getElementById('permissoes').value,
+      observacoes: document.getElementById('observacoes').value,
+      penalidades: document.getElementById('penalidades').value,
+      foto3x4: document.getElementById('imgFoto').src || '',
+      ultimaEdicao: new Date().toISOString()
+    };
+
+    // Coleta placas
+    const placasContainer = document.getElementById('placasContainer');
+    placasContainer.querySelectorAll('input[type="text"]').forEach(input => {
+      if (input.value.trim() !== '') dados.placas.push(input.value.trim());
     });
+
+    // Coleta familiares
+    const familiaresContainer = document.getElementById('familiaresContainer');
+    familiaresContainer.querySelectorAll('div').forEach(divFamiliar => {
+      const inputs = divFamiliar.querySelectorAll('input[type="text"]');
+      if (inputs.length < 5) return;
+
+      let fam = {
+        nome: inputs[0].value.trim(),
+        parentesco: inputs[1].value.trim(),
+        cpf: inputs[2].value.trim(),
+        rg: inputs[3].value.trim(),
+        cnh: inputs[4].value.trim(),
+        placas: []
+      };
+
+      const placasInputs = divFamiliar.querySelectorAll('div > input[type="text"]');
+      placasInputs.forEach(pi => {
+        if (pi.value.trim() !== '') fam.placas.push(pi.value.trim());
+      });
+
+      if (fam.nome !== '') dados.familiares.push(fam);
+    });
+
+    return dados;
+  }
+
+  // Função para preencher formulário com dados do morador
+  function preencherFormulario(dados) {
+    document.getElementById('nome').value = dados.nome || '';
+    document.getElementById('cpf').value = dados.cpf || '';
+    document.getElementById('rg').value = dados.rg || '';
+    document.getElementById('cnh').value = dados.cnh || '';
+    document.getElementById('rua').value = dados.rua || '';
+    document.getElementById('quadra').value = dados.quadra || '';
+    document.getElementById('lote').value = dados.lote || '';
+    document.getElementById('numero').value = dados.numero || '';
+    document.getElementById('cep').value = dados.cep || '';
+    document.getElementById('proximo').value = dados.proximo || '';
+
+    // Limpar e preencher placas
+    const placasContainer = document.getElementById('placasContainer');
+    placasContainer.innerHTML = '';
+    (dados.placas || []).forEach(p => adicionarPlaca(p));
+
+    // Limpar e preencher familiares
+    const familiaresContainer = document.getElementById('familiaresContainer');
+    familiaresContainer.innerHTML = '';
+    (dados.familiares || []).forEach(fam => adicionarFamiliar(fam));
+
+    document.getElementById('permissoes').value = dados.permissoes || '';
+    document.getElementById('observacoes').value = dados.observacoes || '';
+    document.getElementById('penalidades').value = dados.penalidades || '';
+    document.getElementById('imgFoto').src = dados.foto3x4 || '';
+
+    if (dados.ultimaEdicao) {
+      const dt = new Date(dados.ultimaEdicao);
+      const dtLocal = dt.toISOString().slice(0,16);
+      document.getElementById('ultimaEdicao').value = dtLocal;
+    } else {
+      document.getElementById('ultimaEdicao').value = '';
+    }
+  }
+
+  // Funções para criar campos placas e familiares (mantidas igual)
+  function criarCampoPlaca(valor = '') {
+    const div = document.createElement('div');
+    div.style.marginTop = '5px';
+
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.placeholder = 'Placa do veículo';
+    input.value = valor;
+    input.disabled = !usuarioPermissao.podeEditar;
+    div.appendChild(input);
+
+    if (usuarioPermissao.podeEditar) {
+      const btnRemover = document.createElement('button');
+      btnRemover.type = 'button';
+      btnRemover.textContent = 'Remover';
+      btnRemover.style.marginLeft = '10px';
+      btnRemover.onclick = () => div.remove();
+      div.appendChild(btnRemover);
+    }
+    return div;
+  }
+
+  function criarCampoFamiliar(familiar = {}) {
+    const div = document.createElement('div');
+    div.style.border = '1px solid #ccc';
+    div.style.padding = '10px';
+    div.style.marginTop = '10px';
+    div.style.borderRadius = '5px';
+    div.style.background = '#fafafa';
+
+    // Nome e Parentesco
+    const nomeLabel = document.createElement('label');
+    nomeLabel.textContent = 'Nome:';
+    const nomeInput = document.createElement('input');
+    nomeInput.type = 'text';
+    nomeInput.value = familiar.nome || '';
+    nomeInput.disabled = !usuarioPermissao.podeEditar;
+    nomeLabel.appendChild(nomeInput);
+
+    const parentescoLabel = document.createElement('label');
+    parentescoLabel.textContent = 'Parentesco / Relação:';
+    const parentescoInput = document.createElement('input');
+    parentescoInput.type = 'text';
+    parentescoInput.value = familiar.parentesco || '';
+    parentescoInput.disabled = !usuarioPermissao.podeEditar;
+    parentescoLabel.appendChild(parentescoInput);
+
+    // Documentos
+    const cpfLabel = document.createElement('label');
+    cpfLabel.textContent = 'CPF:';
+    const cpfInput = document.createElement('input');
+    cpfInput.type = 'text';
+    cpfInput.value = familiar.cpf || '';
+    cpfInput.disabled = !usuarioPermissao.podeEditar;
+    cpfLabel.appendChild(cpfInput);
+
+    const rgLabel = document.createElement('label');
+    rgLabel.textContent = 'RG:';
+    const rgInput = document.createElement('input');
+    rgInput.type = 'text';
+    rgInput.value = familiar.rg || '';
+    rgInput.disabled = !usuarioPermissao.podeEditar;
+    rgLabel.appendChild(rgInput);
+
+    const cnhLabel = document.createElement('label');
+    cnhLabel.textContent = 'CNH:';
+    const cnhInput = document.createElement('input');
+    cnhInput.type = 'text';
+    cnhInput.value = familiar.cnh || '';
+    cnhInput.disabled = !usuarioPermissao.podeEditar;
+    cnhLabel.appendChild(cnhInput);
+
+    // Placas do familiar
+    const placasFamiliarContainer = document.createElement('div');
+    placasFamiliarContainer.style.marginTop = '5px';
+
+    const placasTitulo = document.createElement('strong');
+    placasTitulo.textContent = 'Placas de Veículos:';
+    placasFamiliarContainer.appendChild(placasTitulo);
+
+    const placasLista = document.createElement('div');
+    placasFamiliarContainer.appendChild(placasLista);
+
+    function adicionarPlacaFamiliar(valor = '') {
+      const placaDiv = document.createElement('div');
+      placaDiv.style.marginTop = '3px';
+
+      const placaInput = document.createElement('input');
+      placaInput.type = 'text';
+      placaInput.placeholder = 'Placa do veículo';
+      placaInput.value = valor;
+      placaInput.disabled = !usuarioPermissao.podeEditar;
+
+      placaDiv.appendChild(placaInput);
+
+      if (usuarioPermissao.podeEditar) {
+        const btnRemover = document.createElement('button');
+        btnRemover.type = 'button';
+        btnRemover.textContent = 'Remover';
+        btnRemover.style.marginLeft = '10px';
+        btnRemover.onclick = () => placaDiv.remove();
+        placaDiv.appendChild(btnRemover);
+      }
+
+      placasLista.appendChild(placaDiv);
+    }
+
+    (familiar.placas || []).forEach(p => adicionarPlacaFamiliar(p));
+
+    if (usuarioPermissao.podeEditar) {
+      const btnAddPlacaFam = document.createElement('button');
+      btnAddPlacaFam.type = 'button';
+      btnAddPlacaFam.textContent = 'Adicionar Placa';
+      btnAddPlacaFam.style.marginTop = '5px';
+      btnAddPlacaFam.onclick = () => adicionarPlacaFamiliar();
+      placasFamiliarContainer.appendChild(btnAddPlacaFam);
+    }
+
+    // Botão remover familiar
+    const btnRemoverFamiliar = document.createElement('button');
+    btnRemoverFamiliar.type = 'button';
+    btnRemoverFamiliar.textContent = 'Remover Familiar / Contato';
+    btnRemoverFamiliar.style.marginTop = '10px';
+    btnRemoverFamiliar.onclick = () => div.remove();
+
+    // Montagem dos campos
+    div.appendChild(nomeLabel);
+    div.appendChild(parentescoLabel);
+    div.appendChild(cpfLabel);
+    div.appendChild(rgLabel);
+    div.appendChild(cnhLabel);
+    div.appendChild(placasFamiliarContainer);
+    if (usuarioPermissao.podeEditar) div.appendChild(btnRemoverFamiliar);
+
+    return div;
+  }
+
+  // Adiciona placa ao container placas
+  function adicionarPlaca(valor = '') {
+    const container = document.getElementById('placasContainer');
+    const campo = criarCampoPlaca(valor);
+    container.appendChild(campo);
+  }
+
+  // Adiciona familiar ao container familiares
+  function adicionarFamiliar(familiar = {}) {
+    const container = document.getElementById('familiaresContainer');
+    const campo = criarCampoFamiliar(familiar);
+    container.appendChild(campo);
+  }
+
+  // Evento para adicionar placa
+  document.getElementById('btnAddPlaca').onclick = () => {
+    if (!usuarioPermissao.podeEditar) return alert('Você não tem permissão para editar.');
+    adicionarPlaca();
   };
 
-  // Botão para adicionar morador novo (abre 3etapa com ?novo=true)
-  document.getElementById('btnAdicionarMorador').onclick = () => {
-    window.location.href = `3etapa.index.html?acesso=${nivel}&novo=true`;
+  // Evento para adicionar familiar
+  document.getElementById('btnAddFamiliar').onclick = () => {
+    if (!usuarioPermissao.podeEditar) return alert('Você não tem permissão para editar.');
+    adicionarFamiliar();
   };
+
+  // Variável para morador atual
+  let moradorAtual = {};
+
+  // Função para atualizar data e hora atual na tela
+  function atualizarDataHoraAtual() {
+    const agora = new Date();
+    document.getElementById('dataHoraAtual').textContent = agora.toLocaleString();
+  }
+
+  // Atualiza data e hora a cada segundo
+  setInterval(atualizarDataHoraAtual, 1000);
+  atualizarDataHoraAtual();
+
+  // Carregar dados do morador (se id informado e não modo novo)
+  function carregarMorador() {
+    const lista = carregarListaMoradores();
+    if (modoNovo) {
+      // Novo morador
+      const novoId = gerarNovoId(lista);
+      moradorAtual = { id: novoId };
+      preencherFormulario(moradorAtual);
+    } else if (idMorador) {
+      // Procurar morador pelo id
+      const idNum = parseInt(idMorador);
+      const encontrado = lista.find(m => m.id === idNum);
+      if (encontrado) {
+        moradorAtual = encontrado;
+        preencherFormulario(moradorAtual);
+      } else {
+        alert('Morador não encontrado. Criando novo.');
+        const novoId = gerarNovoId(lista);
+        moradorAtual = { id: novoId };
+        preencherFormulario(moradorAtual);
+      }
+    } else {
+      alert('ID do morador não informado. Criando novo.');
+      const novoId = gerarNovoId(lista);
+      moradorAtual = { id: novoId };
+      preencherFormulario(moradorAtual);
+    }
+  }
+
+  carregarMorador();
+
+  // Evento para carregar foto e mostrar preview
+  document.getElementById('foto3x4').addEventListener('change', e => {
+    if (!usuarioPermissao.podeEditar) return alert('Você não tem permissão para editar.');
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+      document.getElementById('imgFoto').src = ev.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+
+  // Evento salvar dados no localStorage e baixar JSON
+  document.getElementById('btnSalvar').onclick = () => {
+    if (!usuarioPermissao.podeEditar) return alert('Você não tem permissão para salvar.');
+
+    const dados = coletarDados();
+    // Atualiza morador na lista
+    let lista = carregarListaMoradores();
+    const idx = lista.findIndex(m => m.id === dados.id);
+    if (idx === -1) {
+      lista.push(dados);
+    } else {
+      lista[idx] = dados;
+    }
+    salvarListaMoradores(lista);
+    moradorAtual = dados;
+    preencherFormulario(moradorAtual);
+
+    // Atualiza campo ultima edição
+    const dtLocal = new Date(dados.ultimaEdicao).toISOString().slice(0,16);
+    document.getElementById('ultimaEdicao').value = dtLocal;
+
+    // Baixar arquivo JSON do morador
+    const blob = new Blob([JSON.stringify(dados, null, 2)], {type: 'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `morador_${dados.id}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+
+    document.getElementById('statusMsg').textContent = 'Dados salvos com sucesso e JSON baixado.';
+    document.getElementById('errorMsg').textContent = '';
+  };
+
+  // Evento para carregar dados de arquivo JSON
+  document.getElementById('btnCarregar').onclick = () => {
+    if (!usuarioPermissao.podeEditar) return alert('Você não tem permissão para carregar dados.');
+    document.getElementById('inputCarregarArquivo').click();
+  };
+  document.getElementById('inputCarregarArquivo').addEventListener('change', e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+      try {
+        const dados = JSON.parse(ev.target.result);
+        if (!dados.id) throw new Error('Arquivo JSON inválido (sem id)');
+        moradorAtual = dados;
+        preencherFormulario(moradorAtual);
+        document.getElementById('statusMsg').textContent = 'Dados carregados do arquivo JSON.';
+        document.getElementById('errorMsg').textContent = '';
+      } catch (err) {
+        document.getElementById('statusMsg').textContent = '';
+        document.getElementById('errorMsg').textContent = 'Erro ao carregar JSON: ' + err.message;
+      }
+    };
+    reader.readAsText(file);
+  });
+
+  // Bloqueio de edição para níveis que não podem editar
+  function bloquearEdicao() {
+    if (!usuarioPermissao.podeEditar) {
+      document.querySelectorAll('input, textarea, button').forEach(el => {
+        if (el.id === 'btnCarregar' || el.id === 'btnSalvar') {
+          el.disabled = true;
+        }
+        if (el.tagName === 'BUTTON' && el.type === 'button') {
+          el.disabled = true;
+        }
+        if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+          el.disabled = true;
+        }
+      });
+      document.getElementById('statusMsg').textContent = 'Você está com permissão somente para visualizar.';
+    }
+  }
+
+  bloquearEdicao();
+
 </script>
 
 </body>
