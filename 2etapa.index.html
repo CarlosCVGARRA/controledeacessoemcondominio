@@ -43,15 +43,43 @@
   .resultado-item:hover {
     background: #ddd;
   }
+  /* Estilo para os botões Ver Moradores e Adicionar Morador */
+  #btnVerMoradores {
+    background-color: green;
+    color: white;
+    padding: 8px;
+    border: none;
+    border-radius: 5px;
+    margin-right: 10px;
+    cursor: pointer;
+  }
+  #btnAdicionarMorador {
+    background-color: blue;
+    color: white;
+    padding: 8px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
 </style>
 </head>
 <body>
 
-<h1>Pesquisa de Moradores e Veículos</h1>
+<!-- Botões Ver Moradores e Adicionar Morador -->
+<div style="margin-bottom: 20px;">
+  <button id="btnVerMoradores">Ver Moradores</button>
+  <button id="btnAdicionarMorador">Adicionar Morador</button>
+</div>
+
 <div id="infoNivel"></div>
 
 <div id="pesquisaContainer">
-  <input type="text" id="inputPesquisa" placeholder="Digite nome, placa, CPF, RG..." onkeydown="if(event.key==='Enter') pesquisar()" />
+  <input
+    type="text"
+    id="inputPesquisa"
+    placeholder="Digite nome, placa, CPF, RG..."
+    onkeydown="if(event.key==='Enter') pesquisar()"
+  />
   <button onclick="pesquisar()">Pesquisar</button>
 </div>
 
@@ -134,6 +162,33 @@
       resultadosDiv.appendChild(div);
     });
   }
+
+  // Botão para listar todos moradores
+  document.getElementById('btnVerMoradores').onclick = () => {
+    const resultadosDiv = document.getElementById('resultados');
+    resultadosDiv.innerHTML = '';
+
+    moradores.forEach(morador => {
+      const div = document.createElement('div');
+      div.className = 'resultado-item';
+      div.innerHTML = `
+        <strong>${morador.nome}</strong><br>
+        CPF: ${morador.cpf}<br>
+        RG: ${morador.rg}<br>
+        Placas: ${morador.placas.length ? morador.placas.join(', ') : '-'}<br>
+        <small>Clique para ver detalhes</small>
+      `;
+      div.onclick = () => {
+        window.location.href = `3etapa.index.html?id=${morador.id}&acesso=${nivel}`;
+      };
+      resultadosDiv.appendChild(div);
+    });
+  };
+
+  // Botão para adicionar morador novo (abre 3etapa com ?novo=true)
+  document.getElementById('btnAdicionarMorador').onclick = () => {
+    window.location.href = `3etapa.index.html?acesso=${nivel}&novo=true`;
+  };
 </script>
 
 </body>
