@@ -848,6 +848,44 @@ preencherFormulario(moradorAtual);
     ul.appendChild(li);
   });
 }
+// Ao clicar no botão "Carregar Dados", simula o clique no input de arquivo escondido
+document.getElementById('btnCarregar').onclick = () => {
+  if (!usuarioPermissao.podeEditar) {
+    alert('Você não tem permissão para carregar dados.');
+    return;
+  }
+  document.getElementById('inputCarregarArquivo').click();
+};
+
+// Ao selecionar um arquivo JSON, carrega os dados
+document.getElementById('inputCarregarArquivo').addEventListener('change', function(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const dados = JSON.parse(e.target.result);
+      if (!dados.id) dados.id = gerarNovoId(moradores); // garante ID
+
+      const idx = moradores.findIndex(m => m.id === dados.id);
+      if (idx >= 0) {
+        moradores[idx] = dados;
+      } else {
+        moradores.push(dados);
+      }
+
+      salvarListaMoradores(moradores);
+      moradorAtual = dados;
+      preencherFormulario(moradorAtual);
+      document.getElementById('statusMsg').textContent = 'Dados carregados com sucesso!';
+      document.getElementById('errorMsg').textContent = '';
+    } catch (err) {
+      document.getElementById('errorMsg').textContent = 'Erro ao carregar o arquivo: ' + err.message;
+    }
+  };
+  reader.readAsText(file);
+});
 
 
 
