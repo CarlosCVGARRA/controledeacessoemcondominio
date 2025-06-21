@@ -8,16 +8,16 @@
     font-family: Arial, sans-serif;
     background: #eaeaea;
     padding: 20px;
-    text-align: center; /* Centraliza conteúdo */
+    text-align: center;
   }
   #infoNivel {
     margin-bottom: 20px;
     font-weight: bold;
   }
   #pesquisaContainer {
-    display: inline-flex;       /* Container flexível inline para alinhar input e botão */
-    align-items: center;        /* Alinha verticalmente no centro */
-    gap: 10px;                  /* Espaço entre input e botão */
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
   }
   input, button {
     font-size: 16px;
@@ -58,12 +58,14 @@
 <div id="resultados"></div>
 
 <script>
-  // Captura nível de acesso da URL
+  // Obtém nível de acesso da URL (exemplo: ?acesso=admin)
   const urlParams = new URLSearchParams(window.location.search);
   const nivel = urlParams.get('acesso') || 'visitante';
+
+  // Mostra o nível na tela
   document.getElementById('infoNivel').innerText = `Você está logado como: ${nivel.toUpperCase()}`;
 
-  // Exemplo fixo de dados para pesquisa
+  // Dados fixos para simular moradores
   const moradores = [
     {
       id: 1,
@@ -88,6 +90,7 @@
     }
   ];
 
+  // Função de pesquisa
   function pesquisar() {
     const termo = document.getElementById('inputPesquisa').value.trim().toLowerCase();
     const resultadosDiv = document.getElementById('resultados');
@@ -98,7 +101,7 @@
       return;
     }
 
-    // Filtra moradores que contenham o termo em nome, cpf, rg ou placas
+    // Filtra moradores pelo termo em nome, cpf, rg ou placas
     const resultados = moradores.filter(m => {
       return (
         m.nome.toLowerCase().includes(termo) ||
@@ -113,6 +116,7 @@
       return;
     }
 
+    // Exibe cada morador encontrado
     resultados.forEach(morador => {
       const div = document.createElement('div');
       div.className = 'resultado-item';
@@ -120,11 +124,11 @@
         <strong>${morador.nome}</strong><br>
         CPF: ${morador.cpf}<br>
         RG: ${morador.rg}<br>
-        Placas: ${morador.placas.join(', ') || '-'}<br>
+        Placas: ${morador.placas.length ? morador.placas.join(', ') : '-'}<br>
         <small>Clique para ver detalhes</small>
       `;
       div.onclick = () => {
-        // Redireciona para formulário, passando id e nível de acesso na URL
+        // Redireciona para o formulário, passando id e acesso na URL
         window.location.href = `formulario.html?id=${morador.id}&acesso=${nivel}`;
       };
       resultadosDiv.appendChild(div);
