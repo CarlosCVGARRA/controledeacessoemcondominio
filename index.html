@@ -4,39 +4,149 @@
   <meta charset="UTF-8" />
   <title>Login Condomínio</title>
   <style>
+    /* Variáveis para cores, edite aqui */
+    :root {
+      --cor-fundo-texto: white;
+      --cor-sombra-texto: rgba(0, 0, 0, 0.7);
+      --cor-input-fundo: rgba(255, 255, 255, 0.85);
+      --cor-input-texto: #000;
+      --cor-painel-erro: #ff4d4d;
+      --cor-painel-sucesso: #4caf50;
+      --cor-fundo-painel: rgba(255, 255, 255, 0.9);
+      --cor-rodape-texto: #ddd;
+      --cor-link: #7289da; /* cor do Discord */
+      --cor-link-hover: #5b6eae;
+    }
+
     body {
       font-family: Arial, sans-serif;
       background: url('https://images.unsplash.com/photo-1508780709619-79562169bc64?auto=format&fit=crop&w=1400&q=80') no-repeat center center fixed;
       background-size: cover;
       padding: 30px;
       text-align: center;
+      color: var(--cor-fundo-texto);
     }
+
+    img.logo {
+      width: 120px;
+      margin-bottom: 15px;
+      border-radius: 15px;
+      box-shadow: 0 0 10px var(--cor-sombra-texto);
+    }
+
+    h1 {
+      text-shadow: 1px 1px 3px var(--cor-sombra-texto);
+      margin-bottom: 5px;
+    }
+
+    p.boas-vindas {
+      font-size: 18px;
+      margin-bottom: 25px;
+      text-shadow: 1px 1px 2px var(--cor-sombra-texto);
+    }
+
     input, button {
       padding: 10px;
       font-size: 16px;
       margin: 10px;
       border: none;
       border-radius: 5px;
-      background: rgba(255, 255, 255, 0.85);
-      color: #000;
+      background: var(--cor-input-fundo);
+      color: var(--cor-input-texto);
+      outline-offset: 2px;
+      outline-color: var(--cor-link);
+      width: 250px;
+      max-width: 90vw;
+      box-sizing: border-box;
+      transition: outline-color 0.3s ease;
     }
+
+    input:focus {
+      outline-color: var(--cor-link);
+    }
+
+    button {
+      cursor: pointer;
+      font-weight: bold;
+      width: 100px;
+    }
+
     #painel {
       margin-top: 30px;
       min-height: 50px;
-      background: rgba(255, 255, 255, 0.9);
+      background: var(--cor-fundo-painel);
       padding: 20px;
       border-radius: 10px;
-      color: red;
+      color: var(--cor-painel-erro);
+      font-weight: bold;
+      font-size: 16px;
+      box-shadow: 0 0 8px var(--cor-painel-erro);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      display: inline-block;
+      min-width: 200px;
+    }
+
+    #painel.show {
+      opacity: 1;
+      animation: shake 0.5s;
+    }
+
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      20% { transform: translateX(-10px); }
+      40% { transform: translateX(10px); }
+      60% { transform: translateX(-10px); }
+      80% { transform: translateX(10px); }
+      100% { transform: translateX(0); }
+    }
+
+    p.aviso-seguranca {
+      margin-top: 40px;
+      font-size: 13px;
+      color: var(--cor-fundo-texto);
+      opacity: 0.8;
+      text-shadow: 1px 1px 2px var(--cor-sombra-texto);
+    }
+
+    footer {
+      margin-top: 60px;
+      font-size: 14px;
+      color: var(--cor-rodape-texto);
+      text-shadow: 1px 1px 2px var(--cor-sombra-texto);
+    }
+
+    footer a {
+      color: var(--cor-link);
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    footer a:hover {
+      color: var(--cor-link-hover);
+      text-decoration: underline;
     }
   </style>
 </head>
 <body>
-  <h1 style="color:white; text-shadow: 1px 1px 2px black">Sistema de Login - Condomínio</h1>
+  <!-- Ícone/logo, troque a URL da imagem se quiser -->
+  <img src="https://i.imgur.com/5qHdlYp.png" alt="Logo Condomínio" class="logo" />
 
+  <h1>Sistema de Login - Condomínio</h1>
+  
+  <p class="boas-vindas">Bem-vindo! Por favor, digite sua senha para acessar o sistema.</p>
+  
   <input type="password" id="senha" placeholder="Digite a senha" onkeydown="if(event.key==='Enter') login()" />
   <button onclick="login()">Entrar</button>
-
+  
   <div id="painel"></div>
+
+  <p class="aviso-seguranca">⚠️ Não compartilhe sua senha com ninguém.</p>
+
+  <footer>
+    <p>Condomínio Residencial - Suporte: (00) 0000-0000</p>
+    <p>Acesse nosso Discord: <a href="https://discord.gg/nka5dSDywZ" target="_blank" rel="noopener noreferrer">Clique aqui</a></p>
+  </footer>
 
   <script>
     // Senhas padrão, só para inicializar localStorage
@@ -71,6 +181,7 @@
       const senhaDigitada = document.getElementById('senha').value.trim();
       const painel = document.getElementById('painel');
       painel.textContent = '';
+      painel.classList.remove('show');
 
       let nivelAcesso = null;
       if (senhaDigitada === senhas.admin) nivelAcesso = 'admin';
@@ -84,11 +195,10 @@
         // Redireciona para página principal (formulário)
         window.location.href = `2etapa.index.html?acesso=${nivelAcesso}`;
       } else {
-        painel.textContent = 'Senha incorreta!';
+        painel.textContent = 'Senha incorreta! Tente novamente.';
+        painel.classList.add('show');
       }
     }
-
-    // Se quiser, pode implementar painel para alterar senhas futuramente
   </script>
 </body>
 </html>
