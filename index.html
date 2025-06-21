@@ -1,76 +1,96 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Login Condomínio</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #eaeaea;
-      text-align: center;
+      background: url('https://images.unsplash.com/photo-1508780709619-79562169bc64?auto=format&fit=crop&w=1400&q=80') no-repeat center center fixed;
+      background-size: cover;
       padding: 30px;
+      text-align: center;
     }
     input, button {
       padding: 10px;
       font-size: 16px;
+      margin: 10px;
+      border: none;
+      border-radius: 5px;
+      background: rgba(255, 255, 255, 0.85);
+      color: #000;
     }
     #painel {
       margin-top: 30px;
-      display: none;
+      min-height: 50px;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 20px;
+      border-radius: 10px;
+      color: red;
     }
     .admin { color: red; }
     .sindico { color: purple; }
     .porteiro { color: blue; }
     .morador { color: green; }
+    #emailInfo {
+      margin-top: 20px;
+      font-size: 14px;
+      color: white;
+    }
+    #discordBtn {
+      background-color: #5865F2;
+      color: white;
+    }
   </style>
 </head>
 <body>
-  <h1>Login do Sistema do Condomínio</h1>
-  <input type="password" id="senha" placeholder="Digite a senha" onkeydown="if(event.key==='Enter') login()">
+  <h1 style="color:white; text-shadow: 1px 1px 2px black">Sistema de Login - Condomínio</h1>
+
+  <input type="password" id="senha" placeholder="Digite a senha" onkeydown="if(event.key==='Enter') login()" />
   <button onclick="login()">Entrar</button>
 
   <div id="painel"></div>
 
+  <div id="emailInfo">
+    E-mail de contato: <b id="meuEmail">carlos@email.com</b>
+  </div>
+  <br />
+  <button id="discordBtn" onclick="window.open('https://discord.com/invite/SEULINK', '_blank')">Acessar Discord</button>
+
   <script>
-    // Senhas fixas para teste (pode ser alteradas depois)
     const senhas = {
       admin: '123',
-      sindico: '123',
-      porteiro: '123',
-      morador: '123'
+      sindico: '1234',
+      porteiro: '12345',
+      morador: '123456'
     };
 
-    let nivel = ''; // Guardar nível de acesso
-
     function login() {
-      const senhaDigitada = document.getElementById('senha').value;
+      const senhaDigitada = document.getElementById('senha').value.trim();
       const painel = document.getElementById('painel');
-      painel.innerHTML = '';
-      painel.style.display = 'block';
+      painel.textContent = '';
 
       if (senhaDigitada === senhas.admin) {
-        nivel = 'admin';
-        painel.innerHTML = `<h2 class="admin">Bem-vindo ADMIN</h2>${painelAdmin()}`;
+        // Redireciona para formulário com nível admin
+        window.location.href = 'formulario.html?acesso=admin';
       } else if (senhaDigitada === senhas.sindico) {
-        nivel = 'sindico';
-        painel.innerHTML = `<h2 class="sindico">Bem-vindo SÍNDICO</h2>${painelSindico()}`;
+        window.location.href = 'formulario.html?acesso=sindico';
       } else if (senhaDigitada === senhas.porteiro) {
-        nivel = 'porteiro';
-        painel.innerHTML = `<h2 class="porteiro">Bem-vindo PORTEIRO</h2>${painelPorteiro()}`;
+        window.location.href = 'formulario.html?acesso=porteiro';
       } else if (senhaDigitada === senhas.morador) {
-        nivel = 'morador';
-        painel.innerHTML = `<h2 class="morador">Bem-vindo MORADOR</h2>${painelMorador()}`;
+        window.location.href = 'formulario.html?acesso=morador';
       } else {
-        painel.innerHTML = `<p style="color:red;">Senha incorreta!</p>`;
+        painel.textContent = 'Senha incorreta!';
       }
     }
 
+    // Mantive as funções originais, caso precise reutilizar.
     function painelAdmin() {
       return `
         <p>Editar senhas (exceto sua própria):</p>
-        <p>Síndico: <input id="sSindico" value="${senhas.sindico}"></p>
-        <p>Porteiro: <input id="sPorteiro" value="${senhas.porteiro}"></p>
-        <p>Morador: <input id="sMorador" value="${senhas.morador}"></p>
+        <p>Síndico: <input type="password" id="sSindico" value="${senhas.sindico}"></p>
+        <p>Porteiro: <input type="password" id="sPorteiro" value="${senhas.porteiro}"></p>
+        <p>Morador: <input type="password" id="sMorador" value="${senhas.morador}"></p>
         <button onclick="salvarSenhas('admin')">Salvar</button>
       `;
     }
@@ -78,8 +98,8 @@
     function painelSindico() {
       return `
         <p>Editar senhas (exceto a do ADMIN):</p>
-        <p>Porteiro: <input id="sPorteiro" value="${senhas.porteiro}"></p>
-        <p>Morador: <input id="sMorador" value="${senhas.morador}"></p>
+        <p>Porteiro: <input type="password" id="sPorteiro" value="${senhas.porteiro}"></p>
+        <p>Morador: <input type="password" id="sMorador" value="${senhas.morador}"></p>
         <button onclick="salvarSenhas('sindico')">Salvar</button>
       `;
     }
