@@ -197,8 +197,8 @@
     </label>
   </section>
 
-  <button type="button" id="btnSalvar">Salvar Dados no PC</button>
-  <button type="button" id="btnCarregar">Carregar Dados do PC</button>
+  <button type="button" id="btnSalvar">Salvar Dados no localStorage e baixar JSON</button>
+  <button type="button" id="btnCarregar">Carregar Dados do arquivo JSON</button>
   <input type="file" id="inputCarregarArquivo" style="display:none" accept=".json" />
 
   <div id="statusMsg"></div>
@@ -220,20 +220,6 @@
   };
   const usuarioPermissao = permissoes[nivel] || permissoes.visitante;
 
-  // Firebase config - Substitua pelos seus dados
-  const firebaseConfig = {
-    apiKey: "SUA_API_KEY",
-    authDomain: "SEU_AUTH_DOMAIN",
-    databaseURL: "SUA_DATABASE_URL",
-    projectId: "SEU_PROJECT_ID",
-    storageBucket: "SEU_STORAGE_BUCKET",
-    messagingSenderId: "SEU_MESSAGING_SENDER_ID",
-    appId: "SEU_APP_ID"
-  };
-
-  firebase.initializeApp(firebaseConfig);
-  const database = firebase.database();
-
   // Formatação data/hora para exibir
   function formatarDataHora(data) {
     return data.toLocaleString('pt-BR', { hour12: false });
@@ -243,11 +229,6 @@
     const agora = new Date();
     document.getElementById('dataHoraAtual').innerText = formatarDataHora(agora);
   }
-
-  // Funções para criar placas e familiares, controle do formulário
-  // ... Aqui mantenha seu código original exatamente igual, para criação de campos, coleta de dados, preenchimento, etc...
-
-  // -- para economizar espaço aqui, vou incluir tudo junto abaixo ---
 
   // Criar campo placa
   function criarCampoPlaca(valor = '') {
@@ -533,7 +514,7 @@
     mostrarStatus('Dados carregados do computador.');
   }
 
-  // Mensagens status e erro
+  // Mostrar mensagens
   function mostrarStatus(msg) {
     const el = document.getElementById('statusMsg');
     el.textContent = msg;
@@ -544,6 +525,54 @@
     el.textContent = msg;
     setTimeout(() => { el.textContent = ''; }, 7000);
   }
+
+  // ------ NOVO: salvar arquivo JSON para download ------
+  function salvarArquivoJSON() {
+    if (!usuarioPermissao.podeEditar) {
+      mostrarErro('Você não tem permissão para salvar os dados.');
+      return;
+    }
+    const dados = coletarDados();
+    const dadosStr = JSON.stringify(dados, null, 2);
+    const blob = new Blob([dadosStr], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = url;
+    const nomeArquivo = (dados.nome ? dados.nome.replace(/[^a-z0-9]/gi, '_').toLowerCase() : 'dados_morador') + '.json';
+    a.download = nomeArquivo;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    // Também salva no localStorage para manter seu fluxo atual
+    localStorage.setItem('dadosMorador', dadosStr);
+    mostrarStatus('Arquivo JSON gerado para download e dados salvos localmente.');
+  }
+
+  // ------ NOVO: carregar arquivo JSON enviado pelo input ------
+  document.getElementById('btnCarregar').addEventListener('click', () => {
+    document.getElementById('inputCarregarArquivo').click();
+  });
+
+  document.getElementById('inputCarregarArquivo').addEventListener('change', function(event) {
+    const arquivo = event.target.files[0];
+    if (!arquivo) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      try {
+        const dados = JSON.parse(e.target.result);
+        preencherFormulario(dados);
+        localStorage.setItem('dadosMorador', JSON.stringify(dados)); // sincroniza localStorage também
+        mostrarStatus('Arquivo JSON carregado com sucesso.');
+      } catch (error) {
+        mostrarErro('Erro ao ler o arquivo JSON.');
+      }
+    };
+    reader.readAsText(arquivo);
+  });
 
   // Inicializar data/hora e controles
   function inicializar() {
@@ -559,8 +588,8 @@
   }
 
   // Eventos dos botões
-  document.getElementById('btnSalvar').onclick = salvarLocalStorage;
-  document.getElementById('btnCarregar').onclick = carregarLocalStorage;
+  document.getElementById('btnSalvar').onclick = salvarArquivoJSON;
+  // document.getElementById('btnCarregar').onclick já tratado acima
 
   // Iniciar
   inicializar();
