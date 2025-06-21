@@ -28,19 +28,6 @@
       border-radius: 10px;
       color: red;
     }
-    .admin { color: red; }
-    .sindico { color: purple; }
-    .porteiro { color: blue; }
-    .morador { color: green; }
-    #emailInfo {
-      margin-top: 20px;
-      font-size: 14px;
-      color: white;
-    }
-    #discordBtn {
-      background-color: #5865F2;
-      color: white;
-    }
   </style>
 </head>
 <body>
@@ -51,104 +38,57 @@
 
   <div id="painel"></div>
 
-  <div id="emailInfo">
-    E-mail de contato: <b id="meuEmail">carlos@email.com</b>
-  </div>
-  <br />
-  <button id="discordBtn" onclick="window.open('https://discord.com/invite/SEULINK', '_blank')">Acessar Discord</button>
-
   <script>
-    const senhas = {
+    // Senhas padrão, só para inicializar localStorage
+    const senhasPadrao = {
       admin: '123',
       sindico: '1234',
       porteiro: '12345',
       morador: '123456'
     };
 
+    // Carrega senhas do localStorage ou usa padrão
+    function carregarSenhas() {
+      const json = localStorage.getItem('senhasCond');
+      if (json) {
+        try {
+          return JSON.parse(json);
+        } catch {
+          return {...senhasPadrao};
+        }
+      }
+      return {...senhasPadrao};
+    }
+
+    // Salvar senhas no localStorage
+    function salvarSenhas(senhas) {
+      localStorage.setItem('senhasCond', JSON.stringify(senhas));
+    }
+
+    let senhas = carregarSenhas();
+
     function login() {
       const senhaDigitada = document.getElementById('senha').value.trim();
       const painel = document.getElementById('painel');
       painel.textContent = '';
 
-      if (senhaDigitada === senhas.admin) {
-        // Redireciona para formulário com nível admin
-        window.location.href = '2etapa.index.html?acesso=admin';
-      } else if (senhaDigitada === senhas.sindico) {
-        window.location.href = '2etapa.index.html?acesso=sindico';
-      } else if (senhaDigitada === senhas.porteiro) {
-        window.location.href = '2etapa.index.html?acesso=porteiro';
-      } else if (senhaDigitada === senhas.morador) {
-        window.location.href = '2etapa.index.html?acesso=admin';
+      let nivelAcesso = null;
+      if (senhaDigitada === senhas.admin) nivelAcesso = 'admin';
+      else if (senhaDigitada === senhas.sindico) nivelAcesso = 'sindico';
+      else if (senhaDigitada === senhas.porteiro) nivelAcesso = 'porteiro';
+      else if (senhaDigitada === senhas.morador) nivelAcesso = 'morador';
+
+      if (nivelAcesso) {
+        // Salva o nível no localStorage para manter sessão
+        localStorage.setItem('nivelAcessoCond', nivelAcesso);
+        // Redireciona para página principal (formulário)
+        window.location.href = `2etapa.index.html?acesso=${nivelAcesso}`;
       } else {
         painel.textContent = 'Senha incorreta!';
       }
     }
 
-    // Mantive as funções originais, caso precise reutilizar.
-    function painelAdmin() {
-      return `
-        <p>Editar senhas (exceto sua própria):</p>
-        <p>Síndico: <input type="password" id="sSindico" value="${senhas.sindico}"></p>
-        <p>Porteiro: <input type="password" id="sPorteiro" value="${senhas.porteiro}"></p>
-        <p>Morador: <input type="password" id="sMorador" value="${senhas.morador}"></p>
-        <button onclick="salvarSenhas('admin')">Salvar</button>
-      `;
-    }
-
-    function painelSindico() {
-      return `
-        <p>Editar senhas (exceto a do ADMIN):</p>
-        <p>Porteiro: <input type="password" id="sPorteiro" value="${senhas.porteiro}"></p>
-        <p>Morador: <input type="password" id="sMorador" value="${senhas.morador}"></p>
-        <button onclick="salvarSenhas('sindico')">Salvar</button>
-      `;
-    }
-
-    function painelPorteiro() {
-      return `
-        <p>Editar dados de moradores (exceto CPF/RG):</p>
-        <p>Nome: <input id="nome" value="João da Silva"></p>
-        <p>CPF: <input id="cpf" value="123.456.789-00" disabled></p>
-        <p>RG: <input id="rg" value="MG-12.345.678" disabled></p>
-        <p>Para alterar CPF/RG digite senha do admin ou síndico:</p>
-        <input type="password" id="confirma">
-        <button onclick="tentarLiberar()">Liberar CPF/RG</button>
-      `;
-    }
-
-    function tentarLiberar() {
-      const confirmacao = document.getElementById('confirma').value;
-      if (confirmacao === senhas.admin || confirmacao === senhas.sindico) {
-        document.getElementById('cpf').disabled = false;
-        document.getElementById('rg').disabled = false;
-        alert("CPF/RG liberados para edição.");
-      } else {
-        alert("Senha incorreta. Não autorizado.");
-      }
-    }
-
-    function painelMorador() {
-      return `
-        <p>Seus dados:</p>
-        <p>Nome: João da Silva</p>
-        <p>CPF: 123.456.789-00</p>
-        <p>RG: MG-12.345.678</p>
-        <p>(Você não pode editar nada)</p>
-      `;
-    }
-
-    function salvarSenhas(nivelUsuario) {
-      if (nivelUsuario === 'admin') {
-        senhas.sindico = document.getElementById('sSindico').value;
-        senhas.porteiro = document.getElementById('sPorteiro').value;
-        senhas.morador = document.getElementById('sMorador').value;
-        alert("Senhas atualizadas com sucesso!");
-      } else if (nivelUsuario === 'sindico') {
-        senhas.porteiro = document.getElementById('sPorteiro').value;
-        senhas.morador = document.getElementById('sMorador').value;
-        alert("Senhas atualizadas com sucesso!");
-      }
-    }
+    // Se quiser, pode implementar painel para alterar senhas futuramente
   </script>
 </body>
 </html>
