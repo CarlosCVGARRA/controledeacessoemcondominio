@@ -641,6 +641,62 @@
   bloquearEdicao();
 
 </script>
+<!-- Botão para abrir a lista -->
+<button type="button" id="btnVerLista" style="background:green;margin-left:10px;">Ver Lista de Moradores</button>
+
+<!-- Janela de busca -->
+<div id="listaContainer" style="display:none; margin-top:20px; background:#fff; padding:15px; border:1px solid #ccc; border-radius:10px;">
+  <h2>Lista de Moradores</h2>
+  <input type="text" id="buscaMorador" placeholder="Digite nome, CPF ou RG..." style="width:100%; padding:8px; margin-bottom:10px;"/>
+  <ul id="resultadosMoradores" style="list-style:none; padding:0;"></ul>
+</div>
+
+<script>
+  // Mostrar/esconder a lista
+  document.getElementById('btnVerLista').onclick = () => {
+    const container = document.getElementById('listaContainer');
+    container.style.display = container.style.display === 'none' ? 'block' : 'none';
+    atualizarListaMoradores(); // Atualiza sempre que abrir
+  };
+
+  // Atualiza a lista filtrada de moradores
+  function atualizarListaMoradores(filtro = '') {
+    const lista = carregarListaMoradores();
+    const resultados = document.getElementById('resultadosMoradores');
+    resultados.innerHTML = '';
+
+    const textoFiltro = filtro.toLowerCase();
+    const filtrados = lista.filter(m =>
+      m.nome?.toLowerCase().includes(textoFiltro) ||
+      m.cpf?.includes(textoFiltro) ||
+      m.rg?.includes(textoFiltro)
+    );
+
+    if (filtrados.length === 0) {
+      resultados.innerHTML = '<li>Nenhum morador encontrado.</li>';
+      return;
+    }
+
+    filtrados.forEach(m => {
+      const li = document.createElement('li');
+      li.style.borderBottom = '1px solid #ccc';
+      li.style.padding = '5px 0';
+      li.style.cursor = 'pointer';
+      li.textContent = `${m.nome || '(sem nome)'} - CPF: ${m.cpf || '---'} - RG: ${m.rg || '---'}`;
+      li.onclick = () => {
+        moradorAtual = m;
+        preencherFormulario(m);
+        document.getElementById('listaContainer').style.display = 'none';
+      };
+      resultados.appendChild(li);
+    });
+  }
+
+  // Evento de busca ao digitar
+  document.getElementById('buscaMorador').addEventListener('input', e => {
+    atualizarListaMoradores(e.target.value);
+  });
+</script>
 
 </body>
 </html>
