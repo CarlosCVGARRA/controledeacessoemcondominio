@@ -752,7 +752,7 @@ document.getElementById('btnLimparLocalStorage').onclick = () => {
 
 
   const senha = prompt('Digite a senha do admin ou síndico para confirmar a limpeza:');
-  const senhasValidas = ['464007', 'sindico123']; // ajuste as senhas aqui conforme seu uso
+  const senhasValidas = ['464007', '1234']; // ajuste as senhas aqui conforme seu uso
 
   const msgEl = document.getElementById('msgLimparLocalStorage');
 
@@ -823,7 +823,7 @@ function atualizarListaMoradores() {
     btnApagar.textContent = 'Apagar';
     btnApagar.onclick = () => {
       const senha = prompt('Digite a senha do síndico ou admin para apagar:');
-      const senhasAceitas = ['sindico123', '464007']; // Altere aqui as senhas válidas
+      const senhasAceitas = ['1234', '464007']; // Altere aqui as senhas válidas
       if (!senhasAceitas.includes(senha)) {
         alert('Senha incorreta.');
         return;
