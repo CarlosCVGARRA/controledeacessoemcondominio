@@ -21,6 +21,28 @@ body{
   z-index:-1;
 }
 
+/* topo e rodapé */
+#topo-info, #rodape-info{
+  position:fixed;
+  color:white;
+  font-size:18px;
+  z-index:999;
+  opacity:0.9;
+}
+
+/* TOPO CENTRALIZADO */
+#topo-info{
+  top:5px;
+  left:50%;
+  transform:translateX(-50%);
+  text-align:center;
+}
+
+#rodape-info{
+  bottom:5px;
+  left:10px;
+}
+
 #loginScreen{
   position:fixed;
   width:100%;
@@ -115,7 +137,6 @@ img{
   border-radius:6px;
 }
 
-/* 🔥 BOTÕES MAIORES (70% DA ÁREA DO FORMULÁRIO) */
 .top-actions{
   width:70%;
   margin:0 auto 12px auto;
@@ -130,7 +151,6 @@ img{
   font-size:13px;
 }
 
-/* campos lado a lado */
 .dupla{
   display:flex;
   gap:8px;
@@ -145,7 +165,6 @@ img{
   overflow-y:auto;
 }
 
-/* modo visualização */
 .readonly input,
 .readonly textarea{
   pointer-events:none;
@@ -158,6 +177,12 @@ img{
 
 <div class="bg-overlay"></div>
 
+<!-- TOPO -->
+<div id="topo-info">
+  Criado por Carlos Cunha Vilela - <span id="dataTopo"></span>
+</div>
+
+<!-- LOGIN -->
 <div id="loginScreen">
   <div class="login-box">
     <h2>Condomínio</h2>
@@ -167,6 +192,7 @@ img{
   </div>
 </div>
 
+<!-- APP -->
 <div id="app">
 
 <header>
@@ -199,28 +225,20 @@ Sistema de Moradores
   <input id="cidade" class="medio" placeholder="Cidade">
 </div>
 
-<div class="section">
 <h4>Placas</h4>
 <div id="placas"></div>
 <button onclick="addPlaca()">+ Placa</button>
-</div>
 
-<div class="section">
 <h4>Familiares</h4>
 <div id="familiares"></div>
 <button onclick="addFam()">+ Contato</button>
-</div>
 
-<div class="section">
 <h4>Foto</h4>
 <input type="file" onchange="foto(event)">
 <img id="preview">
-</div>
 
-<div class="section">
 <h4>Observações</h4>
 <textarea id="obs"></textarea>
-</div>
 
 </div>
 
@@ -233,9 +251,14 @@ Sistema de Moradores
 </div>
 </div>
 
+<!-- RODAPÉ -->
+<div id="rodape-info">
+  Criado por Carlos Cunha Vilela - <span id="dataRodape"></span>
+</div>
+
 <script>
 
-const senhaCorreta = "201066";
+const senhaCorreta = "2010";
 
 let moradores = [];
 let fotoBase64 = "";
@@ -264,6 +287,23 @@ const previewEl = document.getElementById("preview");
 
 const loginScreen = document.getElementById("loginScreen");
 const app = document.getElementById("app");
+
+function atualizarData(){
+  const agora = new Date();
+
+  const data = agora.toLocaleDateString("pt-BR");
+  const hora = agora.toLocaleTimeString("pt-BR", {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit"
+  });
+
+  document.getElementById("dataTopo").textContent = data + " " + hora;
+  document.getElementById("dataRodape").textContent = data;
+}
+
+atualizarData();
+setInterval(atualizarData, 1000);
 
 senhaEl.addEventListener("keydown", e=>{
   if(e.key==="Enter") login();
@@ -343,7 +383,7 @@ function editarSelecionado(){
   if(!confirm("Tem certeza que deseja editar este morador?")) return;
 
   let senha = prompt("Digite a senha para liberar edição:");
-  if(senha !== "464007"){
+  if(senha !== "201066"){
     alert("Senha incorreta!");
     return;
   }
@@ -403,7 +443,7 @@ function apagarSelecionado(){
   if(!confirm("Tem certeza que deseja apagar este morador?")) return;
 
   let senha = prompt("Digite a senha para confirmar exclusão:");
-  if(senha !== "464007"){
+  if(senha !== "201066"){
     alert("Senha incorreta!");
     return;
   }
@@ -456,8 +496,8 @@ function render(){
   listaEl.innerHTML="";
 
   let listaOrdenada = moradores
-  .filter(m=>m.nome.toLowerCase().includes(q)||m.cpf.includes(q)||m.rg.includes(q))
-  .sort((a,b)=>a.nome.localeCompare(b.nome,'pt-BR',{sensitivity:'base'}));
+    .filter(m=>m.nome.toLowerCase().includes(q)||m.cpf.includes(q)||m.rg.includes(q))
+    .sort((a,b)=>a.nome.localeCompare(b.nome,'pt-BR',{sensitivity:'base'}));
 
   listaOrdenada.forEach(m=>{
     let div=document.createElement("div");
