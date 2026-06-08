@@ -1,202 +1,480 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <title>Login Condomínio</title>
-  <style>
-    /* Variáveis para cores, edite aqui */
-    :root {
-      --cor-fundo-texto: white;
-      --cor-sombra-texto: rgba(0, 0, 0, 0.7);
-      --cor-input-fundo: rgba(255, 255, 255, 0.85);
-      --cor-input-texto: #000;
-      --cor-painel-erro: #ff4d4d;
-      --cor-painel-sucesso: #4caf50;
-      --cor-fundo-painel: rgba(255, 255, 255, 0.9);
-      --cor-rodape-texto: #ddd;
-      --cor-link: #7289da; /* cor do Discord */
-      --cor-link-hover: #5b6eae;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sistema Condomínio</title>
 
-    body {
-      font-family: Arial, sans-serif;
-      background: url('https://images.unsplash.com/photo-1508780709619-79562169bc64?auto=format&fit=crop&w=1400&q=80') no-repeat center center fixed;
-      background-size: cover;
-      padding: 30px;
-      text-align: center;
-      color: var(--cor-fundo-texto);
-    }
+<style>
+body{
+  margin:0;
+  font-family:Arial;
+  background:url("https://images.unsplash.com/photo-1600585154340-be6161a56a0c") no-repeat center center fixed;
+  background-size:cover;
+}
 
-    img.logo {
-      width: 120px;
-      margin-bottom: 15px;
-      border-radius: 15px;
-      box-shadow: 0 0 10px var(--cor-sombra-texto);
-    }
+.bg-overlay{
+  position:fixed;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.65);
+  z-index:-1;
+}
 
-    h1 {
-      text-shadow: 1px 1px 3px var(--cor-sombra-texto);
-      margin-bottom: 5px;
-    }
+#loginScreen{
+  position:fixed;
+  width:100%;
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
 
-    p.boas-vindas {
-      font-size: 18px;
-      margin-bottom: 25px;
-      text-shadow: 1px 1px 2px var(--cor-sombra-texto);
-    }
+.login-box{
+  background:rgba(255,255,255,0.12);
+  backdrop-filter:blur(12px);
+  padding:30px;
+  border-radius:15px;
+  width:340px;
+  text-align:center;
+  color:white;
+}
 
-    input, button {
-      padding: 10px;
-      font-size: 16px;
-      margin: 10px;
-      border: none;
-      border-radius: 5px;
-      background: var(--cor-input-fundo);
-      color: var(--cor-input-texto);
-      outline-offset: 2px;
-      outline-color: var(--cor-link);
-      width: 250px;
-      max-width: 90vw;
-      box-sizing: border-box;
-      transition: outline-color 0.3s ease;
-    }
+input, textarea{
+  width:100%;
+  padding:10px;
+  margin-top:8px;
+  border-radius:8px;
+  border:none;
+  outline:none;
+}
 
-    input:focus {
-      outline-color: var(--cor-link);
-    }
+button{
+  padding:7px 10px;
+  background:#007bff;
+  color:white;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+  font-size:12px;
+}
 
-    button {
-      cursor: pointer;
-      font-weight: bold;
-      width: 100px;
-    }
+.error{
+  background:red;
+  padding:8px;
+  border-radius:6px;
+  margin-top:10px;
+  display:none;
+}
 
-    #painel {
-      margin-top: 30px;
-      min-height: 50px;
-      background: var(--cor-fundo-painel);
-      padding: 20px;
-      border-radius: 10px;
-      color: var(--cor-painel-erro);
-      font-weight: bold;
-      font-size: 16px;
-      box-shadow: 0 0 8px var(--cor-painel-erro);
-      opacity: 0;
-      transition: opacity 0.4s ease;
-      display: inline-block;
-      min-width: 200px;
-    }
+#app{
+  display:none;
+  padding:15px;
+}
 
-    #painel.show {
-      opacity: 1;
-      animation: shake 0.5s;
-    }
+header{
+  background:rgba(0,0,0,0.6);
+  color:white;
+  padding:12px;
+  border-radius:10px;
+}
 
-    @keyframes shake {
-      0% { transform: translateX(0); }
-      20% { transform: translateX(-10px); }
-      40% { transform: translateX(10px); }
-      60% { transform: translateX(-10px); }
-      80% { transform: translateX(10px); }
-      100% { transform: translateX(0); }
-    }
+.container{
+  display:flex;
+  gap:10px;
+  margin-top:10px;
+}
 
-    p.aviso-seguranca {
-      margin-top: 40px;
-      font-size: 13px;
-      color: var(--cor-fundo-texto);
-      opacity: 0.8;
-      text-shadow: 1px 1px 2px var(--cor-sombra-texto);
-    }
+.form, .list{
+  width:50%;
+  background:rgba(255,255,255,0.12);
+  backdrop-filter:blur(12px);
+  padding:15px;
+  border-radius:12px;
+  color:white;
+  height:85vh;
+  overflow:auto;
+}
 
-    footer {
-      margin-top: 60px;
-      font-size: 14px;
-      color: var(--cor-rodape-texto);
-      text-shadow: 1px 1px 2px var(--cor-sombra-texto);
-    }
+.card{
+  background:rgba(0,0,0,0.4);
+  padding:10px;
+  margin-bottom:10px;
+  border-radius:10px;
+  cursor:pointer;
+}
 
-    footer a {
-      color: var(--cor-link);
-      text-decoration: none;
-      font-weight: bold;
-    }
+.card.selected{
+  border:2px solid #00d4ff;
+}
 
-    footer a:hover {
-      color: var(--cor-link-hover);
-      text-decoration: underline;
-    }
-  </style>
+img{
+  width:70px;
+  height:70px;
+  object-fit:cover;
+  border-radius:6px;
+}
+
+/* 🔥 BOTÕES MAIORES (70% DA ÁREA DO FORMULÁRIO) */
+.top-actions{
+  width:70%;
+  margin:0 auto 12px auto;
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.top-actions button{
+  flex:1;
+  padding:12px 8px;
+  font-size:13px;
+}
+
+/* campos lado a lado */
+.dupla{
+  display:flex;
+  gap:8px;
+}
+
+.dupla .pequeno{width:40%;}
+.dupla .medio{width:60%;}
+
+#obs{
+  height:180px;
+  resize:none;
+  overflow-y:auto;
+}
+
+/* modo visualização */
+.readonly input,
+.readonly textarea{
+  pointer-events:none;
+  background:rgba(255,255,255,0.15);
+}
+</style>
 </head>
+
 <body>
-  <!-- Ícone/logo, troque a URL da imagem se quiser -->
-  <img src="https://i.imgur.com/5qHdlYp.png" alt="Logo Condomínio" class="logo" />
 
-  <h1>Sistema de Login - Condomínio</h1>
-  
-  <p class="boas-vindas">Bem-vindo! Por favor, digite sua senha para acessar o sistema.</p>
-  
-  <input type="password" id="senha" placeholder="Digite a senha" onkeydown="if(event.key==='Enter') login()" />
-  <button onclick="login()">Entrar</button>
-  
-  <div id="painel"></div>
+<div class="bg-overlay"></div>
 
-  <p class="aviso-seguranca">⚠️ Não compartilhe sua senha com ninguém.</p>
+<div id="loginScreen">
+  <div class="login-box">
+    <h2>Condomínio</h2>
+    <input type="password" id="senha" placeholder="Digite a senha">
+    <button onclick="login()">Entrar</button>
+    <div class="error" id="error">Senha incorreta</div>
+  </div>
+</div>
 
-  <footer>
-    <p>Condomínio Residencial - Suporte: (00) 0000-0000</p>
-    <p>Acesse nosso Discord: <a href="https://discord.gg/nka5dSDywZ" target="_blank" rel="noopener noreferrer">Clique aqui</a></p>
-  </footer>
+<div id="app">
 
-  <script>
-    // Senhas padrão, só para inicializar localStorage
-    const senhasPadrao = {
-      admin: '464007',
-      sindico: '1234',
-      porteiro: '12345'
-    };
+<header>
+Sistema de Moradores
+<button onclick="selectFolder()" style="float:right;">Selecionar Pasta</button>
+</header>
 
-    // Carrega senhas do localStorage ou usa padrão
-    function carregarSenhas() {
-      const json = localStorage.getItem('senhasCond');
-      if (json) {
-        try {
-          return JSON.parse(json);
-        } catch {
-          return {...senhasPadrao};
-        }
-      }
-      return {...senhasPadrao};
-    }
+<div class="container">
 
-    // Salvar senhas no localStorage
-    function salvarSenhas(senhas) {
-      localStorage.setItem('senhasCond', JSON.stringify(senhas));
-    }
+<div class="form" id="formBox">
 
-    let senhas = carregarSenhas();
+<h3>Cadastro de Morador</h3>
 
-    function login() {
-      const senhaDigitada = document.getElementById('senha').value.trim();
-      const painel = document.getElementById('painel');
-      painel.textContent = '';
-      painel.classList.remove('show');
+<div class="top-actions">
+  <button onclick="novoMorador()" style="background:#28a745;">Novo</button>
+  <button onclick="salvar()">Salvar</button>
+  <button onclick="editarSelecionado()">Editar</button>
+  <button onclick="visualizarSelecionado()" style="background:#6c757d;">Visualizar</button>
+  <button onclick="apagarSelecionado()" style="background:red;">Apagar</button>
+</div>
 
-      let nivelAcesso = null;
-      if (senhaDigitada === senhas.admin) nivelAcesso = 'admin';
-      else if (senhaDigitada === senhas.sindico) nivelAcesso = 'sindico';
-      else if (senhaDigitada === senhas.porteiro) nivelAcesso = 'porteiro';
+<input id="nome" placeholder="NOME">
+<input id="cpf" placeholder="CPF">
+<input id="rg" placeholder="RG">
+<input id="cnh" placeholder="CNH">
+<input id="endereco" placeholder="Endereço CEP">
 
-      if (nivelAcesso) {
-        // Salva o nível no localStorage para manter sessão
-        localStorage.setItem('nivelAcessoCond', nivelAcesso);
-        // Redireciona para página principal (formulário)
-        window.location.href = `2etapa.index.html?acesso=${nivelAcesso}`;
-      } else {
-        painel.textContent = 'Senha incorreta! Tente novamente.';
-        painel.classList.add('show');
-      }
-    }
-  </script>
+<div class="dupla">
+  <input id="quadra" class="pequeno" placeholder="Quadra e Lote">
+  <input id="cidade" class="medio" placeholder="Cidade">
+</div>
+
+<div class="section">
+<h4>Placas</h4>
+<div id="placas"></div>
+<button onclick="addPlaca()">+ Placa</button>
+</div>
+
+<div class="section">
+<h4>Familiares</h4>
+<div id="familiares"></div>
+<button onclick="addFam()">+ Contato</button>
+</div>
+
+<div class="section">
+<h4>Foto</h4>
+<input type="file" onchange="foto(event)">
+<img id="preview">
+</div>
+
+<div class="section">
+<h4>Observações</h4>
+<textarea id="obs"></textarea>
+</div>
+
+</div>
+
+<div class="list">
+<h3>Moradores</h3>
+<input id="busca" placeholder="Buscar..." oninput="render()">
+<div id="lista"></div>
+</div>
+
+</div>
+</div>
+
+<script>
+
+const senhaCorreta = "201066";
+
+let moradores = [];
+let fotoBase64 = "";
+let dirHandle = null;
+let editId = null;
+let selecionado = null;
+let modoVisualizar = false;
+
+const senhaEl = document.getElementById("senha");
+const errorEl = document.getElementById("error");
+const formBox = document.getElementById("formBox");
+
+const nomeEl = document.getElementById("nome");
+const cpfEl = document.getElementById("cpf");
+const rgEl = document.getElementById("rg");
+const cnhEl = document.getElementById("cnh");
+const enderecoEl = document.getElementById("endereco");
+const quadraEl = document.getElementById("quadra");
+const cidadeEl = document.getElementById("cidade");
+const obsEl = document.getElementById("obs");
+
+const placasEl = document.getElementById("placas");
+const familiaresEl = document.getElementById("familiares");
+const listaEl = document.getElementById("lista");
+const previewEl = document.getElementById("preview");
+
+const loginScreen = document.getElementById("loginScreen");
+const app = document.getElementById("app");
+
+senhaEl.addEventListener("keydown", e=>{
+  if(e.key==="Enter") login();
+});
+
+function login(){
+  if(senhaEl.value === senhaCorreta){
+    loginScreen.style.display="none";
+    app.style.display="block";
+  } else {
+    errorEl.style.display="block";
+    setTimeout(()=>errorEl.style.display="none",2000);
+  }
+}
+
+async function selectFolder(){
+  dirHandle = await window.showDirectoryPicker();
+  await loadDatabase();
+  alert("Pasta conectada!");
+}
+
+async function loadDatabase(){
+  if(!dirHandle) return;
+  try{
+    const fileHandle = await dirHandle.getFileHandle("database.json");
+    const file = await fileHandle.getFile();
+    moradores = JSON.parse(await file.text() || "[]");
+  }catch{
+    moradores=[];
+  }
+  render();
+}
+
+async function salvarArquivo(){
+  const fileHandle = await dirHandle.getFileHandle("database.json",{create:true});
+  const writable = await fileHandle.createWritable();
+  await writable.write(JSON.stringify(moradores,null,2));
+  await writable.close();
+  render();
+  limpar();
+}
+
+async function salvar(){
+  if(!dirHandle){
+    alert("Selecione a pasta!");
+    return;
+  }
+
+  let obj = {
+    id: editId || Date.now(),
+    nome: nomeEl.value,
+    cpf: cpfEl.value,
+    rg: rgEl.value,
+    cnh: cnhEl.value,
+    endereco: enderecoEl.value,
+    quadra: quadraEl.value,
+    cidade: cidadeEl.value,
+    placas: [...placasEl.querySelectorAll("input")].map(i=>i.value.toUpperCase()),
+    familiares: [...familiaresEl.querySelectorAll("input")].map(i=>i.value),
+    foto: fotoBase64,
+    obs: obsEl.value
+  };
+
+  if(editId){
+    moradores = moradores.map(m=>m.id===editId?obj:m);
+    editId=null;
+  } else {
+    moradores.push(obj);
+  }
+
+  await salvarArquivo();
+}
+
+function editarSelecionado(){
+  if(!selecionado) return alert("Selecione um morador");
+
+  if(!confirm("Tem certeza que deseja editar este morador?")) return;
+
+  let senha = prompt("Digite a senha para liberar edição:");
+  if(senha !== "464007"){
+    alert("Senha incorreta!");
+    return;
+  }
+
+  modoVisualizar = false;
+  formBox.classList.remove("readonly");
+  editar(selecionado);
+}
+
+function visualizarSelecionado(){
+  if(!selecionado) return alert("Selecione um morador");
+
+  modoVisualizar = true;
+  formBox.classList.add("readonly");
+
+  editar(selecionado);
+}
+
+function editar(m){
+  selecionado=m;
+  editId=m.id;
+
+  nomeEl.value=m.nome;
+  cpfEl.value=m.cpf;
+  rgEl.value=m.rg;
+  cnhEl.value=m.cnh;
+  enderecoEl.value=m.endereco;
+  quadraEl.value=m.quadra||"";
+  cidadeEl.value=m.cidade||"";
+  obsEl.value=m.obs||"";
+
+  placasEl.innerHTML="";
+  familiaresEl.innerHTML="";
+
+  (m.placas||[]).forEach(p=>{
+    let i=document.createElement("input");
+    i.value=p.toUpperCase();
+    i.oninput=()=>i.value=i.value.toUpperCase();
+    placasEl.appendChild(i);
+  });
+
+  (m.familiares||[]).forEach(f=>{
+    let i=document.createElement("input");
+    i.value=f;
+    familiaresEl.appendChild(i);
+  });
+
+  fotoBase64=m.foto||"";
+  previewEl.src=m.foto||"";
+
+  render();
+}
+
+function apagarSelecionado(){
+  if(!selecionado) return alert("Selecione um morador");
+
+  if(!confirm("Tem certeza que deseja apagar este morador?")) return;
+
+  let senha = prompt("Digite a senha para confirmar exclusão:");
+  if(senha !== "464007"){
+    alert("Senha incorreta!");
+    return;
+  }
+
+  moradores = moradores.filter(m=>m.id!==selecionado.id);
+  selecionado=null;
+  editId=null;
+  salvarArquivo();
+}
+
+function novoMorador(){
+  selecionado=null;
+  editId=null;
+  limpar();
+  formBox.classList.remove("readonly");
+}
+
+function addPlaca(){
+  let i=document.createElement("input");
+  i.oninput=()=>i.value=i.value.toUpperCase();
+  placasEl.appendChild(i);
+}
+
+function addFam(){
+  familiaresEl.appendChild(document.createElement("input"));
+}
+
+function foto(e){
+  let f=e.target.files[0];
+  let r=new FileReader();
+  r.onload=()=>{fotoBase64=r.result; previewEl.src=r.result;}
+  r.readAsDataURL(f);
+}
+
+function limpar(){
+  nomeEl.value=cpfEl.value=rgEl.value=cnhEl.value=enderecoEl.value="";
+  quadraEl.value="";
+  cidadeEl.value="";
+  obsEl.value="";
+  placasEl.innerHTML="";
+  familiaresEl.innerHTML="";
+  previewEl.src="";
+  fotoBase64="";
+  editId=null;
+  selecionado=null;
+}
+
+function render(){
+  let q=document.getElementById("busca").value?.toLowerCase()||"";
+  listaEl.innerHTML="";
+
+  let listaOrdenada = moradores
+  .filter(m=>m.nome.toLowerCase().includes(q)||m.cpf.includes(q)||m.rg.includes(q))
+  .sort((a,b)=>a.nome.localeCompare(b.nome,'pt-BR',{sensitivity:'base'}));
+
+  listaOrdenada.forEach(m=>{
+    let div=document.createElement("div");
+    div.className="card"+(selecionado?.id===m.id?" selected":"");
+    div.onclick=()=>{selecionado=m; render();};
+
+    div.innerHTML=`
+      <b>${m.nome}</b><br>
+      ${m.cpf}<br>
+      <img src="${m.foto||''}">
+    `;
+
+    listaEl.appendChild(div);
+  });
+}
+
+</script>
+
 </body>
 </html>
