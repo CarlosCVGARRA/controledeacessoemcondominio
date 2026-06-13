@@ -8,9 +8,10 @@
 <style>
 body{
   margin:0;
-  font-family:Arial;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   background:url("https://images.unsplash.com/photo-1600585154340-be6161a56a0c") no-repeat center center fixed;
   background-size:cover;
+  color: #f3f4f6;
 }
 
 .bg-overlay{
@@ -21,26 +22,120 @@ body{
   z-index:-1;
 }
 
-/* topo e rodapé */
-#topo-info, #rodape-info{
-  position:fixed;
-  color:white;
-  font-size:18px;
-  z-index:999;
-  opacity:0.9;
+/* ANIMAÇÃO SUAVE E DELICADA COM AS CORES DA BANDEIRA DO BRASIL */
+@keyframes contornoDelicadoBrasil {
+  0%   { border-color: rgba(0, 192, 64, 0.85); }     /* Verde Vivo */
+  25%  { border-color: rgba(254, 223, 0, 0.85); }    /* Amarelo Vivo */
+  50%  { border-color: rgba(0, 110, 255, 0.85); }    /* Azul Vivo */
+  75%  { border-color: rgba(255, 255, 255, 0.85); }  /* Branco Delicado */
+  100% { border-color: rgba(0, 192, 64, 0.85); }     /* Retorna ao Verde */
 }
 
-/* TOPO CENTRALIZADO */
-#topo-info{
-  top:5px;
-  left:50%;
-  transform:translateX(-50%);
-  text-align:center;
+/* ANIMAÇÃO DE CORES PARA O TEXTO DOS CRÉDITOS */
+@keyframes textoColoridoBrasil {
+  0%   { color: rgba(0, 192, 64, 0.95); }     /* Verde Vivo */
+  25%  { color: rgba(254, 223, 0, 0.95); }    /* Amarelo Vivo */
+  50%  { color: rgba(0, 110, 255, 0.95); }    /* Azul Vivo */
+  75%  { color: rgba(255, 255, 255, 0.95); }  /* Branco Delicado */
+  100% { color: rgba(0, 192, 64, 0.95); }     /* Retorna ao Verde */
 }
 
-#rodape-info{
-  bottom:5px;
-  left:10px;
+/* CLASSE REUTILIZÁVEL PARA TEXTO ANIMADO COM CORES DO BRASIL */
+.texto-animado-brasil {
+  font-weight: bold;
+  animation: textoColoridoBrasil 12s infinite ease-in-out;
+}
+
+/* ANIMAÇÕES INDIVIDUAIS DE TRANSIÇÃO LEVE DE CLARO PARA ESCURO DOS BOTÕES */
+@keyframes btn-verde {
+  0% { background-color: #10b981; }
+  50% { background-color: #065f46; }
+  100% { background-color: #10b981; }
+}
+@keyframes btn-azul {
+  0% { background-color: #3b82f6; }
+  50% { background-color: #1e40af; }
+  100% { background-color: #3b82f6; }
+}
+@keyframes btn-amarelo {
+  0% { background-color: #eab308; }
+  50% { background-color: #a16207; }
+  100% { background-color: #eab308; }
+}
+@keyframes btn-laranja {
+  0% { background-color: #f97316; }
+  50% { background-color: #c2410c; }
+  100% { background-color: #f97316; }
+}
+@keyframes btn-vermelho {
+  0% { background-color: #ef4444; }
+  50% { background-color: #991b1b; }
+  100% { background-color: #ef4444; }
+}
+@keyframes btn-cinza {
+  0% { background-color: #6b7280; }
+  50% { background-color: #374151; }
+  100% { background-color: #6b7280; }
+}
+@keyframes btn-ciano {
+  0% { background-color: #06b6d4; }
+  50% { background-color: #0891b2; }
+  100% { background-color: #06b6d4; }
+}
+
+/* CLASSE REUTILIZÁVEL PARA BORDAS ANIMADAS DELICADAS */
+.borda-animada {
+  animation: contornoDelicadoBrasil 12s infinite ease-in-out;
+}
+
+/* CLASSE REUTILIZÁVEL PARA O EFEITO DE VIDRO REDONDO COM BORDA ANIMADA (IGUAL DATA E HORA) */
+.pill-glass {
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.15); /* Linha fina de 1px */
+  padding: 8px 24px;
+  border-radius: 40px;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  animation: contornoDelicadoBrasil 12s infinite ease-in-out; /* Transição muito suave de 12s */
+}
+
+/* DATA, RELÓGIO OU LOGO CENTRALIZADO EM FORMATO DE "PILL" DE VIDRO */
+#topo-info {
+  position: fixed;
+  top: 15px;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.15); /* Linha fina de 1px */
+  padding: 8px 24px;
+  border-radius: 40px;
+  font-size: 22px;
+  font-weight: bold;
+  color: white;
+  z-index: 9999;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+  transition: all 0.3s ease;
+  animation: contornoDelicadoBrasil 12s infinite ease-in-out; /* Transição muito suave de 12s */
+}
+
+/* Classes para controlar o posicionamento dinâmico da data/logo flutuante */
+#topo-info.esquerda {
+  left: 15px;
+  transform: none;
+}
+#topo-info.centralizado {
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 #loginScreen{
@@ -48,41 +143,86 @@ body{
   width:100%;
   height:100vh;
   display:flex;
-  justify-content:center;
+  flex-direction: column;
+  justify-content: flex-start; /* Coloca logotipo e nome no topo */
   align-items:center;
+  padding: 5vh 20px 20px 20px; /* Distanciamento do topo da tela */
+  box-sizing: border-box;
+  gap: 30px; /* Espaço entre o logotipo/nome e a caixa de senha */
 }
 
 .login-box{
-  background:rgba(255,255,255,0.12);
-  backdrop-filter:blur(12px);
-  padding:30px;
-  border-radius:15px;
-  width:340px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  padding:25px;
+  border-radius:16px;
+  width:320px;
   text-align:center;
   color:white;
+  border: 1px solid rgba(255, 255, 255, 0.2); /* Linha fina de 1px */
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  animation: contornoDelicadoBrasil 12s infinite ease-in-out; /* Transição suave idêntica */
 }
 
-input, textarea{
+input, textarea, select{
   width:100%;
-  padding:10px;
-  margin-top:8px;
+  padding:12px;
+  margin-top:10px;
   border-radius:8px;
-  border:none;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(0, 0, 0, 0.45);
+  color: #ffffff;
   outline:none;
+  box-sizing: border-box;
+  transition: all 0.2s ease-in-out;
 }
 
+input::placeholder, textarea::placeholder {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: #3b82f6;
+  background: rgba(0, 0, 0, 0.65);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+}
+
+/* CONFIGURAÇÃO GERAL DOS BOTÕES COM LETRAS MAIÚSCULAS */
 button{
-  padding:7px 10px;
-  background:#007bff;
+  padding:8px 14px;
   color:white;
   border:none;
-  border-radius:6px;
+  border-radius:8px;
   cursor:pointer;
   font-size:12px;
+  font-weight: 700;
+  text-transform: uppercase; /* Letras maiúsculas para todos */
+  letter-spacing: 0.5px;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Classes para atribuir as animações pulsantes */
+button.btn-verde { animation: btn-verde 4s infinite ease-in-out; }
+button.btn-azul { animation: btn-azul 4s infinite ease-in-out; }
+button.btn-amarelo { animation: btn-amarelo 4s infinite ease-in-out; }
+button.btn-laranja { animation: btn-laranja 4s infinite ease-in-out; }
+button.btn-vermelho { animation: btn-vermelho 4s infinite ease-in-out; }
+button.btn-cinza { animation: btn-cinza 4s infinite ease-in-out; }
+button.btn-ciano { animation: btn-ciano 4s infinite ease-in-out; }
+
+button:hover{
+  opacity: 1;
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
+
+button:active{
+  transform: translateY(0);
 }
 
 .error{
-  background:red;
+  background:#dc2626;
   padding:8px;
   border-radius:6px;
   margin-top:10px;
@@ -92,54 +232,126 @@ button{
 #app{
   display:none;
   padding:15px;
+  margin-top: 15px; /* Mantido no topo para aproveitar o espaço da tela */
 }
 
 header{
-  background:rgba(0,0,0,0.6);
+  background:rgba(0,0,0,0.5);
   color:white;
-  padding:12px;
-  border-radius:10px;
+  padding:16px 20px;
+  border-radius:12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header span {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
 }
 
 .container{
   display:flex;
-  gap:10px;
-  margin-top:10px;
+  gap:12px;
+  margin-top:12px;
 }
 
+/* BOX DO CADASTRO (FORM) E DA LISTAGEM (LIST) COM CONTORNO ANIMADO DO BRASIL */
 .form, .list{
   width:50%;
-  background:rgba(255,255,255,0.12);
-  backdrop-filter:blur(12px);
-  padding:15px;
-  border-radius:12px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  padding:20px;
+  border-radius:16px;
   color:white;
   height:85vh;
   overflow:auto;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.25);
+  animation: contornoDelicadoBrasil 12s infinite ease-in-out; /* Borda animada nas caixas principais */
 }
 
+/* ESTILIZAÇÃO DOS TÍTULOS - ESCRITA BRANCA E LETRAS MAIÚSCULAS */
+h3 {
+  margin-top: 0;
+  font-size: 18px;
+  font-weight: 700;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+  color: #ffffff; /* Escrita branca */
+  text-transform: uppercase; /* Letra maiúscula */
+  letter-spacing: 1px;
+}
+
+h4 {
+  font-size: 14px;
+  font-weight: 700;
+  color: #ffffff; /* Escrita branca */
+  margin-top: 10px;
+  margin-bottom: 12px;
+  text-transform: uppercase; /* Letra maiúscula */
+  letter-spacing: 1px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  padding-bottom: 6px;
+}
+
+/* CARTÕES DE MORADOR INDIVIDUAIS NA LISTA LATERAL (COM CONTORNO MAIS LARGO E ANIMADO) */
 .card{
-  background:rgba(0,0,0,0.4);
-  padding:10px;
-  margin-bottom:10px;
-  border-radius:10px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background:rgba(0,0,0,0.45);
+  padding:12px;
+  margin-bottom:12px;
+  border-radius:12px;
+  border: 2px solid rgba(255, 255, 255, 0.15); /* Contorno mais largo de 2px */
   cursor:pointer;
+  transition: all 0.2s ease-in-out;
+  animation: contornoDelicadoBrasil 12s infinite ease-in-out; /* Contorno animado individual */
 }
 
+.card:hover{
+  background: rgba(0, 0, 0, 0.6);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.card-info {
+  flex-grow: 1;
+}
+
+/* MORADOR SELECIONADO NA LISTA LATERAL */
 .card.selected{
-  border:2px solid #00d4ff;
+  border-width: 3px; /* Borda levemente mais larga de 3px para destacar */
+  background: rgba(0, 212, 255, 0.12);
+  box-shadow: 0 0 16px rgba(0, 212, 255, 0.45); /* Brilho azul delicado e mais vivo */
 }
 
-img{
+/* Fotos do morador principal na lista lateral */
+.card img, .img-placeholder{
   width:70px;
   height:70px;
   object-fit:cover;
-  border-radius:6px;
+  border-radius:8px;
+}
+
+.img-placeholder {
+  background: rgba(255,255,255,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  color: #ccc;
+  text-align: center;
 }
 
 .top-actions{
-  width:70%;
-  margin:0 auto 12px auto;
+  width:100%;
+  margin:0 auto 15px auto;
   display:flex;
   gap:8px;
   flex-wrap:wrap;
@@ -147,7 +359,7 @@ img{
 
 .top-actions button{
   flex:1;
-  padding:12px 8px;
+  padding:10px 8px;
   font-size:13px;
 }
 
@@ -159,16 +371,215 @@ img{
 .dupla .pequeno{width:40%;}
 .dupla .medio{width:60%;}
 
+/* Divisão em três partes para acomodar a placa do morador principal */
+.tripla{
+  display:flex;
+  gap:8px;
+}
+.tripla .t-pequeno{width:25%;}
+.tripla .t-medio{width:45%;}
+.tripla .t-grande{width:30%;}
+
+/* CAIXA DE OBSERVAÇÕES (TEXTAREA) COM CONTORNO ANIMADO */
 #obs{
   height:180px;
   resize:none;
   overflow-y:auto;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  animation: contornoDelicadoBrasil 12s infinite ease-in-out; /* Borda animada somente nesta caixa de escrita */
 }
 
-.readonly input,
-.readonly textarea{
-  pointer-events:none;
-  background:rgba(255,255,255,0.15);
+/* Modo visualizar bloqueia apenas os campos diretos do morador principal */
+.readonly #nome,
+.readonly #cpf,
+.readonly #cnh,
+.readonly #endereco,
+.readonly #quadra,
+.readonly #cidade,
+.readonly #placa_morador {
+  pointer-events: none;
+}
+
+/* BLOQUEIA OS CAMPOS DE MEMBROS DA FAMÍLIA JÁ SALVOS NO MODO VISUALIZAR */
+.readonly .familia-row:not(.new-row) input,
+.readonly .familia-row:not(.new-row) select {
+  pointer-events: none;
+}
+
+/* OCULTA APENAS O BOTÃO DE EXCLUSÃO (X) DOS MEMBROS DE FAMÍLIA JÁ SALVOS NO MODO VISUALIZAR */
+.readonly .familia-row:not(.new-row) button.btn-vermelho,
+.readonly .familia-row:not(.new-row) button.btn-azul {
+  display: none !important;
+}
+
+/* BLOQUEIA OS CAMPOS DOS VISITANTES JÁ SALVOS NO MODO VISUALIZAR (EXCETO PARA NOVOS ENTRANTES) */
+.readonly .pessoa-row:not(.new-row) input,
+.readonly .pessoa-row:not(.new-row) select {
+  pointer-events: none;
+}
+
+/* OCULTA OS BOTÕES DE FOTO E EXCLUSÃO PARA VISITANTES JÁ SALVOS NO MODO VISUALIZAR */
+.readonly .pessoa-row:not(.new-row) button {
+  display: none !important;
+}
+
+.readonly button:not(.permitido-readonly) {
+  display: none !important;
+}
+
+/* Permite cliques nas fotos para ampliar mesmo no modo visualizar */
+.readonly img, .readonly #foto_principal_container {
+  pointer-events: auto !important;
+}
+
+/* Oculta o seletor de arquivos no modo visualizar */
+.readonly #foto_principal_input {
+  display: none !important;
+}
+
+/* BLOQUEIO DE SEGURANÇA PARA A SEÇÃO DE VISITANTES ANTES DA SELEÇÃO DO MORADOR */
+.visitantes-bloqueados {
+  pointer-events: none !important;
+  opacity: 0.45;
+  filter: grayscale(0.85);
+}
+
+/* CONTAINER DINÂMICO DOS VISITANTES COM BARRA DE ROLAGEM SUTIL APÓS 3 REGISTROS */
+#pessoas {
+  max-height: 380px; /* Limita o tamanho para exibir cerca de 3 registros ao mesmo tempo */
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 5px;
+}
+
+/* Estilização da barra de rolagem sutil e translúcida para visitantes */
+#pessoas::-webkit-scrollbar {
+  width: 6px;
+}
+#pessoas::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+#pessoas::-webkit-scrollbar-thumb {
+  background: rgba(0, 212, 255, 0.3);
+  border-radius: 10px;
+}
+#pessoas::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 212, 255, 0.5);
+}
+
+/* CONTAINER DINÂMICO DA AGENDA DE RESERVAS COM BARRA DE ROLAGEM SUTIL APÓS 3 REGISTROS */
+#reservasMoradorContainer {
+  max-height: 240px; /* Limita o tamanho para exibir cerca de 3 registros ao mesmo tempo */
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 5px;
+  margin-bottom: 10px;
+}
+
+/* Estilização da barra de rolagem sutil e translúcida para reservas */
+#reservasMoradorContainer::-webkit-scrollbar {
+  width: 6px;
+}
+#reservasMoradorContainer::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+#reservasMoradorContainer::-webkit-scrollbar-thumb {
+  background: rgba(0, 212, 255, 0.3);
+  border-radius: 10px;
+}
+#reservasMoradorContainer::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 212, 255, 0.5);
+}
+
+.familia-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  background: rgba(0,0,0,0.35);
+  padding: 8px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.2s ease;
+}
+
+.pessoa-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+  background: rgba(0,0,0,0.35);
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.2s ease;
+}
+
+/* Garante o alinhamento correto dos itens dentro das linhas dinâmicas */
+.pessoa-row input, .pessoa-row select, .pessoa-row button,
+.familia-row input, .familia-row select, .familia-row button {
+  margin-top: 0 !important;
+}
+
+.family-photos {
+  display: flex;
+  gap: 5px;
+  margin-top: 8px;
+}
+.family-photos img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid #00d4ff;
+  transition: transform 0.2s;
+}
+.family-photos img:hover {
+  transform: scale(1.15) translateY(-2px);
+  z-index: 10;
+}
+
+/* Ajuste do visualizador do modal de galeria */
+#modalImg {
+  width: auto !important;
+  height: auto !important;
+  max-width: 80vw;
+  max-height: 80vh;
+  border-radius: 8px;
+  border: 2px solid white;
+  box-shadow: 0 0 32px rgba(0, 0, 0, 0.8);
+}
+
+/* Setas de navegação da galeria */
+.galeria-setas {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: white;
+  font-size: 50px;
+  font-weight: bold;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.2s, color 0.2s;
+  padding: 10px;
+  z-index: 11000;
+}
+.galeria-setas:hover {
+  color: #3b82f6;
+  transform: translateY(-50%) scale(1.15);
+}
+
+/* Estilização para as linhas de Reservas */
+.reserva-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 10px 14px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 </style>
 </head>
@@ -177,18 +588,38 @@ img{
 
 <div class="bg-overlay"></div>
 
-<!-- TOPO -->
-<div id="topo-info">
-  Criado por Carlos Cunha Vilela - <span id="dataTopo"></span>
+<!-- TOPO COM DATA E RELÓGIO (TELA DE LOGIN) OU LOGO CORPORATIVO (SEGUNDA TELA) -->
+<div id="topo-info" class="esquerda">
+  <span id="dataTopo"></span>
 </div>
 
 <!-- LOGIN -->
 <div id="loginScreen">
-  <div class="login-box">
-    <h2>Condomínio</h2>
+  <!-- LOGOTIPO NO TOPO -->
+  <div style="display: flex; flex-direction: column; align-items: center; margin-top: 0; margin-bottom: 0;">
+    <!-- CONTAINER CIRCULAR COM CLASSE DE BORDA ANIMADA ADICIONADA -->
+    <div class="borda-animada" style="width: 220px; height: 220px; border-radius: 50%; overflow: hidden; border: 3px solid rgba(255,255,255,0.25); filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5)); margin-bottom: 15px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.3);">
+      <img id="login_logo" src="https://w7.pngwing.com/pngs/784/809/png-transparent-building-small-business-company-office-corporation-office-icon-insharepics-discellaneous-blue-text-thumbnail.png" alt="Logo" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.05s ease;" draggable="false">
+    </div>
+    
+    <!-- TÍTULO ENVOLTO PELO MESMO CONTORNO DELICADO DA DATA E HORA -->
+    <div class="pill-glass">
+      <!-- ATRIBUÍDO ID PARA MANIPULATION VIA JS -->
+      <span id="login_nome" style="font-weight: bold; font-size: 24px; letter-spacing: 2px; color: white; text-shadow: 1px 1px 3px rgba(0,0,0,0.5); text-transform: uppercase;">NOME DO CONDOMÍNIO</span>
+    </div>
+  </div>
+
+  <!-- CAIXA DE LOGIN E SENHA NO MEIO DA TELA (DIMINUÍDA PARA scale(1.05) E CENTRALIZADA) -->
+  <div class="login-box" style="transform: scale(1.05); transform-origin: center;">
+    <h2 style="margin-top: 0; font-size: 20px;">Acesso ao Sistema</h2>
     <input type="password" id="senha" placeholder="Digite a senha">
-    <button onclick="login()">Entrar</button>
+    <button onclick="login()" class="btn-azul">Entrar</button>
     <div class="error" id="error">Senha incorreta</div>
+  </div>
+
+  <!-- CRÉDITOS NA TELA DE LOGIN (NO CANTO INFERIOR DIREITO WITH TEXTO ANIMADO) -->
+  <div style="position: absolute; bottom: 15px; right: 20px; z-index: 1000;">
+    <span class="texto-animado-brasil" style="font-size: 16px; letter-spacing: 0.5px;">Criado por Carlos Cunha Vilela</span>
   </div>
 </div>
 
@@ -196,76 +627,327 @@ img{
 <div id="app">
 
 <header>
-Sistema de Moradores
-<button onclick="selectFolder()" style="float:right;">Selecionar Pasta</button>
+  <!-- ALINHAMENTO DO TÍTULO E NOVA POSIÇÃO DA DATA E HORA AFASTADA -->
+  <div style="display: flex; align-items: center;">
+    <span>Sistema de Moradores</span>
+    <div id="dataTopoApp" style="display: flex; align-items: center;"></div>
+  </div>
+  
+  <div style="float:right; display:flex; align-items:center;">
+    <!-- BOTÃO INSERIDO PARA GERENCIAR LOGO E NOME -->
+    <button onclick="configurarSistema()" class="btn-azul" style="margin-right: 10px;">Configurar Logo/Nome</button>
+    <button onclick="abrirAgendaGlobal()" class="btn-laranja" style="margin-right: 10px;">Ver Reservas</button>
+    <button onclick="selectFolder()" class="btn-cinza">Selecionar Pasta</button>
+    <button onclick="exportarBackup()" class="btn-ciano" style="margin-left:10px;">Gerar Backup</button>
+  </div>
 </header>
 
 <div class="container">
 
 <div class="form" id="formBox">
 
-<h3>Cadastro de Morador</h3>
+<!-- ======================================================================= -->
+<!-- SEÇÃO 1: CADASTRO DE MORADOR                                            -->
+<!-- ======================================================================= -->
+<div class="secao-grupo">
+  <h3>CADASTRO DE MORADOR</h3>
 
-<div class="top-actions">
-  <button onclick="novoMorador()" style="background:#28a745;">Novo</button>
-  <button onclick="salvar()">Salvar</button>
-  <button onclick="editarSelecionado()">Editar</button>
-  <button onclick="visualizarSelecionado()" style="background:#6c757d;">Visualizar</button>
-  <button onclick="apagarSelecionado()" style="background:red;">Apagar</button>
+  <div class="top-actions">
+    <button onclick="novoMorador()" class="permitido-readonly btn-verde">Novo</button>
+    <button onclick="salvar()" class="permitido-readonly btn-azul">Salvar</button>
+    <button onclick="editarSelecionado()" class="permitido-readonly btn-amarelo">Editar</button>
+    <button onclick="apagarSelecionado()" class="permitido-readonly btn-vermelho">Apagar</button>
+  </div>
+
+  <!-- Nome do Morador, CPF/RG e Caixa de Foto de Perfil Principal (Foto reposicionada à Esquerda) -->
+  <div style="display: flex; gap: 12px; align-items: stretch; margin-top: 10px;">
+    <!-- FOTO PRINCIPAL NA ESQUERDA -->
+    <div id="foto_principal_container" class="permitido-readonly" style="position: relative; width: 92px; height: 92px; flex-shrink: 0; background: rgba(0, 0, 0, 0.45); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.18); display: flex; align-items: center; justify-content: center; cursor: pointer; overflow: hidden;" onclick="clickFotoPrincipal()" title="Clique para gerenciar a Foto de Perfil">
+      <img id="foto_principal_preview" style="width: 100%; height: 100%; object-fit: cover; display: none;">
+      <span id="foto_principal_placeholder" style="font-size: 11px; text-align: center; color: #9ca3af; padding: 4px;">Foto Principal</span>
+    </div>
+    <input type="file" id="foto_principal_input" onchange="carregarFotoPrincipal(event)" style="display: none;">
+
+    <!-- INPUTS DE DADOS NA DIREITA -->
+    <div style="flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between;">
+      <input id="nome" placeholder="NOME DO MORADOR PRINCIPAL" style="margin-top: 0;">
+      <input id="cpf" placeholder="CPF ou RG" style="margin-top: 8px;">
+    </div>
+  </div>
+
+  <!-- Área Dinâmica dos Telefones e Placas do Núcleo Familiar -->
+  <div id="telefonesFamilia"></div>
+
+  <!-- Dados de CNH e Endereço do Morador Principal -->
+  <input id="cnh" placeholder="CNH">
+  <input id="endereco" placeholder="Endereço CEP">
+
+  <!-- Dados Físicos do Imóvel e Placa Principal do Veículo do Morador -->
+  <div class="tripla">
+    <input id="quadra" class="t-pequeno" placeholder="Quadra e Lote">
+    <input id="cidade" class="t-medio" placeholder="Cidade">
+    <input id="placa_morador" class="t-grande" placeholder="Placa do Veículo">
+  </div>
 </div>
 
-<input id="nome" placeholder="NOME">
-<input id="cpf" placeholder="CPF">
-<input id="rg" placeholder="RG">
-<input id="cnh" placeholder="CNH">
-<input id="endereco" placeholder="Endereço CEP">
+<hr style="border: 0; border-top: 1px solid rgba(255, 255, 255, 0.15); margin: 25px 0;">
 
-<div class="dupla">
-  <input id="quadra" class="pequeno" placeholder="Quadra e Lote">
-  <input id="cidade" class="medio" placeholder="Cidade">
+<!-- ======================================================================= -->
+<!-- SEÇÃO 2: DADOS DE VISITANTES / SERVIÇOS (COM TITULO ISOLADO DO BLOQUEIO)-->
+<!-- ======================================================================= -->
+<div class="secao-grupo" id="secao-visitantes">
+  <h4 style="color: #ffffff !important; opacity: 1 !important; border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;">VISITANTES E PRESTADORES DE SERVIÇO</h4>
+  
+  <!-- O BLOQUEIO DE TELA AGORA É APLICADO APENAS AO CONTEÚDO DA LISTAGEM E BOTÕES -->
+  <div id="visitantes-conteudo">
+    <div id="pessoas"></div>
+    <button type="button" onclick="adicionarNovoVisitanteRapido()" class="permitido-readonly btn-azul" style="margin-top: 12px; margin-bottom: 12px;">ADICIONAR +</button>
+  </div>
 </div>
 
-<h4>Placas</h4>
-<div id="placas"></div>
-<button onclick="addPlaca()">+ Placa</button>
+<hr style="border: 0; border-top: 1px solid rgba(255, 255, 255, 0.15); margin: 25px 0;">
 
-<h4>Familiares</h4>
-<div id="familiares"></div>
-<button onclick="addFam()">+ Contato</button>
+<!-- ======================================================================= -->
+<!-- SEÇÃO 3: AGENDA DE RESERVAS DESTE MORADOR                      -->
+<!-- ======================================================================= -->
+<div class="secao-grupo">
+  <h4>AGENDA DE RESERVAS (DESTE MORADOR)</h4>
+  <div id="reservasMoradorContainer"></div>
+  <button type="button" onclick="abrirModalNovaReserva()" class="permitido-readonly btn-verde">+ Reservar Novo Espaço</button>
+</div>
 
-<h4>Foto</h4>
-<input type="file" onchange="foto(event)">
-<img id="preview">
+<hr style="border: 0; border-top: 1px solid rgba(255, 255, 255, 0.15); margin: 25px 0;">
 
-<h4>Observações</h4>
-<textarea id="obs"></textarea>
+<!-- ======================================================================= -->
+<!-- SEÇÃO 4: OBSERVAÇÕES, HISTÓRICO E OCORRÊNCIAS / ANEXO DE FOTOS         -->
+<!-- ======================================================================= -->
+<div class="secao-grupo">
+  <h4>OBSERVAÇÕES E OCORRÊNCIAS (COM FOTOS)</h4>
+  <small style="display: block; color: #9ca3af; margin-bottom: 8px; font-size: 11.5px; line-height: 1.4;">
+    Insira textos informativos no campo abaixo. Use os controles de anexos para registrar múltiplos arquivos de fotos de ocorrências relacionadas.
+  </small>
+  
+  <!-- CONTAINER RELATIVO DO TEXTAREA PARA ADICIONAR O BOTÃO ABSOLUTO NO CANTO INFERIOR DIREITO -->
+  <div style="position: relative; width: 100%;">
+    <textarea id="obs" style="padding-bottom: 50px;"></textarea>
+    <button type="button" id="btn_salvar_obs_rapido" onclick="salvarObsRapido()" class="permitido-readonly btn-azul" style="position: absolute; bottom: 15px; right: 15px; z-index: 10;">Salvar Obs</button>
+  </div>
+
+  <div style="margin-top: 10px; display: flex; gap: 8px; align-items: center;">
+    <!-- O botão de anexar agora fica ativo no modo visualizar para fins de ocorrências rápidas -->
+    <button type="button" onclick="document.getElementById('fotos_obs').click();" class="permitido-readonly btn-ciano">Anexar Fotos à Obs.</button>
+    <!-- O botão de visualizar a galeria continua ativo no modo visualizar -->
+    <button type="button" id="btn_ver_galeria" onclick="abrirGaleria()" class="permitido-readonly btn-cinza" style="display:none;">Ver Galeria (<span id="count_fotos">0</span>)</button>
+    <input type="file" id="fotos_obs" multiple onchange="carregarFotosObs(event)" style="display:none;">
+  </div>
+</div>
 
 </div>
 
-<div class="list">
-<h3>Moradores</h3>
-<input id="busca" placeholder="Buscar..." oninput="render()">
-<div id="lista"></div>
+<!-- ENVOLTÓRIO DA LISTA DE MORADORES E DISTRIBUIÇÃO DOS CRÉDITOS E BOTÃO -->
+<div style="width: 50%; display: flex; flex-direction: column;">
+  <div class="list" style="width: 100%; height: 85vh; box-sizing: border-box;">
+    <!-- CONTAINER DO TÍTULO EM LINHA COM O BOTÃO AO LADO -->
+    <div style="display: flex; align-items: center; gap: 12px; border-bottom: 2px solid rgba(255, 255, 255, 0.2); padding-bottom: 10px; margin-bottom: 15px;">
+      <h3 style="margin: 0; border: none; padding-bottom: 0;">Moradores</h3>
+      <button type="button" onclick="limparBusca()" class="btn-verde" style="font-size: 11px; padding: 6px 12px;">Apagar Campo</button>
+    </div>
+    <input id="busca" placeholder="Buscar por Nome, CPF, Placa, Autorizado, Empresa ou Telefone..." oninput="render()" style="margin-top: -10px; margin-bottom: 12px;">
+    <div id="lista"></div>
+  </div>
+  <!-- CRÉDITOS MOVIDOS PARA A ESQUERDA DO BOTÃO TROCAR SENHAS, AUMENTADOS E COM ANIMAÇÃO DE CORES -->
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
+    <span class="texto-animado-brasil" style="font-size: 16px; letter-spacing: 0.5px;">Criado por Carlos Cunha Vilela</span>
+    <button type="button" onclick="abrirModalTrocarSenhas()" class="btn-vermelho" style="font-size: 11px;">Trocar Senhas</button>
+  </div>
 </div>
 
 </div>
 </div>
 
-<!-- RODAPÉ -->
-<div id="rodape-info">
-  Criado por Carlos Cunha Vilela - <span id="dataRodape"></span>
+<!-- MODAL PARA AMPLIAR FOTOS / SLIDER DE GALERIA -->
+<div id="photoModal" style="display:none; position:fixed; z-index:10000; left:0; top:0; width:100%; height:100%; overflow:auto; background-color:rgba(0,0,0,0.9); justify-content:center; align-items:center;" onclick="fecharModal()">
+  <span style="position:absolute; top:15px; right:35px; color:#f1f1f1; font-size:40px; font-weight:bold; cursor:pointer; z-index: 12000;">&times;</span>
+  
+  <!-- Setas de Navegação -->
+  <a id="prev_btn" class="galeria-setas" onclick="event.stopPropagation(); navegarGaleria(-1);" style="left:20px; display:none;">&#10094;</a>
+  
+  <div style="text-align: center;">
+    <img id="modalImg" style="margin:auto; display:block;">
+    <!-- Botão de excluir foto só aparece na galeria quando NÃO estiver em modo visualizar -->
+    <button id="del_galeria_btn" onclick="event.stopPropagation(); excluirFotoGaleria();" class="permitido-readonly btn-vermelho" style="margin-top: 15px;">Excluir esta Foto</button>
+  </div>
+  
+  <a id="next_btn" class="galeria-setas" onclick="event.stopPropagation(); navegarGaleria(1);" style="right:20px; display:none;">&#10095;</a>
+</div>
+
+<!-- MODAL PARA NOVA RESERVA / EDICAO -->
+<div id="reservaModal" style="display:none; position:fixed; z-index:10000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.85); justify-content:center; align-items:center;">
+  <div class="login-box" style="width: 420px; text-align: left; background: rgba(30, 30, 30, 0.75); border: 1px solid rgba(255, 255, 255, 0.25);">
+    <h3 id="reservaModalTitle" style="margin-bottom: 10px; border-bottom: 1px solid rgba(255, 255, 255, 0.2); padding-bottom: 8px;">Reservar Espaço</h3>
+    
+    <label style="font-size:12px; color:#cbd5e1;">Morador:</label>
+    <input id="res_morador_nome" readonly style="background: rgba(255,255,255,0.05); color: #9ca3af; cursor: not-allowed;">
+    
+    <label style="font-size:12px; color:#cbd5e1; display:block; margin-top:10px;">Selecione o Espaço:</label>
+    <select id="res_espaco" style="color: black; background: white;">
+      <option value="Salão de Festas">Salão de Festas</option>
+      <option value="Quiosque Gourmet">Quiosque Gourmet</option>
+      <option value="Churrasqueira Principal">Churrasqueira Principal</option>
+      <option value="Quadra Esportiva">Quadra Esportiva</option>
+    </select>
+
+    <div style="display:flex; gap:10px; margin-top:10px;">
+      <div style="flex:1;">
+        <label style="font-size:11px; color:#cbd5e1;">Data Início:</label>
+        <input type="date" id="res_data_ini" style="color: black; background: white; padding: 8px;" onchange="document.getElementById('res_data_fim').value = this.value;">
+      </div>
+      <div style="flex:1;">
+        <label style="font-size:11px; color:#cbd5e1;">Hora Início:</label>
+        <input type="time" id="res_hora_ini" style="color: black; background: white; padding: 8px;">
+      </div>
+    </div>
+
+    <div style="display:flex; gap:10px; margin-top:10px;">
+      <div style="flex:1;">
+        <label style="font-size:11px; color:#cbd5e1;">Data Fim:</label>
+        <input type="date" id="res_data_fim" style="color: black; background: white; padding: 8px;">
+      </div>
+      <div style="flex:1;">
+        <label style="font-size:11px; color:#cbd5e1;">Hora Fim:</label>
+        <input type="time" id="res_hora_fim" style="color: black; background: white; padding: 8px;">
+      </div>
+    </div>
+
+    <div style="margin-top: 20px; display:flex; gap:10px; justify-content: flex-end;">
+      <button onclick="fecharModalReserva()" class="btn-cinza">Cancelar</button>
+      <button onclick="salvarNovaReserva()" class="btn-verde">Salvar Reserva</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DA AGENDA GLOBAL DE RESERVAS -->
+<div id="agendaGlobalModal" style="display:none; position:fixed; z-index:10000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.85); justify-content:center; align-items:center;">
+  <div class="form" style="width: 600px; height: 80vh; overflow-y: auto; background: rgba(30, 30, 30, 0.95); border: 1px solid rgba(255,255,255,0.25);">
+    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 2px solid rgba(255,255,255,0.15); margin-bottom:15px; padding-bottom:8px;">
+      <h3 style="margin:0; border:none; padding:0;">Agenda Global de Eventos</h3>
+      <button onclick="fecharAgendaGlobal()" class="btn-vermelho" style="padding:6px 12px;">Fechar X</button>
+    </div>
+    
+    <div id="agendaGlobalLista"></div>
+  </div>
+</div>
+
+<!-- MODAL CONFIGURAÇÃO DO LOGO E NOME -->
+<div id="configModal" style="display:none; position:fixed; z-index:10100; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.95); justify-content:center; align-items:center;">
+  <div class="login-box" style="width: 420px; text-align: left; background: rgba(30, 30, 30, 0.85); border: 1px solid rgba(255, 255, 255, 0.25); max-height: 95vh; overflow-y: auto;">
+    <h3 style="margin-bottom: 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.2); padding-bottom: 8px;">Configurações</h3>
+    
+    <!-- ÁREA DE PRÉ-VISUALIZAÇÃO AO VIVO EM CÍRCULO -->
+    <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px;">
+      <span style="font-size: 11px; color: #cbd5e1; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Pré-visualização do Perfil</span>
+      <div style="width: 130px; height: 130px; border-radius: 50%; overflow: hidden; border: 3px solid #3b82f6; box-shadow: 0 0 15px rgba(59, 130, 246, 0.5); background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; position: relative;">
+        <img id="cfg_preview_img" src="" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.05s ease; cursor: grab; user-select: none;" draggable="false">
+      </div>
+    </div>
+
+    <label style="font-size:12px; color:#cbd5e1;">Nome do Condomínio:</label>
+    <input id="cfg_nome" style="color: white; background: rgba(0,0,0,0.5); margin-bottom: 15px;" oninput="atualizarPreviewLive()">
+    
+    <label style="font-size:12px; color:#cbd5e1; display:block; margin-bottom: 5px;">Logo do Condomínio:</label>
+    <div style="display: flex; flex-direction: column; gap: 10px;">
+      <div>
+        <span style="font-size:11px; color:#9ca3af;">Opção 1: Link de Internet (URL)</span>
+        <input id="cfg_logo_url" placeholder="Ex: https://site.com/imagem.png" style="color: white; background: rgba(0,0,0,0.5); margin-top: 4px;" oninput="atualizarPreviewLive()">
+      </div>
+      <div style="text-align: center; margin: 4px 0;">
+        <span style="font-size: 11px; color: #9ca3af; font-weight: bold;">— OU —</span>
+      </div>
+      <div>
+        <span style="font-size:11px; color:#9ca3af;">Opção 2: Carregar do Computador</span>
+        <input type="file" id="cfg_logo_file" accept="image/*" onchange="processarLogoFile(event)" style="margin-top: 4px; padding: 6px;">
+      </div>
+    </div>
+
+    <!-- CONTROLE ÚNICO DE ZOOM DA IMAGEM DENTRO DO CÍRCULO -->
+    <label style="font-size:12px; color:#cbd5e1; display:block; margin-top:15px;">Ajuste do Zoom da Logo: <span id="val_zoom">100</span>%</label>
+    <input type="range" id="cfg_logo_zoom" min="100" max="300" value="100" oninput="atualizarPreviewLive()" style="margin-top: 4px; width: 100%;">
+    
+    <div style="margin-top: 25px; display:flex; gap:10px; justify-content: flex-end;">
+      <button onclick="fecharConfigModal()" class="btn-cinza">Cancelar</button>
+      <button onclick="salvarConfig()" class="btn-verde">Confirmar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL PARA ALTERAÇÃO DE SENHAS (GERENTE E OPERADOR) -->
+<div id="passwordsModal" style="display:none; position:fixed; z-index:10200; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.95); justify-content:center; align-items:center;">
+  <div class="login-box" style="width: 380px; text-align: left; background: rgba(30, 30, 30, 0.85); border: 1px solid rgba(255, 255, 255, 0.25);">
+    <h3 style="margin-bottom: 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.2); padding-bottom: 8px;">Alterar Senhas</h3>
+    
+    <label style="font-size:12px; color:#cbd5e1;">Nova Senha Normal (Operador):</label>
+    <input type="password" id="cfg_senha_normal" style="color: white; background: rgba(0,0,0,0.5); margin-bottom: 15px;">
+    
+    <label style="font-size:12px; color:#cbd5e1;">Nova Senha do Gerente:</label>
+    <input type="password" id="cfg_senha_gerente" style="color: white; background: rgba(0,0,0,0.5); margin-bottom: 15px;">
+    
+    <div style="margin-top: 15px; display:flex; gap:10px; justify-content: flex-end;">
+      <button onclick="fecharPasswordsModal()" class="btn-cinza">Cancelar</button>
+      <button onclick="salvarNovasSenhas()" class="btn-verde">Confirmar Troca</button>
+    </div>
+  </div>
 </div>
 
 <script>
 
-const senhaCorreta = "2010";
+// CONFIGURAÇÃO DINÂMICA DE LOGO, NOME, ZOOM, COORDENADAS X/Y E SENHAS DE SEGURANÇA
+let config = {
+  logo: "https://w7.pngwing.com/pngs/784/809/png-transparent-building-small-business-company-office-corporation-office-icon-insharepics-discellaneous-blue-text-thumbnail.png",
+  nome: "NOME DO CONDOMÍNIO",
+  logoZoom: 1.0,      // Fator de escala padrão (1.0 = 100%)
+  logoX: 0,           // Deslocamento X inicial
+  logoY: 0,           // Deslocamento Y inicial
+  senhaNormal: "2010",   // Senha padrão operacional
+  senhaGerente: "201066" // Senha padrão de gerente
+};
+
+// Carrega as configurações personalizadas salvas no navegador local antes do carregamento da base de dados
+const configSalva = localStorage.getItem("config_condominio");
+if (configSalva) {
+  try {
+    config = { ...config, ...JSON.parse(configSalva) };
+  } catch(e) {
+    console.error(e);
+  }
+}
 
 let moradores = [];
-let fotoBase64 = "";
+let fotoBase64 = ""; // Foto de Perfil Principal
+let fotosObsArray = []; // Array que armazena os anexos de fotos do morador ativo
 let dirHandle = null;
 let editId = null;
 let selecionado = null;
 let modoVisualizar = false;
+
+// Controle para edição de reservas
+let editReservaId = null;
+
+// Controle de estado da galeria no Modal
+let galeriaAtiva = false;
+let indiceGaleria = 0;
+
+// Variáveis para controlar edição de observações prévias
+let originalObs = "";
+let obsDesbloqueado = false;
+
+// Variável temporária de transição de imagens locais
+let tempLogoBase64 = "";
+
+// Variáveis de controle para o recurso de arrastar com o mouse (Panning da Logo)
+let isDragging = false;
+let startX = 0, startY = 0;
+let currentX = 0, currentY = 0;       // Coordenadas relativas acumuladas do preview
+let initialDragX = 0, initialDragY = 0; // Coordenadas iniciais registradas ao clicar
 
 const senhaEl = document.getElementById("senha");
 const errorEl = document.getElementById("error");
@@ -273,20 +955,167 @@ const formBox = document.getElementById("formBox");
 
 const nomeEl = document.getElementById("nome");
 const cpfEl = document.getElementById("cpf");
-const rgEl = document.getElementById("rg");
+const telefonesFamiliaEl = document.getElementById("telefonesFamilia");
 const cnhEl = document.getElementById("cnh");
 const enderecoEl = document.getElementById("endereco");
 const quadraEl = document.getElementById("quadra");
-const cidadeEl = document.getElementById("cidade");
+const cityEl = document.getElementById("cidade"); // cidade
+const placaMoradorEl = document.getElementById("placa_morador");
 const obsEl = document.getElementById("obs");
 
-const placasEl = document.getElementById("placas");
-const familiaresEl = document.getElementById("familiares");
+const pessoasEl = document.getElementById("pessoas");
 const listaEl = document.getElementById("lista");
-const previewEl = document.getElementById("preview");
 
 const loginScreen = document.getElementById("loginScreen");
 const app = document.getElementById("app");
+
+// Sincroniza e atualiza dinamicamente as referências de imagem, texto, zoom e deslocamento X/Y no DOM
+function atualizarLogoENomeDOM() {
+  const zoomFactor = config.logoZoom || 1.0;
+  const logoX = config.logoX || 0;
+  const logoY = config.logoY || 0;
+
+  // Proporções para garantir alinhamento perfeito em múltiplos tamanhos de caixas circulares
+  const ratioLogin = 220 / 130; // Proporção da caixa de login em relação à caixa de preview
+  const ratioApp = 70 / 130;   // Proporção da caixa do cabeçalho em relação à caixa de preview
+
+  const loginLogo = document.getElementById("login_logo");
+  const loginNome = document.getElementById("login_nome");
+  if (loginLogo) {
+    loginLogo.src = config.logo;
+    loginLogo.style.transform = `translate(${logoX * ratioLogin}px, ${logoY * ratioLogin}px) scale(${zoomFactor})`;
+  }
+  if (loginNome) loginNome.textContent = config.nome;
+
+  const topoInfo = document.getElementById("topo-info");
+  if (topoInfo && topoInfo.classList.contains("centralizado")) {
+    topoInfo.innerHTML = `
+      <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+        <!-- ADICIONADA A CLASSE borda-animada E UMA LINHA DE BORDA DELICADA DE 1.5PX PARA TRANSICIONAR SUAVEMENTE SEM OFUSCAR A LOGO -->
+        <div class="borda-animada" style="width: 70px; height: 70px; border-radius: 50%; overflow: hidden; border: 1.5px solid rgba(255, 255, 255, 0.2); display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.3);">
+          <img src="${config.logo}" alt="Logo" style="width: 100%; height: 100%; object-fit: cover; transform: translate(${logoX * ratioApp}px, ${logoY * ratioApp}px) scale(${zoomFactor});" draggable="false">
+        </div>
+        <span style="font-size: 16px; font-weight: bold; letter-spacing: 1px; color: white; text-transform: uppercase;">${config.nome}</span>
+      </div>
+    `;
+  }
+}
+
+// Inicializa no carregamento do arquivo
+atualizarLogoENomeDOM();
+
+// Caixa alta automática para a placa do morador principal
+placaMoradorEl.oninput = () => placaMoradorEl.value = placaMoradorEl.value.toUpperCase();
+
+// Controle inteligente para proteção e edição de observações salvas previamente
+obsEl.addEventListener("keydown", (e) => {
+  if (!selecionado) {
+    e.preventDefault();
+    alert("Por favor, selecione um morador na lista lateral antes de digitar.");
+    return;
+  }
+
+  // Permite teclas de navegação, CapsLock, Shifts, etc.
+  const keysPermitidas = ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "PageUp", "PageDown", "Home", "End", "Tab", "CapsLock", "Shift", "Control", "Alt"];
+  if (keysPermitidas.includes(e.key)) return;
+
+  if (originalObs !== "" && !obsDesbloqueado) {
+    const start = obsEl.selectionStart;
+    let violation = false;
+
+    if (e.key === "Backspace") {
+      if (start <= originalObs.length) {
+        violation = true;
+      }
+    } else if (e.key === "Delete") {
+      if (start < originalObs.length) {
+        violation = true;
+      }
+    } else {
+      if (start < originalObs.length) {
+        violation = true;
+      }
+    }
+
+    if (violation) {
+      e.preventDefault();
+      let senha = prompt("Digite a senha de GERENTE para editar ou apagar as observações existentes:");
+      const adminKey = config.senhaGerente || "201066";
+      if (senha === adminKey) {
+        obsDesbloqueado = true;
+        alert("Edição de observações liberada!");
+      } else {
+        alert("Senha incorreta! Edição bloqueada.");
+      }
+    }
+  }
+});
+
+obsEl.addEventListener("paste", (e) => {
+  if (!selecionado) { e.preventDefault(); return; }
+  if (originalObs !== "" && !obsDesbloqueado) {
+    const start = obsEl.selectionStart;
+    if (start < originalObs.length) {
+      e.preventDefault();
+      let senha = prompt("Digite a senha de GERENTE para editar ou apagar as observações existentes:");
+      const adminKey = config.senhaGerente || "201066";
+      if (senha === adminKey) {
+        obsDesbloqueado = true;
+        alert("Edição de observações liberada!");
+      } else {
+        alert("Senha incorreta! Edição bloqueada.");
+      }
+    }
+  }
+});
+
+obsEl.addEventListener("cut", (e) => {
+  if (!selecionado) { e.preventDefault(); return; }
+  if (originalObs !== "" && !obsDesbloqueado) {
+    const start = obsEl.selectionStart;
+    if (start < originalObs.length) {
+      e.preventDefault();
+      let senha = prompt("Digite a senha de GERENTE para editar ou apagar as observações existentes:");
+      const adminKey = config.senhaGerente || "201066";
+      if (senha === adminKey) {
+        obsDesbloqueado = true;
+        alert("Edição de observações liberada!");
+      } else {
+        alert("Senha incorreta! Edição bloqueada.");
+      }
+    }
+  }
+});
+
+obsEl.addEventListener("input", () => {
+  if (originalObs !== "" && !obsDesbloqueado) {
+    // Caso ocorra alteração forçada que altere o início do texto preservado, restaura-o
+    if (!obsEl.value.startsWith(originalObs)) {
+      obsEl.value = originalObs + obsEl.value.substring(originalObs.length);
+    }
+  }
+});
+
+// Salva observações de forma rápida, mesmo no modo visualização
+async function salvarObsRapido() {
+  if (!selecionado) {
+    alert("Por favor, selecione um morador na lista lateral primeiro!");
+    return;
+  }
+
+  const index = moradores.findIndex(m => m.id === selecionado.id);
+  if (index !== -1) {
+    moradores[index].obs = obsEl.value;
+    moradores[index].dataAlteracao = new Date().toLocaleString("pt-BR");
+
+    selecionado.obs = obsEl.value;
+    originalObs = obsEl.value;
+    obsDesbloqueado = false;
+
+    await salvarArquivoSemLimpar();
+    alert("Observações salvas com sucesso!");
+  }
+}
 
 function atualizarData(){
   const agora = new Date();
@@ -298,8 +1127,22 @@ function atualizarData(){
     second: "2-digit"
   });
 
-  document.getElementById("dataTopo").textContent = data + " " + hora;
-  document.getElementById("dataRodape").textContent = data;
+  // Se o aplicativo NÃO estiver visível (ou seja, na Tela de Login), mantém o relógio alinhado
+  if (app.style.display !== "block") {
+    document.getElementById("dataTopo").innerHTML = `${data} &nbsp;&nbsp;&nbsp;&nbsp; ${hora}`;
+  }
+  
+  // Atualiza as informações de Data e Hora com destaque visual e espaçamento maior no cabeçalho
+  const dataTopoApp = document.getElementById("dataTopoApp");
+  if (dataTopoApp) {
+    dataTopoApp.innerHTML = `
+      <span style="margin-left: 15px; color: rgba(255,255,255,0.3); font-weight: normal; margin-right: 15px;">|</span>
+      <div class="borda-animada" style="display: flex; align-items: center; background: rgba(255, 255, 255, 0.12); border: 1px solid rgba(255, 255, 255, 0.15); padding: 8px 20px; border-radius: 20px; box-shadow: inset 0 1px 1px rgba(255,255,255,0.1); gap: 18px;">
+        <span style="color: #cbd5e1; font-size: 16px; font-weight: 500; letter-spacing: 0.5px;">${data}</span>
+        <span style="color: #38bdf8; font-size: 18px; font-weight: 800; letter-spacing: 1px; text-shadow: 0 0 10px rgba(56, 189, 248, 0.45);">${hora}</span>
+      </div>
+    `;
+  }
 }
 
 atualizarData();
@@ -310,9 +1153,19 @@ senhaEl.addEventListener("keydown", e=>{
 });
 
 function login(){
-  if(senhaEl.value === senhaCorreta){
+  const normalKey = config.senhaNormal || "2010";
+  const adminKey = config.senhaGerente || "201066";
+
+  // ACEITA TANTO A SENHA OPERACIONAL SALVA QUANTO A DE GERENTE SALVA
+  if(senhaEl.value === normalKey || senhaEl.value === adminKey){
     loginScreen.style.display="none";
     app.style.display="block";
+    limpar();
+    
+    // Altera a classe do topo-info para centralizado e atualiza com o novo LOGO na segunda tela
+    const topoInfo = document.getElementById("topo-info");
+    topoInfo.className = "centralizado";
+    atualizarLogoENomeDOM();
   } else {
     errorEl.style.display="block";
     setTimeout(()=>errorEl.style.display="none",2000);
@@ -320,9 +1173,13 @@ function login(){
 }
 
 async function selectFolder(){
-  dirHandle = await window.showDirectoryPicker();
-  await loadDatabase();
-  alert("Pasta conectada!");
+  try {
+    dirHandle = await window.showDirectoryPicker();
+    await loadDatabase();
+    alert("Pasta de dados conectada com sucesso!");
+  } catch(e) {
+    alert("Não foi possível conectar à pasta.");
+  }
 }
 
 async function loadDatabase(){
@@ -330,20 +1187,168 @@ async function loadDatabase(){
   try{
     const fileHandle = await dirHandle.getFileHandle("database.json");
     const file = await fileHandle.getFile();
-    moradores = JSON.parse(await file.text() || "[]");
-  }catch{
+    const rawData = await file.text();
+    if (rawData.trim() === "") {
+      moradores = [];
+    } else {
+      const data = JSON.parse(rawData);
+      // Mantém retrocompatibilidade de arquivo se for uma listagem de Array comum
+      if (Array.isArray(data)) {
+        moradores = data;
+      } else {
+        moradores = data.moradores || [];
+        if (data.config) {
+          config = { ...config, ...data.config };
+          localStorage.setItem("config_condominio", JSON.stringify(config));
+        }
+      }
+    }
+  }catch(e){
+    console.error(e);
     moradores=[];
   }
+  atualizarLogoENomeDOM();
   render();
 }
 
+// LÓGICA DE PERSISTÊNCIA - SEÇÃO DE ARQUIVOS
 async function salvarArquivo(){
+  if(!dirHandle) return;
   const fileHandle = await dirHandle.getFileHandle("database.json",{create:true});
   const writable = await fileHandle.createWritable();
-  await writable.write(JSON.stringify(moradores,null,2));
+  const payload = {
+    moradores: moradores,
+    config: config
+  };
+  await writable.write(JSON.stringify(payload,null,2));
   await writable.close();
   render();
   limpar();
+}
+
+// Lógica para gravação direta no arquivo sem recarregar o formulário
+async function salvarArquivoSemLimpar(){
+  if(!dirHandle) return;
+  try {
+    const fileHandle = await dirHandle.getFileHandle("database.json",{create:true});
+    const writable = await fileHandle.createWritable();
+    const payload = {
+      moradores: moradores,
+      config: config
+    };
+    await writable.write(JSON.stringify(payload,null,2));
+    await writable.close();
+    render();
+  } catch(e) {
+    console.error("Erro ao salvar atualizações automáticas:", e);
+  }
+}
+
+async function exportarBackup() {
+  if(!dirHandle) {
+    alert("Selecione a pasta de dados primeiro!");
+    return;
+  }
+  try {
+    const agora = new Date();
+    const dataStr = agora.toISOString().split('T')[0];
+    const horaStr = agora.toTimeString().split(' ')[0].replace(/:/g, "-");
+    const nomeBackup = `backup_condominio_${dataStr}_${horaStr}.json`;
+
+    const fileHandle = await dirHandle.getFileHandle(nomeBackup, {create:true});
+    const writable = await fileHandle.createWritable();
+    const payload = {
+      moradores: moradores,
+      config: config
+    };
+    await writable.write(JSON.stringify(payload, null, 2));
+    await writable.close();
+
+    alert(`Backup criado com sucesso!\nArquivo: ${nomeBackup}`);
+  } catch(e) {
+    alert("Falha ao gerar arquivo de backup: " + e.message);
+  }
+}
+
+// Lógica de leitura da Foto de Perfil Principal
+function carregarFotoPrincipal(e) {
+  let f = e.target.files[0];
+  if(!f) return;
+  let r = new FileReader();
+  r.onload = () => {
+    fotoBase64 = r.result; 
+    const img = document.getElementById("foto_principal_preview");
+    const placeholder = document.getElementById("foto_principal_placeholder");
+    img.src = r.result;
+    img.style.display = "block";
+    placeholder.style.display = "none";
+  }
+  r.readAsDataURL(f);
+}
+
+// Clique na Foto Principal (Adiciona se estiver editando, amplia se estiver apenas visualizando)
+function clickFotoPrincipal() {
+  if (modoVisualizar) {
+    if (fotoBase64) {
+      ampliarFoto(fotoBase64);
+    }
+  } else {
+    document.getElementById('foto_principal_input').click();
+  }
+}
+
+// Lógica de leitura de múltiplos arquivos anexados à Obs com auto-gravação
+function carregarFotosObs(e) {
+  const files = e.target.files;
+  if (!files || files.length === 0) return;
+  
+  let carregadas = 0;
+  for (let i = 0; i < files.length; i++) {
+    let r = new FileReader();
+    r.onload = async () => {
+      fotosObsArray.push(r.result);
+      carregadas++;
+      if (carregadas === files.length) {
+        atualizarBotaoGaleria();
+        
+        // Se houver um morador selecionado, as fotos são gravadas na base de forma direta
+        if (editId) {
+          const index = moradores.findIndex(m => m.id === editId);
+          if (index !== -1) {
+            moradores[index].fotos = fotosObsArray;
+            moradores[index].foto = moradores[index].foto || fotosObsArray[0] || "";
+            moradores[index].dataAlteracao = new Date().toLocaleString("pt-BR");
+            await salvarArquivoSemLimpar();
+          }
+        }
+        alert(files.length + " foto(s) anexada(s) à observação com sucesso!");
+      }
+    };
+    r.readAsDataURL(files[i]);
+  }
+  e.target.value = ""; // Limpa o seletor
+}
+
+function atualizarBotaoGaleria() {
+  const btn = document.getElementById("btn_ver_galeria");
+  const count = document.getElementById("count_fotos");
+  if (fotosObsArray.length > 0) {
+    btn.style.display = "inline-block";
+    count.textContent = fotosObsArray.length;
+  } else {
+    btn.style.display = "none";
+  }
+}
+
+// Gera a data e hora atual formatada localmente para preenchimento padrão do datetime-local
+function obterDataHoraAtualLocal() {
+  const agora = new Date();
+  const ano = agora.getFullYear();
+  const mes = String(agora.getMonth() + 1).padStart(2, '0');
+  const dia = String(agora.getDate()).padStart(2, '0');
+  const hora = String(agora.getHours()).padStart(2, '0');
+  const minuto = String(agora.getMinutes()).padStart(2, '0');
+  return `${ano}-${mes}-${dia}T${hora}:${minuto}`;
 }
 
 async function salvar(){
@@ -352,19 +1357,87 @@ async function salvar(){
     return;
   }
 
+  // NOVA CONFIRMAÇÃO DE SALVAMENTO ANTES DE EXECUTAR A AÇÃO
+  if(!confirm("Deseja realmente salvar as informações deste morador?")) {
+    return;
+  }
+
+  const dataAtual = new Date().toLocaleString("pt-BR");
+  const moradorExistente = editId ? moradores.find(m => m.id === editId) : null;
+
+  // === SALVAMENTO - SEÇÃO 1: MORADOR PRINCIPAL & FAMÍLIA ===
+  let telefonesColetados = [];
+  const rowsFamilia = telefonesFamiliaEl.querySelectorAll(".familia-row");
+  rowsFamilia.forEach(row => {
+    const nomeVal = row.querySelector(".fam-nome").value.trim();
+    const telVal = row.querySelector(".fam-telefone").value.trim();
+    const placaVal = row.querySelector(".fam-placa").value.trim();
+    const select = row.querySelector("select");
+    const img = row.querySelector("img");
+    
+    if(nomeVal !== "" || telVal !== "" || placaVal !== "") {
+      telefonesColetados.push({
+        nome: nomeVal,
+        telefone: telVal,
+        parentesco: select.value,
+        placa: placaVal,
+        foto: img.dataset.base64 || ""
+      });
+    }
+  });
+
+  // === SALVAMENTO - SEÇÃO 2: VISITANTES ===
+  let pessoasColetadas = [];
+  const rowsPessoas = pessoasEl.querySelectorAll(".pessoa-row");
+  rowsPessoas.forEach(row => {
+    const nomeVal = row.querySelector(".vis-nome").value.trim();
+    const docVal = row.querySelector(".vis-documento").value.trim();
+    const telVal = row.querySelector(".vis-telefone").value.trim();
+    const select = row.querySelector("select");
+    const img = row.querySelector("img");
+    const placaVal = row.querySelector(".vis-placa").value.trim();
+    const empVal = row.querySelector(".vis-empresa").value.trim();
+    let dhVal = row.querySelector(".vis-datahora").value;
+    
+    if(nomeVal !== "" || docVal !== "" || telVal !== "" || placaVal !== "" || empVal !== "") {
+      // ANTI-FRAUDE: Se for um visitante novo (sem data/hora anterior gravada),
+      // a data/hora é definida de forma obrigatória no momento exato do clique em "Salvar"
+      if (!dhVal) {
+        dhVal = obterDataHoraAtualLocal();
+      }
+
+      pessoasColetadas.push({
+        nome: nomeVal,
+        documento: docVal,
+        telefone: telVal,
+        relacao: select.value,
+        foto: img.dataset.base64 || "",
+        placa: placaVal,
+        empresa: empVal,
+        dataHoraChegada: dhVal
+      });
+    }
+  });
+
+  // === MONTAGEM DO OBJETO COMPLETO DE DADOS ===
   let obj = {
     id: editId || Date.now(),
     nome: nomeEl.value,
     cpf: cpfEl.value,
-    rg: rgEl.value,
+    telefonesFamilia: telefonesColetados,
     cnh: cnhEl.value,
     endereco: enderecoEl.value,
     quadra: quadraEl.value,
-    cidade: cidadeEl.value,
-    placas: [...placasEl.querySelectorAll("input")].map(i=>i.value.toUpperCase()),
-    familiares: [...familiaresEl.querySelectorAll("input")].map(i=>i.value),
-    foto: fotoBase64,
-    obs: obsEl.value
+    cidade: cityEl.value, // cidade
+    placaMorador: placaMoradorEl.value,
+    placas: [], // Campo mantido vazio para compatibilidade de esquemas antigos
+    pessoas: pessoasColetadas,
+    reservas: moradorExistente ? (moradorExistente.reservas || []) : [], // Preserva as reservas já feitas
+    fotos: fotosObsArray, // Salva o array de fotos na galeria do morador
+    foto: fotoBase64, // Salva a Foto de Perfil Principal
+    obs: obsEl.value,
+    dataCriacao: moradorExistente ? (moradorExistente.dataCriacao || dataAtual) : dataAtual,
+    dataAlteracao: dataAtual
   };
 
   if(editId){
@@ -382,8 +1455,9 @@ function editarSelecionado(){
 
   if(!confirm("Tem certeza que deseja editar este morador?")) return;
 
-  let senha = prompt("Digite a senha para liberar edição:");
-  if(senha !== "201066"){
+  const adminKey = config.senhaGerente || "201066";
+  let senha = prompt("Digite a senha de GERENTE para liberar edição:");
+  if(senha !== adminKey){
     alert("Senha incorreta!");
     return;
   }
@@ -393,46 +1467,94 @@ function editarSelecionado(){
   editar(selecionado);
 }
 
-function visualizarSelecionado(){
-  if(!selecionado) return alert("Selecione um morador");
-
-  modoVisualizar = true;
-  formBox.classList.add("readonly");
-
-  editar(selecionado);
-}
-
+// === PREENCHIMENTO E LEITURA DOS DADOS ===
 function editar(m){
   selecionado=m;
   editId=m.id;
 
-  nomeEl.value=m.nome;
-  cpfEl.value=m.cpf;
-  rgEl.value=m.rg;
-  cnhEl.value=m.cnh;
-  enderecoEl.value=m.endereco;
+  // LEITURA - SEÇÃO 1: MORADOR PRINCIPAL & FAMÍLIA
+  nomeEl.value=m.nome || "";
+  cpfEl.value=m.cpf || "";
+  cnhEl.value=m.cnh || "";
+  enderecoEl.value=m.endereco || "";
   quadraEl.value=m.quadra||"";
-  cidadeEl.value=m.cidade||"";
+  cityEl.value=m.cidade||""; // cidade
+  placaMoradorEl.value=m.placaMorador||"";
   obsEl.value=m.obs||"";
 
-  placasEl.innerHTML="";
-  familiaresEl.innerHTML="";
+  // Salva o estado original do campo observações para controle de edição
+  originalObs = m.obs || "";
+  obsDesbloqueado = false;
 
-  (m.placas||[]).forEach(p=>{
-    let i=document.createElement("input");
-    i.value=p.toUpperCase();
-    i.oninput=()=>i.value=i.value.toUpperCase();
-    placasEl.appendChild(i);
-  });
+  pessoasEl.innerHTML="";
+  telefonesFamiliaEl.innerHTML="";
 
-  (m.familiares||[]).forEach(f=>{
-    let i=document.createElement("input");
-    i.value=f;
-    familiaresEl.appendChild(i);
-  });
+  // Carrega Telefones da Família (Sempre marcando como já gravados)
+  const listaTelsFamilia = m.telefonesFamilia || [];
+  if (listaTelsFamilia.length === 0) {
+    if(m.telSecundario || m.nomeSecundario) {
+      addTelefoneFamilia(m.telSecundario || "", m.nomeSecundario || "", m.parentescoSecundario || "", "", false, "");
+    } else {
+      addTelefoneFamilia("", "", "", "", false, "");
+    }
+  } else {
+    listaTelsFamilia.forEach(t => {
+      addTelefoneFamilia(t.telefone, t.nome, t.parentesco, t.placa || "", false, t.foto || "");
+    });
+  }
 
-  fotoBase64=m.foto||"";
-  previewEl.src=m.foto||"";
+  // LEITURA - SEÇÃO 2: VISITANTES (SÃO CRIADOS POR PADRÃO COMO JÁ SALVOS: isNew = false)
+  let listaPessoas = m.pessoas || [];
+  if (listaPessoas.length === 0) {
+    if (m.contatos) {
+      listaPessoas = listaPessoas.concat(m.contatos);
+    }
+    if (m.visitantes) {
+      const visitantesMapeados = m.visitantes.map(v => ({
+        nome: v.nome,
+        documento: v.documento,
+        telefone: "",
+        relacao: "Visitante",
+        foto: v.foto,
+        placa: v.placa || "",
+        empresa: v.empresa || "",
+        dataHoraChegada: v.dataHoraChegada || ""
+      }));
+      listaPessoas = listaPessoas.concat(visitantesMapeados);
+    }
+  }
+
+  if (listaPessoas.length === 0) {
+    addPessoa();
+  } else {
+    listaPessoas.forEach(p => {
+      addPessoa(p.nome, p.documento || "", p.telefone || "", p.relacao || "Familiar", p.foto || "", p.placa || "", p.empresa || "", p.dataHoraChegada || "", false);
+    });
+  }
+
+  // Desbloqueia a seção de visitantes por se tratar de um morador já salvo carregado
+  document.getElementById("visitantes-conteudo").classList.remove("visitantes-bloqueados");
+
+  // Carrega a Foto Principal de Perfil
+  fotoBase64 = m.foto || "";
+  const imgPreview = document.getElementById("foto_principal_preview");
+  const placeholder = document.getElementById("foto_principal_placeholder");
+  if (m.foto) {
+    imgPreview.src = m.foto;
+    imgPreview.style.display = "block";
+    placeholder.style.display = "none";
+  } else {
+    imgPreview.src = "";
+    imgPreview.style.display = "none";
+    placeholder.style.display = "block";
+  }
+
+  // LEITURA - SEÇÃO 4: HISTÓRICO E GALERIA DE FOTOS
+  fotosObsArray = m.fotos || [];
+  atualizarBotaoGaleria();
+
+  // ATUALIZA AS RESERVAS DESTE MORADOR NA INTERFACE
+  atualizarListaReservasMorador();
 
   render();
 }
@@ -442,8 +1564,9 @@ function apagarSelecionado(){
 
   if(!confirm("Tem certeza que deseja apagar este morador?")) return;
 
-  let senha = prompt("Digite a senha para confirmar exclusão:");
-  if(senha !== "201066"){
+  const adminKey = config.senhaGerente || "201066";
+  let senha = prompt("Digite a senha de GERENTE para confirmar exclusão:");
+  if(senha !== adminKey){
     alert("Senha incorreta!");
     return;
   }
@@ -457,38 +1580,963 @@ function apagarSelecionado(){
 function novoMorador(){
   selecionado=null;
   editId=null;
+  modoVisualizar = false;
   limpar();
   formBox.classList.remove("readonly");
+  // Bloqueia a seção de visitantes para novos cadastros de moradores até que sejam salvos
+  document.getElementById("visitantes-conteudo").classList.add("visitantes-bloqueados");
 }
 
-function addPlaca(){
-  let i=document.createElement("input");
-  i.oninput=()=>i.value=i.value.toUpperCase();
-  placasEl.appendChild(i);
+// ADICIONAR LINHA DE TELEFONE DE FAMILIAR (NOME, TELEFONE, PLACA DO CARRO, PARENTESCO)
+// isNew=true determina que o familiar acabou de ser adicionado, mantendo seus campos editáveis
+function addTelefoneFamilia(telefone="", nome="", parentesco="", placa="", isNew=false, fotoFamiliaBase64=""){
+  let div = document.createElement("div");
+  div.className = "familia-row" + (isNew ? " new-row" : "");
+
+  // 1. Criar preview de imagem circular
+  let img = document.createElement("img");
+  img.style.width = "35px";
+  img.style.height = "35px";
+  img.style.borderRadius = "50%";
+  img.style.objectFit = "cover";
+  img.style.cursor = "pointer";
+  // Fallback SVG image
+  img.src = fotoFamiliaBase64 || "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='35' height='35' viewBox='0 0 24 24' fill='%23ccc'><circle cx='12' cy='8' r='4'/><path d='M12 14c-6.1 0-8 4-8 4h16s-1.9-4-8-4z'/></svg>";
+  img.dataset.base64 = fotoFamiliaBase64;
+  img.onclick = () => {
+    if (img.dataset.base64) ampliarFoto(img.dataset.base64);
+  };
+
+  // 2. Inputs de texto com classes específicas
+  let iNome = document.createElement("input");
+  iNome.className = "fam-nome";
+  iNome.placeholder = "Nome";
+  iNome.value = nome;
+  iNome.style.flex = "2";
+
+  let iTel = document.createElement("input");
+  iTel.className = "fam-telefone";
+  iTel.placeholder = "Telefone";
+  iTel.value = telefone;
+  iTel.style.flex = "1.5";
+
+  // Novo campo de Placa inserido ANTES do parentesco
+  let iPlaca = document.createElement("input");
+  iPlaca.className = "fam-placa";
+  iPlaca.placeholder = "Placa do Carro";
+  iPlaca.value = placa;
+  iPlaca.style.flex = "1.2";
+  iPlaca.oninput = () => iPlaca.value = iPlaca.value.toUpperCase();
+
+  let sPar = document.createElement("select");
+  sPar.style.flex = "1.2";
+  sPar.style.padding = "10px";
+  sPar.style.borderRadius = "8px";
+  sPar.style.border = "none";
+  sPar.style.background = "white";
+  sPar.style.color = "black";
+
+  let optDefault = document.createElement("option");
+  optDefault.value = "";
+  optDefault.textContent = "Parentesco";
+  optDefault.disabled = true;
+  if (!parentesco) optDefault.selected = true;
+  sPar.appendChild(optDefault);
+
+  const opcoes = ["Pai", "Mãe", "Filho", "Filha"];
+  opcoes.forEach(op => {
+    let o = document.createElement("option");
+    o.value = op;
+    o.textContent = op;
+    if(op === parentesco) o.selected = true;
+    sPar.appendChild(o);
+  });
+
+  // 3. Botão de Adicionar Foto (btn-azul)
+  let btnFoto = document.createElement("button");
+  btnFoto.type = "button";
+  btnFoto.textContent = "Foto";
+  btnFoto.className = "btn-azul";
+  btnFoto.style.padding = "10px";
+  btnFoto.onclick = () => {
+    let fInput = document.createElement("input");
+    fInput.type = "file";
+    fInput.onchange = (e) => {
+      let f = e.target.files[0];
+      if(!f) return;
+      let r = new FileReader();
+      r.onload = () => {
+        img.src = r.result;
+        img.dataset.base64 = r.result;
+      };
+      r.readAsDataURL(f);
+    };
+    fInput.click();
+  };
+
+  // 4. Botão Adicionar + (btn-verde)
+  let btnAdd = document.createElement("button");
+  btnAdd.type = "button";
+  btnAdd.textContent = "+";
+  // O botão "+" recebe permitido-readonly para ficar disponível mesmo no modo visualização
+  btnAdd.className = "permitido-readonly btn-verde"; 
+  btnAdd.style.padding = "10px";
+  // Ao clicar, cria uma nova linha de familiar editável (isNew = true)
+  btnAdd.onclick = () => addTelefoneFamilia("", "", "", "", true, "");
+
+  let btnDel = document.createElement("button");
+  btnDel.type = "button";
+  btnDel.textContent = "X";
+  btnDel.className = "btn-vermelho"; // Atribui a classe vermelha pulsante (será ocultada em readonly para salvos)
+  btnDel.style.padding = "10px";
+  btnDel.onclick = () => {
+    if (telefonesFamiliaEl.children.length > 1) {
+      div.remove();
+    } else {
+      iTel.value = "";
+      iNome.value = "";
+      iPlaca.value = "";
+      sPar.selectedIndex = 0;
+      img.src = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='35' height='35' viewBox='0 0 24 24' fill='%23ccc'><circle cx='12' cy='8' r='4'/><path d='M12 14c-6.1 0-8 4-8 4h16s-1.9-4-8-4z'/></svg>";
+      img.dataset.base64 = "";
+    }
+  };
+
+  // ANTI-FRAUDE & UX: Se for uma linha nova criada pelo botão "+",
+  // aplica permitido-readonly para que os botões de Foto e Excluir fiquessem visíveis no painel de visualização
+  if (isNew) {
+    btnFoto.classList.add("permitido-readonly");
+    btnDel.classList.add("permitido-readonly");
+  }
+
+  // Organiza os elementos de modo a exibir a Foto de perfil circular antes da caixa do Nome
+  div.appendChild(img);
+  div.appendChild(iNome);
+  div.appendChild(iTel);
+  div.appendChild(iPlaca);
+  div.appendChild(sPar);
+  div.appendChild(btnFoto);
+  div.appendChild(btnAdd);
+  div.appendChild(btnDel);
+
+  telefonesFamiliaEl.appendChild(div);
 }
 
-function addFam(){
-  familiaresEl.appendChild(document.createElement("input"));
+// ADICIONAR SEÇÃO UNIFICADA DE VISITANTE / PRESTADOR DE SERVIÇOS
+// isNew=true determina que a linha acabou de ser criada pelo botão rápido, mantendo-a editável
+function addPessoa(nome="", documento="", telefone="", relacao="Visitante", fotoPessoaBase64="", placa="", empresa="", dataHoraChegada="", isNew=false){
+  let div = document.createElement("div");
+  // Se for nova entrada, atribui a classe new-row para contornar o blocoio visualizador do CSS
+  div.className = "pessoa-row" + (isNew ? " new-row" : "");
+
+  // Linha superior: Dados do Indivíduo
+  let r1 = document.createElement("div");
+  r1.style.display = "flex";
+  r1.style.gap = "8px";
+  r1.style.alignItems = "center";
+  r1.style.width = "100%";
+
+  let iNome = document.createElement("input");
+  iNome.className = "vis-nome";
+  iNome.placeholder = "Nome Completo";
+  iNome.value = nome;
+  iNome.style.flex = "2";
+
+  let iDoc = document.createElement("input");
+  iDoc.className = "vis-documento";
+  iDoc.placeholder = "RG ou CPF";
+  iDoc.value = documento;
+  iDoc.style.flex = "1.2";
+
+  let iTel = document.createElement("input");
+  iTel.className = "vis-telefone";
+  iTel.placeholder = "Telefone/Celular";
+  iTel.value = telefone;
+  iTel.style.flex = "1.2";
+
+  let sRel = document.createElement("select");
+  sRel.style.flex = "1.2";
+  sRel.style.padding = "10px";
+  sRel.style.borderRadius = "8px";
+  sRel.style.border = "none";
+  sRel.style.background = "white";
+  sRel.style.color = "black";
+  
+  const opcoes = [
+    "Familiar",
+    "Amigo",
+    "Visitante",
+    "Prestador de Serviço",
+    "Entregador",
+    "Motorista de Aplicativo",
+    "Táxi",
+    "Motoboy",
+    "Correios",
+    "Funcionário",
+    "Diarista",
+    "Babá",
+    "Cuidador",
+    "Enfermeiro",
+    "Técnico",
+    "Manutenção",
+    "Obra",
+    "Mudança",
+    "Corretor",
+    "Comprador",
+    "Locatário",
+    "Proprietário",
+    "Representante Comercial",
+    "Convidado de Evento",
+    "Outro"
+  ];
+  options = opcoes.map(op => {
+    let o = document.createElement("option");
+    o.value = op;
+    o.textContent = op;
+    if(op === relacao) o.selected = true;
+    sRel.appendChild(o);
+  });
+
+  let img = document.createElement("img");
+  img.style.width = "35px";
+  img.style.height = "35px";
+  img.style.borderRadius = "50%";
+  img.style.objectFit = "cover";
+  img.style.cursor = "pointer";
+  img.src = fotoPessoaBase64 || "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='35' height='35' viewBox='0 0 24 24' fill='%23ccc'><circle cx='12' cy='8' r='4'/><path d='M12 14c-6.1 0-8 4-8 4h16s-1.9-4-8-4z'/></svg>";
+  img.dataset.base64 = fotoPessoaBase64;
+  
+  // AMPLIAR FOTO DO CONTATO AO CLICAR
+  img.onclick = () => {
+    if (img.dataset.base64) ampliarFoto(img.dataset.base64);
+  };
+
+  let btnFoto = document.createElement("button");
+  btnFoto.type = "button";
+  btnFoto.textContent = "Foto";
+  btnFoto.className = "btn-azul"; // Atribui a classe com animação pulsante azul
+  btnFoto.style.padding = "5px";
+  btnFoto.onclick = () => {
+    let fInput = document.createElement("input");
+    fInput.type = "file";
+    fInput.onchange = (e) => {
+      let f = e.target.files[0];
+      if(!f) return;
+      let r = new FileReader();
+      r.onload = () => {
+        img.src = r.result;
+        img.dataset.base64 = r.result;
+      };
+      r.readAsDataURL(f);
+    };
+    fInput.click();
+  };
+
+  let btnDel = document.createElement("button");
+  btnDel.type = "button";
+  btnDel.textContent = "X";
+  btnDel.className = "btn-vermelho"; // Atribui a classe com animação pulsante vermelha
+  btnDel.onclick = () => div.remove();
+
+  // ANTI-FRAUDE & UX: Se for uma linha nova criada pelo botão "+",
+  // aplica permitido-readonly para que os botões de Foto e Excluir fiquessem visíveis no painel de visualização
+  if (isNew) {
+    btnFoto.classList.add("permitido-readonly");
+    btnDel.classList.add("permitido-readonly");
+  }
+
+  r1.appendChild(iNome);
+  r1.appendChild(iDoc);
+  r1.appendChild(iTel);
+  r1.appendChild(sRel);
+  r1.appendChild(img);
+  r1.appendChild(btnFoto);
+  r1.appendChild(btnDel);
+
+  // Linha inferior: Dados da Visita / Veículo / Empresa / Data e Hora
+  let r2 = document.createElement("div");
+  r2.style.display = "flex";
+  r2.style.gap = "8px";
+  r2.style.alignItems = "center";
+  r2.style.width = "100%";
+
+  let iPlaca = document.createElement("input");
+  iPlaca.className = "vis-placa";
+  iPlaca.placeholder = "Placa do Veículo";
+  iPlaca.value = placa;
+  iPlaca.style.flex = "1";
+  iPlaca.oninput = () => iPlaca.value = iPlaca.value.toUpperCase();
+
+  let iEmpresa = document.createElement("input");
+  iEmpresa.className = "vis-empresa";
+  iEmpresa.placeholder = "Empresa / Origem";
+  iEmpresa.value = empresa;
+  iEmpresa.style.flex = "1.5";
+
+  let iDataHora = document.createElement("input");
+  iDataHora.type = "datetime-local";
+  iDataHora.className = "vis-datahora";
+  iDataHora.value = dataHoraChegada; // Carrega em branco para novos registros
+  iDataHora.style.flex = "1.5";
+  iDataHora.style.color = "#9ca3af";
+  
+  // ANTI-FRAUDE: Bloqueia totalmente a interação direta do operador com o campo de tempo de chegada
+  iDataHora.readOnly = true;
+  iDataHora.style.pointerEvents = "none";
+  iDataHora.style.background = "rgba(0, 0, 0, 0.6)";
+
+  r2.appendChild(iPlaca);
+  r2.appendChild(iEmpresa);
+  r2.appendChild(iDataHora);
+
+  // Anexa as linhas ao container do visitante
+  div.appendChild(r1);
+  div.appendChild(r2);
+
+  pessoasEl.appendChild(div);
 }
 
-function foto(e){
-  let f=e.target.files[0];
-  let r=new FileReader();
-  r.onload=()=>{fotoBase64=r.result; previewEl.src=r.result;}
-  r.readAsDataURL(f);
+// LÓGICA DE CADASTRO RÁPIDO DO BOTÃO ADICIONAR +
+function adicionarNovoVisitanteRapido() {
+  if (!selecionado) {
+    alert("Por favor, selecione um morador na lista lateral primeiro!");
+    return;
+  }
+  // Insere uma nova linha marcando o parâmetro isNew como true (linha editável)
+  addPessoa("", "", "", "Visitante", "", "", "", "", true);
 }
 
 function limpar(){
-  nomeEl.value=cpfEl.value=rgEl.value=cnhEl.value=enderecoEl.value="";
+  nomeEl.value=cpfEl.value=cnhEl.value=enderecoEl.value="";
   quadraEl.value="";
-  cidadeEl.value="";
+  cityEl.value=""; // cidade
+  placaMoradorEl.value="";
   obsEl.value="";
-  placasEl.innerHTML="";
-  familiaresEl.innerHTML="";
-  previewEl.src="";
-  fotoBase64="";
+  pessoasEl.innerHTML="";
+  telefonesFamiliaEl.innerHTML="";
+  fotosObsArray = []; // Limpa o controle de fotos anexadas
+  atualizarBotaoGaleria();
+
+  // Limpa o controle da Foto de Perfil Principal
+  fotoBase64 = "";
+  document.getElementById("foto_principal_preview").src = "";
+  document.getElementById("foto_principal_preview").style.display = "none";
+  document.getElementById("foto_principal_placeholder").style.display = "block";
+
   editId=null;
   selecionado=null;
+
+  // Limpa a agenda local e referências originais de texto
+  document.getElementById("reservasMoradorContainer").innerHTML = "";
+  originalObs = "";
+  obsDesbloqueado = false;
+
+  addPessoa();
+  addTelefoneFamilia();
+
+  // Garante o bloqueio da seção de visitantes até que um morador válido seja aberto
+  document.getElementById("visitantes-conteudo").classList.add("visitantes-bloqueados");
+}
+
+// AMPLIAR FOTO OU EXIBIR NO SLIDER DE GALERIA
+function ampliarFoto(src) {
+  if(!src) return;
+  galeriaAtiva = false; // Configura visualização direta de uma única imagem
+  
+  const modal = document.getElementById("photoModal");
+  const modalImg = document.getElementById("modalImg");
+  const prevBtn = document.getElementById("prev_btn");
+  const nextBtn = document.getElementById("next_btn");
+  const delBtn = document.getElementById("del_galeria_btn");
+
+  modal.style.display = "flex";
+  modalImg.src = src;
+  
+  // Esconde controles da galeria no modal unitário
+  prevBtn.style.display = "none";
+  nextBtn.style.display = "none";
+  delBtn.style.display = "none";
+}
+
+// Abertura do visualizador dinâmico de fotos da galeria
+function abrirGaleria() {
+  if (fotosObsArray.length === 0) return;
+  galeriaAtiva = true;
+  indiceGaleria = 0;
+  exibirFotoGaleria();
+}
+
+function exibirFotoGaleria() {
+  const modal = document.getElementById("photoModal");
+  const modalImg = document.getElementById("modalImg");
+  const prevBtn = document.getElementById("prev_btn");
+  const nextBtn = document.getElementById("next_btn");
+  const delBtn = document.getElementById("del_galeria_btn");
+
+  modal.style.display = "flex";
+  modalImg.src = fotosObsArray[indiceGaleria];
+
+  // Mostra as setas de navegação somente se houver mais de uma foto
+  if (fotosObsArray.length > 1) {
+    prevBtn.style.display = "block";
+    nextBtn.style.display = "block";
+  } else {
+    prevBtn.style.display = "none";
+    nextBtn.style.display = "none";
+  }
+
+  // Permite excluir apenas fora do modo de visualização geral (Segurança do Gerente)
+  if (modoVisualizar) {
+    delBtn.style.display = "none";
+  } else {
+    delBtn.style.display = "inline-block";
+  }
+}
+
+function navegarGaleria(direcao) {
+  if (!galeriaAtiva) return;
+  indiceGaleria += direcao;
+  if (indiceGaleria < 0) {
+    indiceGaleria = fotosObsArray.length - 1;
+  } else if (indiceGaleria >= fotosObsArray.length) {
+    indiceGaleria = 0;
+  }
+  exibirFotoGaleria();
+}
+
+function excluirFotoGaleria() {
+  if (modoVisualizar) return;
+  if (!confirm("Deseja realmente excluir esta foto da galeria?")) return;
+  
+  fotosObsArray.splice(indiceGaleria, 1);
+  atualizarBotaoGaleria();
+  
+  if (fotosObsArray.length === 0) {
+    fecharModal();
+  } else {
+    if (indiceGaleria >= fotosObsArray.length) {
+      indiceGaleria = fotosObsArray.length - 1;
+    }
+    exibirFotoGaleria();
+  }
+}
+
+function fecharModal() {
+  document.getElementById("photoModal").style.display = "none";
+  galeriaAtiva = false;
+}
+
+// =======================================================================
+// LÓGICA DO NOVO SISTEMA DE RESERVAS E AGENDA DE EVENTOS
+// =======================================================================
+
+function abrirModalNovaReserva() {
+  if (!editId) {
+    alert("Por favor, selecione ou salve um morador primeiro na lista lateral para vincular a reserva!");
+    return;
+  }
+  
+  editReservaId = null; // Reinicia o controle de edicao
+  document.getElementById("reservaModalTitle").textContent = "Reservar Espaço";
+  document.getElementById("res_morador_nome").value = nomeEl.value;
+  document.getElementById("res_data_ini").value = "";
+  document.getElementById("res_hora_ini").value = "";
+  document.getElementById("res_data_fim").value = "";
+  document.getElementById("res_hora_fim").value = "";
+  
+  document.getElementById("reservaModal").style.display = "flex";
+}
+
+function fecharModalReserva() {
+  document.getElementById("reservaModal").style.display = "none";
+  editReservaId = null;
+}
+
+// Verifica se o espaço já está reservado no período selecionado (Desconsiderando a própria reserva se for edição)
+function verificarConflitoReserva(espaco, dIni, hIni, dFim, hFim, ignoreId = null) {
+  const inicioNovo = new Date(`${dIni}T${hIni}`);
+  const fimNovo = new Date(`${dFim}T${hFim}`);
+  
+  let conflito = null;
+  moradores.forEach(m => {
+    if (m.reservas) {
+      m.reservas.forEach(r => {
+        if (r.id === ignoreId) return; // Ignora se for o próprio ID em edição
+        if (r.espaco === espaco) {
+          const inicioExistente = new Date(`${r.dataInicio}T${r.horaInicio}`);
+          const fimExistente = new Date(`${r.dataFim}T${r.horaFim}`);
+          
+          // Se houver sobreposição de horários
+          if (inicioNovo < fimExistente && fimNovo > inicioExistente) {
+            conflito = {
+              moradorNome: m.nome,
+              quadra: m.quadra || "Não informada",
+              dataInicio: r.dataInicio,
+              horaInicio: r.horaInicio
+            };
+          }
+        }
+      });
+    }
+  });
+  return conflito;
+}
+
+async function salvarNovaReserva() {
+  const espaco = document.getElementById("res_espaco").value;
+  const dataIni = document.getElementById("res_data_ini").value;
+  const horaIni = document.getElementById("res_hora_ini").value;
+  const dataFim = document.getElementById("res_data_fim").value;
+  const horaFim = document.getElementById("res_hora_fim").value;
+
+  if (!dataIni || !horaIni || !dataFim || !horaFim) {
+    alert("Por favor, preencha todas as datas e horários corretamente.");
+    return;
+  }
+
+  if (new Date(`${dataIni}T${horaIni}`) >= new Date(`${dataFim}T${horaFim}`)) {
+    alert("A data/hora de início não pode ser igual ou posterior à data/hora de término!");
+    return;
+  }
+
+  // Verifica se há choque de datas (passando o editReservaId para não conflitar com si mesmo em caso de edição)
+  const conflito = verificarConflitoReserva(espaco, dataIni, horaIni, dataFim, horaFim, editReservaId);
+  if (conflito) {
+    alert(`Conflito de Reserva!\n\nO espaço "${espaco}" já está reservado para o morador:\n"${conflito.moradorNome}" (Quadra: ${conflito.quadra})\nneste mesmo período.`);
+    return;
+  }
+
+  const index = moradores.findIndex(m => m.id === editId);
+  if (index !== -1) {
+    if (!moradores[index].reservas) {
+      moradores[index].reservas = [];
+    }
+
+    if (editReservaId) {
+      // Caso seja edição, substitui os dados
+      moradores[index].reservas = moradores[index].reservas.map(r => 
+        r.id === editReservaId ? { ...r, espaco, dataInicio: dataIni, horaInicio: horaIni, dataFim: dataFim, horaFim: horaFim } : r
+      );
+    } else {
+      // Caso seja nova, cria um novo objeto
+      const novaRes = {
+        id: Date.now(),
+        espaco: espaco,
+        dataInicio: dataIni,
+        horaInicio: horaIni,
+        dataFim: dataFim,
+        horaFim: horaFim
+      };
+      moradores[index].reservas.push(novaRes);
+    }
+
+    moradores[index].dataAlteracao = new Date().toLocaleString("pt-BR");
+    
+    // Sincroniza localmente as atualizações
+    selecionado.reservas = moradores[index].reservas;
+
+    await salvarArquivoSemLimpar();
+    atualizarListaReservasMorador();
+    fecharModalReserva();
+    alert("Reserva salva com sucesso!");
+  }
+}
+
+// Renderiza as reservas cadastradas do morador ativo na tela
+function atualizarListaReservasMorador() {
+  const container = document.getElementById("reservasMoradorContainer");
+  container.innerHTML = "";
+  
+  if (!selecionado || !selecionado.reservas || selecionado.reservas.length === 0) {
+    container.innerHTML = `<small style="color: #9ca3af; display:block; margin-bottom:10px;">Nenhuma reserva ativa para este morador.</small>`;
+    return;
+  }
+
+  // Obedece ordenação cronológica
+  const ordenadas = [...selecionado.reservas].sort((a,b) => new Date(`${a.dataInicio}T${a.horaInicio}`) - new Date(`${b.dataInicio}T${b.horaFim}`));
+
+  ordenadas.forEach(res => {
+    const div = document.createElement("div");
+    div.className = "reserva-row";
+    
+    const dIniFmt = res.dataInicio.split("-").reverse().join("/");
+    const dFimFmt = res.dataFim.split("-").reverse().join("/");
+
+    div.innerHTML = `
+      <div style="font-size:12px; line-height:1.4;">
+        <strong style="color: #00d4ff;">${res.espaco}</strong><br>
+        <span>De: ${dIniFmt} às ${res.horaInicio}</span><br>
+        <span>Até: ${dFimFmt} às ${res.horaFim}</span>
+      </div>
+      <div style="display:flex; gap: 6px;">
+        <button type="button" class="permitido-readonly btn-amarelo" style="padding:4px 8px; font-size:11px;" onclick="editarReserva(${res.id})">Editar</button>
+        <button type="button" class="permitido-readonly btn-vermelho" style="padding:4px 8px; font-size:11px;" onclick="excluirReserva(${res.id})">Excluir</button>
+      </div>
+    `;
+    container.appendChild(div);
+  });
+}
+
+function editarReserva(reservaId) {
+  const index = moradores.findIndex(m => m.id === editId);
+  if (index === -1) return;
+
+  const res = moradores[index].reservas.find(r => r.id === reservaId);
+  if (!res) return;
+
+  const adminKey = config.senhaGerente || "201066";
+  const senha = prompt("Digite a senha de GERENTE para alterar esta reserva:");
+  if (senha !== adminKey) {
+    alert("Senha incorreta!");
+    return;
+  }
+
+  editReservaId = reservaId; // Define o controle de edição ativo
+  document.getElementById("reservaModalTitle").textContent = "Editar Reserva";
+  
+  document.getElementById("res_morador_nome").value = nomeEl.value;
+  document.getElementById("res_espaco").value = res.espaco;
+  document.getElementById("res_data_ini").value = res.dataInicio;
+  document.getElementById("res_hora_ini").value = res.horaInicio;
+  document.getElementById("res_data_fim").value = res.dataFim;
+  document.getElementById("res_hora_fim").value = res.horaFim;
+
+  document.getElementById("reservaModal").style.display = "flex";
+}
+
+async function excluirReserva(reservaId) {
+  if (!confirm("Tem certeza que deseja excluir esta reserva?")) return;
+
+  const adminKey = config.senhaGerente || "201066";
+  const senha = prompt("Digite a senha de GERENTE para confirmar a exclusão:");
+  if (senha !== adminKey) {
+    alert("Senha incorreta!");
+    return;
+  }
+
+  const index = moradores.findIndex(m => m.id === editId);
+  if (index !== -1) {
+    moradores[index].reservas = moradores[index].reservas.filter(r => r.id !== reservaId);
+    moradores[index].dataAlteracao = new Date().toLocaleString("pt-BR");
+    
+    // Converte e armazena localmente
+    selecionado.reservas = moradores[index].reservas;
+    
+    await salvarArquivoSemLimpar();
+    atualizarListaReservasMorador();
+    alert("Reserva excluída!");
+  }
+}
+
+// --- AGENDA GLOBAL ---
+
+function abrirAgendaGlobal() {
+  const container = document.getElementById("agendaGlobalLista");
+  container.innerHTML = "";
+
+  // Agrega todas as reservas de todos os moradores
+  let todasReservas = [];
+  moradores.forEach(m => {
+    if (m.reservas && m.reservas.length > 0) {
+      m.reservas.forEach(r => {
+        todasReservas.push({
+          ...r,
+          moradorId: m.id,
+          moradorNome: m.nome,
+          moradorQuadra: m.quadra || "Não cadastrada"
+        });
+      });
+    }
+  });
+
+  if (todasReservas.length === 0) {
+    container.innerHTML = `<p style="text-align:center; color: #9ca3af;">Nenhuma reserva de espaço registrada no condomínio.</p>`;
+    document.getElementById("agendaGlobalModal").style.display = "flex";
+    return;
+  }
+
+  // Ordena cronologicamente pela data de início
+  todasReservas.sort((a,b) => new Date(`${a.dataInicio}T${a.horaInicio}`) - new Date(`${b.dataInicio}T${b.horaFim}`));
+
+  todasReservas.forEach(res => {
+    const div = document.createElement("div");
+    div.className = "card";
+    
+    const dIniFmt = res.dataInicio.split("-").reverse().join("/");
+    const dFimFmt = res.dataFim.split("-").reverse().join("/");
+
+    // Ao clicar na reserva global, seleciona o morador correspondente, fecha o modal e abre o cadastro
+    div.onclick = () => {
+      const moradorVinculado = moradores.find(m => m.id === res.moradorId);
+      if (moradorVinculado) {
+        selecionado = moradorVinculado;
+        render();
+        visualizarSelecionado();
+        fecharAgendaGlobal();
+      } else {
+        alert("Morador vinculado a esta reserva não foi encontrado.");
+      }
+    };
+
+    div.innerHTML = `
+      <div style="flex-grow:1; font-size:13px; line-height:1.5;">
+        <strong style="color: #38bdf8; font-size:15px;">${res.espaco}</strong><br>
+        <span><b>Morador:</b> ${res.moradorNome} (Quadra/Lote: ${res.moradorQuadra})</span><br>
+        <span><b>Início:</b> ${dIniFmt} às ${res.horaInicio}</span> | <span><b>Fim:</b> ${dFimFmt} às ${res.horaFim}</span>
+      </div>
+      <div style="color: #10b981; font-size: 11px; font-weight: bold; text-transform: uppercase;">Clique para ver Morador</div>
+    `;
+    container.appendChild(div);
+  });
+
+  document.getElementById("agendaGlobalModal").style.display = "flex";
+}
+
+function fecharAgendaGlobal() {
+  document.getElementById("agendaGlobalModal").style.display = "none";
+}
+
+// =======================================================================
+// LÓGICA DE GERENCIAMENTO DE CONFIGURAÇÃO DE LOGO E NOME
+// =======================================================================
+
+function configurarSistema() {
+  const adminKey = config.senhaGerente || "201066";
+  let senha = prompt("Digite a senha de GERENTE para alterar as configurações do sistema:");
+  if (senha !== adminKey) {
+    alert("Senha incorreta!");
+    return;
+  }
+
+  document.getElementById("cfg_nome").value = config.nome;
+  document.getElementById("cfg_logo_url").value = config.logo.startsWith("data:") ? "" : config.logo;
+  tempLogoBase64 = config.logo.startsWith("data:") ? config.logo : "";
+  document.getElementById("cfg_logo_file").value = ""; // Limpa campo de arquivo
+
+  // Define os valores antigos do zoom de volta
+  const currentZoom = Math.round((config.logoZoom || 1.0) * 100);
+  document.getElementById("cfg_logo_zoom").value = currentZoom;
+  document.getElementById("val_zoom").innerText = currentZoom;
+
+  // Carrega as coordenadas X e Y salvas para o arrastar da imagem
+  currentX = config.logoX || 0;
+  currentY = config.logoY || 0;
+
+  // Carrega imagem atual na pré-visualização circular interna do modal aplicando zoom e posições
+  const previewImg = document.getElementById("cfg_preview_img");
+  previewImg.src = config.logo;
+  previewImg.style.transform = `translate(${currentX}px, ${currentY}px) scale(${config.logoZoom || 1.0})`;
+
+  document.getElementById("configModal").style.display = "flex";
+}
+
+function fecharConfigModal() {
+  document.getElementById("configModal").style.display = "none";
+  tempLogoBase64 = "";
+  // Desfaz qualquer alteração visual provisória provocada pelos controles deslizantes e arrastes
+  atualizarLogoENomeDOM();
+}
+
+function processarLogoFile(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    tempLogoBase64 = reader.result;
+    document.getElementById("cfg_logo_url").value = ""; // Limpa o link para dar preferência ao arquivo carregado
+    atualizarPreviewLive(); // Atualiza a pré-visualização ao vivo com o novo arquivo carregado
+  };
+  reader.readAsDataURL(file);
+}
+
+// Realiza a atualização visual e interativa em tempo real enquanto o usuário manipula o painel (Estilo Discord)
+function atualizarPreviewLive() {
+  const tempNome = document.getElementById("cfg_nome").value.trim();
+  const tempUrl = document.getElementById("cfg_logo_url").value.trim();
+  const zoomVal = parseInt(document.getElementById("cfg_logo_zoom").value, 10) || 100;
+  const zoomFactor = zoomVal / 100;
+
+  // Proporções para garantir alinhamento idêntico em caixas de diferentes tamanhos
+  const ratioLogin = 220 / 130; 
+  const ratioApp = 70 / 130;
+
+  // Atualiza os indicators textuais de zoom
+  document.getElementById('val_zoom').innerText = zoomVal;
+
+  // Determina qual imagem está ativa no fluxo do formulário
+  let logoAtivo = config.logo;
+  if (tempUrl) {
+    logoAtivo = tempUrl;
+  } else if (tempLogoBase64) {
+    logoAtivo = tempLogoBase64;
+  }
+
+  // 1. Atualiza o círculo de preview interno do modal com zoom e coordenadas ao vivo
+  const previewImg = document.getElementById("cfg_preview_img");
+  if (previewImg) {
+    previewImg.src = logoAtivo;
+    previewImg.style.transform = `translate(${currentX}px, ${currentY}px) scale(${zoomFactor})`;
+  }
+
+  // 2. Atualiza a tela de login ao vivo com ajuste proporcional
+  const loginLogo = document.getElementById("login_logo");
+  const loginNome = document.getElementById("login_nome");
+  if (loginLogo) {
+    loginLogo.src = logoAtivo;
+    loginLogo.style.transform = `translate(${currentX * ratioLogin}px, ${currentY * ratioLogin}px) scale(${zoomFactor})`;
+  }
+  if (loginNome && tempNome) {
+    loginNome.textContent = tempNome;
+  }
+
+  // 3. Atualiza o topo do aplicativo ao vivo com ajuste proporcional e borda-animada fina de 1.5px
+  const topoInfo = document.getElementById("topo-info");
+  if (topoInfo && topoInfo.classList.contains("centralizado")) {
+    topoInfo.innerHTML = `
+      <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+        <div class="borda-animada" style="width: 70px; height: 70px; border-radius: 50%; overflow: hidden; border: 1.5px solid rgba(255, 255, 255, 0.2); display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.3);">
+          <img src="${logoAtivo}" alt="Logo" style="width: 100%; height: 100%; object-fit: cover; transform: translate(${logoX * ratioApp}px, ${logoY * ratioApp}px) scale(${zoomFactor});" draggable="false">
+        </div>
+        <span style="font-size: 16px; font-weight: bold; letter-spacing: 1px; color: white; text-transform: uppercase;">${tempNome || config.nome}</span>
+      </div>
+    `;
+  }
+}
+
+async function salvarConfig() {
+  const novoNome = document.getElementById("cfg_nome").value.trim();
+  const novaUrl = document.getElementById("cfg_logo_url").value.trim();
+  const zoomVal = parseInt(document.getElementById("cfg_logo_zoom").value, 10) || 100;
+  const zoomFactor = zoomVal / 100;
+
+  if (!novoNome) {
+    alert("O nome do condomínio não pode estar em branco.");
+    return;
+  }
+
+  config.nome = novoNome;
+  config.logoZoom = zoomFactor;
+  config.logoX = currentX;
+  config.logoY = currentY;
+
+  if (novaUrl) {
+    config.logo = novaUrl;
+  } else if (tempLogoBase64) {
+    config.logo = tempLogoBase64;
+  }
+
+  // Grava as alterações definitivas e encerra o modal
+  atualizarLogoENomeDOM();
+  document.getElementById("configModal").style.display = "none";
+  tempLogoBase64 = "";
+
+  // Salva na base de dados de forma centralizada ou no localStorage temporário de apoio
+  if (dirHandle) {
+    await salvarArquivoSemLimpar();
+  } else {
+    localStorage.setItem("config_condominio", JSON.stringify(config));
+  }
+
+  alert("Configurações atualizadas!");
+}
+
+// =======================================================================
+// LÓGICA DE ALTERAÇÃO DE SENHAS (OPERADOR E GERENTE)
+// =======================================================================
+
+function abrirModalTrocarSenhas() {
+  const adminKey = config.senhaGerente || "201066";
+  let senhaConfirmacao = prompt("Digite a senha de GERENTE atual para autorizar a troca de senhas:");
+  if (senhaConfirmacao !== adminKey) {
+    alert("Senha incorreta! Acesso negado.");
+    return;
+  }
+
+  document.getElementById("cfg_senha_normal").value = config.senhaNormal || "2010";
+  document.getElementById("cfg_senha_gerente").value = config.senhaGerente || "201066";
+
+  document.getElementById("passwordsModal").style.display = "flex";
+}
+
+function fecharPasswordsModal() {
+  document.getElementById("passwordsModal").style.display = "none";
+}
+
+async function salvarNovasSenhas() {
+  const novaNormal = document.getElementById("cfg_senha_normal").value.trim();
+  const novaGerente = document.getElementById("cfg_senha_gerente").value.trim();
+
+  if (!novaNormal || !novaGerente) {
+    alert("As senhas não podem ficar em branco!");
+    return;
+  }
+
+  if (novaNormal.length < 3 || novaGerente.length < 3) {
+    alert("Por motivos de segurança, as senhas devem ter no mínimo 3 caracteres.");
+    return;
+  }
+
+  config.senhaNormal = novaNormal;
+  config.senhaGerente = novaGerente;
+
+  fecharPasswordsModal();
+
+  // Salva as novas configurações de segurança permanentemente
+  if (dirHandle) {
+    await salvarArquivoSemLimpar();
+  } else {
+    localStorage.setItem("config_condominio", JSON.stringify(config));
+  }
+
+  alert("Senhas alteradas com sucesso!");
+}
+
+// =======================================================================
+// INTERAÇÃO DE CLIQUE E ARRASTE WITH O MOUSE (PANNING DA LOGO)
+// =======================================================================
+
+const previewImg = document.getElementById("cfg_preview_img");
+
+// Evento disparado ao pressionar o botão do mouse sobre a imagem
+previewImg.addEventListener("mousedown", (e) => {
+  e.preventDefault(); // Impede o comportamento de arrastar fantasma nativo do navegador
+  isDragging = true;
+  startX = e.clientX;
+  startY = e.clientY;
+  initialDragX = currentX;
+  initialDragY = currentY;
+  previewImg.style.cursor = "grabbing";
+});
+
+// Evento global para rastrear o movimento do mouse
+document.addEventListener("mousemove", (e) => {
+  if (!isDragging) return;
+  const deltaX = e.clientX - startX;
+  const deltaY = e.clientY - startY;
+
+  currentX = initialDragX + deltaX;
+  currentY = initialDragY + deltaY;
+
+  // Em tempo real atualiza
+  atualizarPreviewLive();
+});
+
+// Evento global disparado ao soltar o mouse
+document.addEventListener("mouseup", () => {
+  if (isDragging) {
+    isDragging = false;
+    previewImg.style.cursor = "grab";
+  }
+});
+
+// =======================================================================
+
+function limparBusca() {
+  const buscaEl = document.getElementById("busca");
+  if (buscaEl) {
+    buscaEl.value = "";
+    render();
+  }
 }
 
 function render(){
@@ -496,22 +2544,105 @@ function render(){
   listaEl.innerHTML="";
 
   let listaOrdenada = moradores
-    .filter(m=>m.nome.toLowerCase().includes(q)||m.cpf.includes(q)||m.rg.includes(q))
+    .filter(m=>{
+      if (!q) return true;
+
+      // 1. Dados do Morador Principal (Nome, CPF/RG, Placa do Veículo Principal, CNH)
+      const nomePrincipal = (m.nome || "").toLowerCase();
+      const cpfPrincipal = (m.cpf || "").toLowerCase();
+      const placaPrincipal = (m.placaMorador || "").toLowerCase();
+      const cnhPrincipal = (m.cnh || "").toLowerCase();
+
+      const matchPrincipal = nomePrincipal.includes(q) || 
+                             cpfPrincipal.includes(q) || 
+                             placaPrincipal.includes(q) ||
+                             cnhPrincipal.includes(q);
+
+      // 2. Dados dos Membros da Família / Outros Principais (Nome, Telefone, Placa, Parentesco)
+      const telsFamiliaVal = m.telefonesFamilia || [];
+      const matchFamilia = telsFamiliaVal.some(t => 
+        (t.nome || "").toLowerCase().includes(q) || 
+        (t.telefone || "").toLowerCase().includes(q) ||
+        (t.parentesco || "").toLowerCase().includes(q) ||
+        (t.placa || "").toLowerCase().includes(q)
+      );
+
+      // 3. Dados de Visitantes / Prestadores autorizados (Nome, Telefone, Placa, Documento RG/CPF, Empresa)
+      const autorizadosVal = m.pessoas || m.contatos || [];
+      const matchAutorizados = autorizadosVal.some(p => 
+        (p.nome || "").toLowerCase().includes(q) || 
+        (p.telefone || "").toLowerCase().includes(q) ||
+        (p.documento || "").toLowerCase().includes(q) ||
+        (p.placa || "").toLowerCase().includes(q) ||
+        (p.empresa || "").toLowerCase().includes(q)
+      );
+
+      return matchPrincipal || matchFamilia || matchAutorizados;
+    })
     .sort((a,b)=>a.nome.localeCompare(b.nome,'pt-BR',{sensitivity:'base'}));
 
   listaOrdenada.forEach(m=>{
     let div=document.createElement("div");
     div.className="card"+(selecionado?.id===m.id?" selected":"");
-    div.onclick=()=>{selecionado=m; render();};
+    // Ao clicar na linha do morador, as informações são carregadas diretamente na tela
+    div.onclick=()=>{selecionado=m; render(); visualizarSelecionado();};
+
+    // FOTO DO MORADOR PRINCIPAL (USA A FOTO DE PERFIL OFICIAL)
+    const fotoCard = m.foto || null;
+    const imgHTML = fotoCard 
+      ? `<img src="${fotoCard}" onclick="event.stopPropagation(); ampliarFoto('${fotoCard}')" style="cursor:pointer;">` 
+      : `<div class="img-placeholder">Sem Foto</div>`;
+
+    let foneDestaque = "Sem telefone";
+    const autorizadosVal = m.pessoas || m.contatos || [];
+    if (autorizadosVal.length > 0) {
+      const principal = autorizadosVal[0];
+      if(principal.telefone) {
+        foneDestaque = `${principal.telefone} (${principal.nome})`;
+      }
+    } else {
+      const famTels = m.telefonesFamilia || [];
+      if (famTels.length > 0 && famTels[0].telefone) {
+        foneDestaque = `${famTels[0].telefone} (${famTels[0].nome || famTels[0].parentesco})`;
+      }
+    }
+
+    // FOTOS DOS FAMILIARES COM SUPORTE PARA AMPLIAR AO CLICAR
+    let fotosFamiliaHTML = "";
+    autorizadosVal.forEach(p => {
+      if ((p.relacao === "Morador" || p.relacao === "Familiar") && p.foto) {
+        fotosFamiliaHTML += `<img src="${p.foto}" onclick="event.stopPropagation(); ampliarFoto('${p.foto}')" style="cursor:pointer;" title="${p.nome} (${p.relacao})">`;
+      }
+    });
+
+    // Também exibe fotos cadastradas na lista dinâmica de telefones da família
+    const famTelsList = m.telefonesFamilia || [];
+    famTelsList.forEach(f => {
+      if (f.foto) {
+        fotosFamiliaHTML += `<img src="${f.foto}" onclick="event.stopPropagation(); ampliarFoto('${f.foto}')" style="cursor:pointer;" title="${f.nome} (${f.parentesco})">`;
+      }
+    });
 
     div.innerHTML=`
-      <b>${m.nome}</b><br>
-      ${m.cpf}<br>
-      <img src="${m.foto||''}">
+      ${imgHTML}
+      <div class="card-info">
+        <b>${m.nome}</b><br>
+        <small>CPF/RG: ${m.cpf || "Não cadastrado"}</small><br>
+        <small>Tel: ${foneDestaque}</small>
+        
+        ${fotosFamiliaHTML ? `<div class="family-photos">${fotosFamiliaHTML}</div>` : ''}
+      </div>
     `;
 
     listaEl.appendChild(div);
   });
+}
+
+function visualizarSelecionado(){
+  if(!selecionado) return alert("Selecione um morador");
+  modoVisualizar = true;
+  formBox.classList.add("readonly");
+  editar(selecionado);
 }
 
 </script>
